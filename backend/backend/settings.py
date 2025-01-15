@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +29,7 @@ SECRET_KEY = "django-insecure-vrfzi81%klv^h_k=$%m2h0-!*msmh$x!gngkkjvbjld9x-$8ty
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +43,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "tailwind",
     "theme",
+    "web",
+    "webapi"
 ]
 
 
@@ -120,7 +126,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "backend/theme/static_src"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -131,3 +138,11 @@ INTERNAL_IPS = [
     "127.0.0.1"
 ]
 
+# settings.py
+
+INFLUXDB_CONFIG = {
+    "url": "https://influxdb.endide.com",  # URL de l'instance InfluxDB
+    "token": os.getenv("TOKEN_INFLUXDB"),  # Jeton d'accès (InfluxDB v2+)
+    "org": "sae",  # Organisation (InfluxDB v2+)
+    "bucket": "sensors",  # Bucket cible
+}

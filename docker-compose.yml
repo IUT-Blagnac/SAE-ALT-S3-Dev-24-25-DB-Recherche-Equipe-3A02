@@ -1,0 +1,51 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.django
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    stdin_open: true
+    tty: true
+
+  mqtt:
+    build:
+      context: .
+      dockerfile: Dockerfile.mqtt
+    volumes:
+      - ./mqtt:/app
+    ports:
+      - "8001:8001"
+    command: sh -c "sleep 5 && python main_app.py"
+    networks:
+      - django_network
+    environment:
+      - APP_API=http://192.168.1.35:8000/api
+    depends_on:
+      - web
+    profiles:
+      - mqtt
+
+  
+  tailwind:
+    build:
+      context: .
+      dockerfile: Dockerfile.django
+    volumes:
+      - ./backend:/app
+    command: sh -c "python manage.py tailwind install && python manage.py tailwind start"
+    stdin_open: true
+    tty: true
+    user: "1000:1000"
+
+
+networks:
+  django_network:
+    driver: bridge

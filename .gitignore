@@ -1,40 +1,67 @@
-# JMB 2022 -- Adapted from https://gist.github.com/JonathanGawrych/32afe529fd519a7312df
+# Environnements Python
+*.pyc
+*.pyo
+*.pyd
+*.swp
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# Environnements virtuels
+env/
+venv/
+.venv/
 
-# VSCode
-.vscode
-
-# Eclipse
-.classpath
-.project
-.settings/
-
-# Intellij
+# Configurations spécifiques de l'IDE
+.vscode/
 .idea/
 *.iml
-*.iws
 
-# Mac
+# Node.js et Tailwind CSS
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers de logs
+*.log
+
+# Fichiers de base de données SQLite
+*.sqlite3
+
+# Staticfiles et fichiers compilés
+/staticfiles/
+media/
+*.css.map
+*.js.map
+
+backend/.npm-cache/
+
+# Configurations Docker
+*.env
+docker-compose.override.yml
+docker-compose*.yaml~
+
+# Autres fichiers temporaires ou inutiles
+*.tmp
+*.bak
+*.orig
 .DS_Store
+Thumbs.db
+package-lock.json
 
-# Maven
-log/
-target/
+# Ignorer les migrations compilées
+**/migrations/__pycache__/
+**/migrations/*.pyc
+**/migrations/*.pyo
+**/migrations/*.pyd
 
-# Inclusions
-!lib/**
-
-
-backend/backend/__pycache__/
-venv/
-
-# Compiled Files
-*.class
-bin/
+# Build outputs
 build/
-/bin1/
-java/build/**
+dist/
+
+# Fichiers spécifiques à Django
+*.mo
+*.pot
+
+# Fichiers secrets
+secret_key.txt
+
+shell.nix
