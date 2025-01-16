@@ -49,7 +49,7 @@ Tutrice & tuteur enseignant.e.s de l'équipe : [Cassandre Vey](cassandre.vey@iri
 Chaque sprint (une semaine et demi) nous livrons une nouvelle version de notre application (release).
 Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](https://docs.github.com/en/repositories/releasing-projects-on-github).
 
-- Version courante : [v0.0.1]()
+- Version courante : [v0.0.1](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/releases/tag/1.0.0)
 - Lien vers la doc technique : [Documentation Technique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Documentation/Documentation%20Technique/Technical_Document.md)
 - Lien vers la doc utilisateur : [Documentation Utilisateur](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Documentation/Documentation%20Utilisateur/User_Document.md)
 - Liste des User Stories avec leurs (User Stories/Todo/In progress/In review/Done) et % restant :
