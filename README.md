@@ -64,7 +64,7 @@ Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](http
 - Lien vers [Backlog](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/issues)
 - Liste des Sprints :
   - [Sprint 1](https://github.com/orgs/IUT-Blagnac/projects/296)
-  - (Sprint 2)[]
+  - [Sprint 2](https://github.com/orgs/IUT-Blagnac/projects/306)
 - Liste des ODJs et leurs CRs :
 
   | Ordres du Jour | Compte-rendus |
