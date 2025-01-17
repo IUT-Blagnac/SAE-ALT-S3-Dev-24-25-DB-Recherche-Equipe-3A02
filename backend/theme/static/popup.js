@@ -11,9 +11,15 @@ async function getSensorData() {
     }
 }
 
-// Ne garde que les données qui correspondent à la salle sélectionnée
+// Permet de garder que les données qui correspondent à la salle sélectionnée
 function filterRoomData(data, roomId) {
-    return data.filter(sensor => sensor.room_id === roomId);
+    const filteredData = [];
+    for (const sensor of data) {
+        if (sensor.room_id === roomId) {
+            filteredData.push(sensor);
+        }
+    }
+    return filteredData;
 }
 
 // Cherche la dernière valeur disponible pour un type de mesure spécifique
