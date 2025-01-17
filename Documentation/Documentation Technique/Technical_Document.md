@@ -1,15 +1,17 @@
 # Documentation Technique - Recherches DashBoard
 
 ## Sommaire
-- [I. Introduction](#i-introduction)
-- [II. Présentation de l'application](#ii-présentation-de-lapplication)
-  - [1. Cas d'utilisation](#1-cas-dutilisation)
-  - [2. Diagramme de classes](#2-diagramme-de-classes)
-- [III. Architecture](#iii-architecture)
-  - [1. Architecture de l'application](#1-architecture-de-lapplication)
-- [IV. Fonctionnalités de l'application](#iv-fonctionnalités-de-lapplication)
+- [Documentation Technique - Recherches DashBoard](#documentation-technique---recherches-dashboard)
+  - [Sommaire](#sommaire)
+  - [I. Introduction](#i-introduction)
+  - [II. Présentation de l'application](#ii-présentation-de-lapplication)
+    - [1. Cas d'utilisation](#1-cas-dutilisation)
+    - [2. Diagramme de classes](#2-diagramme-de-classes)
+  - [III. Architecture](#iii-architecture)
+    - [1. Architecture de l'application](#1-architecture-de-lapplication)
+  - [IV. Fonctionnalités de l'application](#iv-fonctionnalités-de-lapplication)
 
-![Logo IUT](./images/Logo_IUT.png)
+![Logo IUT](../images/Logo_IUT.png)
 
 ---
 
