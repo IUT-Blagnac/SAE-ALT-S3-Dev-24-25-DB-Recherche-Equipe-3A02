@@ -1,4 +1,3 @@
-
 // Récupère les données des capteurs depuis l'API locale
 // En cas d'erreur, renvoie un tableau vide pour éviter les crashs
 async function getSensorData() {
@@ -13,6 +12,8 @@ async function getSensorData() {
 
 // Ne garde que les données qui correspondent à la salle sélectionnée
 function filterRoomData(data, roomId) {
+    console.log(data);
+    console.log(roomId);
     return data.filter(sensor => sensor.room_id === roomId);
 }
 
