@@ -6,10 +6,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    {% tailwind_css %} {% block stylesheets %}{% endblock %}
+    {% tailwind_css %}
+    {% block stylesheets %}{% endblock %}
+    <style>
+      .scale-on-hover:hover {
+        transform: scale(1.05); 
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .active {
+        background-color: #dc2626; 
+      }
+    </style>
   </head>
   <body class="bg-neutral-300">
-  
     <main>{% block body %}{% endblock %}</main>
 
     <div class="relative">
@@ -18,7 +28,7 @@
       >
         <a
           href="/"
-          class="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-full"
+          class="flex items-center space-x-2 px-4 py-2 text-white rounded-full scale-on-hover {% if request.path == '/' %}active{% else %}bg-gray-700{% endif %}"
           style="font-family: Verdana, Geneva, Tahoma, sans-serif"
         >
           <svg
@@ -36,7 +46,7 @@
 
         <a
           href="/historique"
-          class="flex items-center space-x-2 px-4 py-2 bg-gray-700 text-white rounded-full"
+          class="flex items-center space-x-2 px-4 py-2 text-white rounded-full scale-on-hover {% if request.path == '/historique' %}active{% else %}bg-gray-700{% endif %}"
           style="font-family: Verdana, Geneva, Tahoma, sans-serif"
         >
           <svg
