@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.django.prod
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings.production
+      - PYTHONUNBUFFERED=1
+      - TOKEN_INFLUXDB=${TOKEN_INFLUXDB}
+    networks:
+      - django_network
+
+  mqtt:
+    build:
+      context: .
+      dockerfile: Dockerfile.mqtt.prod
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+    environment:
+      - INFLUXDB_URL=${INFLUXDB_URL}
+      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN}
+      - INFLUXDB_ORG=${INFLUXDB_ORG}
+      - INFLUXDB_BUCKET=${INFLUXDB_BUCKET}
+      - APP_API=${APP_API}
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_TOPIC=${MQTT_TOPIC}
+      - MQTT_USER=${MQTT_USER}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+    depends_on:
+      - web
+    networks:
+      - django_network
+
+networks:
+  django_network:
+    driver: bridge
