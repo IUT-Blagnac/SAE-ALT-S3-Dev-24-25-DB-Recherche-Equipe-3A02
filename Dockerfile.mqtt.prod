@@ -1,0 +1,45 @@
+# Use Python 3.10 slim as base image
+FROM python:3.10-slim as builder
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set work directory
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY mqtt/requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+
+# Final stage
+FROM python:3.10-slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+WORKDIR /app
+
+# Copy wheels from builder
+COPY --from=builder /app/wheels /wheels
+RUN pip install --no-cache /wheels/*
+
+# Copy project
+COPY mqtt .
+
+# Run as non-root user
+RUN useradd -m mqtt
+RUN chown -R mqtt:mqtt /app
+USER mqtt
+
+# Expose port
+EXPOSE 8001
+
+# Command to run the application
+CMD ["uvicorn", "main_app:app", "--host", "0.0.0.0", "--port", "8001"]
