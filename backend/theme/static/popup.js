@@ -10,9 +10,12 @@ async function getSensorData() {
     }
 }
 
-// Ne garde que les données qui correspondent à la salle sélectionnée
-function filterRoomData(data, roomId) {
-    return data.filter(sensor => sensor.room_id === roomId);
+// Récupère les données des capteurs pour une salle spécifique
+function getRoomData(data, roomId) {
+    if (data[roomId] && data[roomId].sensors) {
+        return data[roomId].sensors;
+    }
+    return [];
 }
 
 // Cherche la dernière valeur disponible pour un type de mesure spécifique
