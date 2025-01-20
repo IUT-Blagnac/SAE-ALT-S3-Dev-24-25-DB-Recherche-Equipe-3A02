@@ -1,0 +1,51 @@
+name: Task
+description: Une tâche associée à une User Story
+title: "[Task]: "
+labels: ["task"]
+body:
+  - type: textarea
+    id: task_description
+    attributes:
+      label: Description de la tâche
+      description: Détaillez les étapes ou le travail requis pour accomplir cette tâche.
+      placeholder: "Ex. Décrire le code à implémenter ou les actions à effectuer."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorité
+      description: Quelle est l'importance de cette tâche ?
+      options:
+        - Must (Default)
+        - Should
+        - Could
+        - Will
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Critères d'acceptation
+      description: Comment cette tâche sera validée comme terminée.
+      placeholder: "Ex. Fonctionnalité X doit être fonctionnelle avec Y tests réussis."
+
+  - type: input
+    id: estimated_time
+    attributes:
+      label: Temps estimé
+      description: Combien de temps est estimé pour réaliser cette tâche ?
+      placeholder: "Ex. 3 heures, 2 jours"
+    validations:
+      required: true
+
+  - type: input
+    id: user_story_link
+    attributes:
+      label: Lier à une User Story
+      description: Entrez l'ID de l'User Story à laquelle cette tâche est associée.
+      placeholder: "Ex. #123"
+    validations:
+      required: false

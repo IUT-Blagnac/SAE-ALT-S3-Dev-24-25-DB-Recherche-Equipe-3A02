@@ -219,17 +219,19 @@ class InfluxDB:
             field_filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(field)}))'
             all_query += f"\n{field_filter}"
         if start_time and end_time:
-            range_filter = f'|> range(start: {start_time}, stop: {end_time})'
+            range_filter = f'|> range(start: {start_time}Z, stop: {end_time}Z)'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
         if last:
             all_query += f'\n|> last()'
-        if return_object:        
+        if return_object: 
+            print(all_query)       
             result = self(all_query)
             if(not result):
                 return []
             self._last_result = self.transform_json_to_dataclass(result)
             return self._last_result
 
+        print(all_query)
         return self(all_query)
     
     def transform_json_to_dataclass(self, data_entry):

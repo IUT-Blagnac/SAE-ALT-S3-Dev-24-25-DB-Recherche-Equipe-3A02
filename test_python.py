@@ -313,9 +313,11 @@ class InfluxDB:
         return dictionnaire_capteur
 
 client = InfluxDB()
-result = client.get(return_object=True)
-di = client.get_capteur_by_list("room_id", result)
-print(len(di))
+result = client.get(room_id="C104", field=['temperature', 'humidity'], start_time="2025-01-13T21:15:12.224Z", end_time="2025-01-13T21:36:26.004Z", return_object=True)
+
+print(len(result))
+for r in result:
+    print(r.afficher())
 
 
 
