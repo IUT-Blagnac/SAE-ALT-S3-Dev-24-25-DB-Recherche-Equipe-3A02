@@ -44,19 +44,20 @@ def get_all_last_sensors(request):
 @router.get("/{room_id}", response={200: dict[str, dict]})
 def get_data_by_room(request, room_id: str, sensor_id: list[str] = Query(default=None),sensor_type: list[str] = Query(default=None), field: list[str] = Query(None), start_time: str = None, end_time: str = None):
 
-    start_time_dt = None
-    end_time_dt = None
+    start_time_dt = ""
+    end_time_dt = ""
 
     if start_time:
         start_time_dt = isoparse(start_time).isoformat()  # Convertir en datetime puis en isoformat
     if end_time:
         end_time_dt = isoparse(end_time).isoformat() 
+    
+    print(f"tout les parametres : room_id : {room_id}\nsensor_id : {sensor_id}\nsensor_type : {sensor_type}\nstart_time_dt : {start_time_dt}\nend_time_dt : {end_time_dt}\nfield : {field}")
 
-
-    result = db.get(room_id=[room_id], sensor_id=sensor_id, sensor_type=sensor_type, start_time=start_time_dt, end_time=end_time_dt, field=field, return_object=True)
+    result = db.get(room_id=room_id, sensor_id=sensor_id, sensor_type=sensor_type, start_time=start_time_dt, end_time=end_time_dt, field=field, return_object=True)
 
     if not result:
-        return []
+        return {}
 
     room_data = {
         room_id: {

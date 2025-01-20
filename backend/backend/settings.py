@@ -140,8 +140,8 @@ INTERNAL_IPS = [
 # settings.py
 
 INFLUXDB_CONFIG = {
-    "url": "https://influxdb.endide.com",  # URL de l'instance InfluxDB
-    "token": os.getenv("TOKEN_INFLUXDB"),  # Jeton d'accès (InfluxDB v2+)
+    "url": "https://influxdb.endide.com",  # URL de l'instanceù InfluxDB
+    "token": "QFKdKWJHe9ir4doaKlPBFKpxl7JUGR14YMDa-wjcKQ18aw_0b2hZaRDypBoXKjHvKpU9eWzXuZf9eCnbupklyw==",  # Jeton d'accès (InfluxDB v2+)
     "org": "sae",  # Organisation (InfluxDB v2+)
     "bucket": "sensors",  # Bucket cible
 }
