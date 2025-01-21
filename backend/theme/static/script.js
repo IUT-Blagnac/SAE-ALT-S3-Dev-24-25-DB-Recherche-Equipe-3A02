@@ -71,8 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-  
-// menu deroulants
+
+// Menu
 document.addEventListener("DOMContentLoaded", function () {
   // Gestion des accordéons
   document.querySelectorAll(".accordion-button").forEach((button) => {
@@ -86,12 +86,45 @@ document.addEventListener("DOMContentLoaded", function () {
       const content = document.getElementById(targetId);
       const icon = button.querySelector("svg");
 
-    content.classList.toggle("hidden");
-    button.classList.toggle("bg-gray-700");
-    content.classList.toggle("bg-gray-700");
-    icon.classList.toggle("rotate-180");
+        content.classList.toggle("hidden");
+        button.classList.toggle("bg-gray-700");
+        content.classList.toggle("bg-gray-700");
+      
+        icon.classList.toggle("rotate-180");
+      
     });
-});
+  });
+
+
+  const salleCheckboxes = document.querySelectorAll('input[name="filter1[]"]');
+  const accordion2Section = document.querySelector(
+    '[data-target="accordion2"]'
+  )?.parentElement;
+  const accordion3Section = document.querySelector(
+    '[data-target="accordion3"]'
+  )?.parentElement;
+
+
+  // Mise à jour de l'affichage des accordéons
+  function updateAccordionsState() {
+    const anyChecked = Array.from(salleCheckboxes).some(
+      (checkbox) => checkbox.checked
+    );
+
+    if (anyChecked) {
+      accordion2Section.classList.remove("hidden");
+      accordion3Section.classList.remove("hidden");
+    } else {
+      accordion2Section.classList.add("hidden");
+      accordion3Section.classList.add("hidden");
+    }
+  }
+  salleCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", updateAccordionsState);
+  });
+
+  // État initial
+  updateAccordionsState();
 });
 
 conversion = {
