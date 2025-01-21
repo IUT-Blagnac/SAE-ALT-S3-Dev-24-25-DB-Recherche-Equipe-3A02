@@ -14,7 +14,7 @@ _Créé par : Yahya MAGAZ_
 
 _A destination de : Cassandre Vey, Esther Pendaries et Rémi Boulle_
 
-![Logo IUT](Logo_IUT.png)
+![Logo IUT](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/Logo_IUT.png)
 
 ---
 
@@ -58,31 +58,24 @@ La carte interactive permet de naviguer à travers le bâtiment et d'interagir a
 
 #### 1.1 Affichage du plan du bâtiment
 
-![Affichage du plan du bâtiment](uc.svg)
+![Affichage du plan du bâtiment](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcConsultCarte.PNG)
 
 - La carte du bâtiment est affichée, montrant toutes les salles de cours.
-
+- La carte est interactive et réagit au survol de la souris, chaque salle devenant plus visible lorsqu'elle est survolée.
 ---
 
-#### 1.2 Interaction avec les salles via des clics
+#### 1.2 Pop-ups d'information pour chaque salle
 
-![Interaction avec les salles](uc.svg)
-
-- La carte doit être interactive et réagir au survol de la souris, avec chaque salle devenant plus visible lorsqu'elle est survolée.
----
-
-#### 1.3 Pop-ups d'information pour chaque salle
-
-![Pop-up d'information](uc.svg)
+![Pop-up d'information](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcVoirInfosCapteurs.PNG)
 
 - Lorsqu'un utilisateur clique sur une salle, un pop-up apparaît.
 - Le pop-up affiche des informations supplémentaires telles que la température et l'humidité de la salle sélectionnée.
 
 ---
 
-#### 1.4 Indication visuelle de l'état des portes
+#### 1.3 Indication visuelle de l'état des portes
 
-![Indication de l'état des portes](uc.svg)
+![Indication de l'état des portes](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcEtatPortes.PNG)
 
 - Les portes des salles sont indiquées visuellement dans la carte, montrant si elles sont ouvertes ou fermées.
 - Un changement d'état visuel est utilisé pour différencier les portes ouvertes des portes fermées.
@@ -93,34 +86,22 @@ La carte interactive permet de naviguer à travers le bâtiment et d'interagir a
 
 L'interface d'historique permet aux utilisateurs de consulter les données passées et d'analyser les tendances au fil du temps.
 
-#### 2.1 Sélection de la salle via un système de filtres
+#### 2.1 Affichage de la page historique
 
-![Sélection de la salle avec filtres](uc.svg)
+![Affichage de la page historique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcConsultHistorique.PNG)
+
+#### 2.2 Sélection de la salle via un système de filtres
+
+![Sélection de la salle avec filtres](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcFiltres.PNG)
 
 - Un système de filtres permet à l'utilisateur de sélectionner la salle pour afficher son historique.
 - L'utilisateur peut choisir le type de capteur (température, humidité, état des portes) et la période pour laquelle les données doivent être affichées.
 
 ---
 
-#### 2.2 Choix du type de capteur
+#### 2.3 Visualisation graphique des données sélectionnées
 
-![Choix du type de capteur](uc.svg)
-
-- L'utilisateur peut sélectionner le type de capteur (par exemple, température ou humidité) pour voir les données historiques correspondantes.
-
----
-
-#### 2.3 Sélection de la période temporelle
-
-![Sélection de la période](uc.svg)
-
-- L'utilisateur choisit une période spécifique pour laquelle il souhaite voir les données historiques, afin de visualiser les changements sur une période donnée.
-
----
-
-#### 2.4 Visualisation graphique des données sélectionnées
-
-![Visualisation graphique](uc.svg)
+![Visualisation graphique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcAfficherGraphes.PNG)
 
 - Les données historiques sont affichées sous forme de graphiques.
 - Les graphiques montrent les variations des données (température, humidité, état des portes) sur la période choisie.
