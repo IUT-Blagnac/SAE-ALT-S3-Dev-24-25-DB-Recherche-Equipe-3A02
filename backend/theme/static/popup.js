@@ -1,9 +1,10 @@
+import { getAllSensors, getSensorsByRoom } from './fetcher.js';
+
 // Récupère les données des capteurs depuis l'API locale
 // En cas d'erreur, renvoie un objet vide pour éviter les crashs
 async function getSensorData() {
     try {
-        const response = await fetch('http://localhost:8000/api/sensors');
-        return await response.json();
+        return await getAllSensors();
     } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
         return {};
