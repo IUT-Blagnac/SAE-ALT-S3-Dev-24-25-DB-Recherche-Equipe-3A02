@@ -43,7 +43,7 @@ L'application permet aux chercheurs de :
 L’architecture de l’application repose sur plusieurs modules interconnectés :
 - Un système MQTT pour la collecte des données
 - Une base de données InfluxDB pour le stockage des données sous forme de séries temporelles
-- Un backend Django pour le traitement (récupérer et filtrer les données) servant de liason entre la BD et le frontend
+- Un backend Django pour le traitement (récupérer et filtrer les données) servant de liaison entre la BD et le frontend
 - Une interface frontend interactive pour la visualisation
 <br>
 
