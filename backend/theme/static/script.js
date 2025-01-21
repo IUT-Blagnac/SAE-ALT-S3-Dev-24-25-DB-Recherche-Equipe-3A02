@@ -214,9 +214,14 @@ function updateChart(groupedFields) {
     const canvasContact = document.getElementById('contact');
     const message = document.getElementById('noDataMessage');
 
-    // Masquer tous les graphiques par défaut
-    [canvasTemperature, canvasHumidity, canvasContact].forEach(canvas => {
+    // Liste des canvas dans l'ordre
+    const canvases = [canvasTemperature, canvasHumidity, canvasContact];
+
+    // Masquer tous les graphiques et leurs séparateurs par défaut
+    canvases.forEach((canvas) => {
         canvas.style.display = "none";
+        const separator = document.querySelector(`.separator[data-associated-canvas="${canvas.id}"]`);
+        if (separator) separator.style.display = "none";
     });
 
     // Si aucun champ n'est disponible, afficher le message et retourner
@@ -247,28 +252,35 @@ function updateChart(groupedFields) {
             label: 'Contact (1 = Fermé, 0 = Ouvert)',
             borderColor: 'rgba(255, 206, 86, 1)',
             backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            stepped: true, // Style spécifique pour les changements d'état
+            stepped: true,
         },
     };
 
-    // Mettre à jour chaque graphique en fonction des données disponibles
-    Object.keys(groupedFields).forEach(field => {
+    // Liste des graphiques visibles
+    const visibleCanvases = [];
+
+    // Configurer et afficher les graphiques disponibles
+    canvases.forEach((canvas) => {
+        const field = canvas.id;
         const config = chartConfigurations[field];
-        if (config) {
-            const canvas = config.canvas;
-            canvas.style.display = "block"; // Afficher le graphique correspondant
+        if (groupedFields[field] && config) {
+            // Afficher le graphique
+            canvas.style.display = "block";
+            visibleCanvases.push(canvas); // Ajouter à la liste des graphiques visibles
 
             const ctx = canvas.getContext('2d');
             const data = {
-                labels: groupedFields[field][1], // Dates formatées
-                datasets: [{
-                    label: config.label,
-                    data: groupedFields[field][0], // Valeurs
-                    borderColor: config.borderColor,
-                    backgroundColor: config.backgroundColor,
-                    tension: config.stepped ? 0 : 0.4, // Ligne droite ou courbe
-                    stepped: config.stepped || false, // Seulement pour "contact"
-                }],
+                labels: groupedFields[field][1],
+                datasets: [
+                    {
+                        label: config.label,
+                        data: groupedFields[field][0],
+                        borderColor: config.borderColor,
+                        backgroundColor: config.backgroundColor,
+                        tension: config.stepped ? 0 : 0.4,
+                        stepped: config.stepped || false,
+                    },
+                ],
             };
 
             const chartConfig = {
@@ -310,7 +322,16 @@ function updateChart(groupedFields) {
             canvas.chartInstance = new Chart(ctx, chartConfig);
         }
     });
+
+    // Gérer les séparateurs dynamiquement
+    visibleCanvases.forEach((canvas, index) => {
+        const separator = document.querySelector(`.separator[data-associated-canvas="${canvas.id}"]`);
+        if (separator && index < visibleCanvases.length - 1) {
+            separator.style.display = "block"; // Afficher uniquement si ce n'est pas le dernier graphique
+        }
+    });
 }
+
 
 // Fonction utilitaire pour générer des couleurs aléatoires
 function getRandomColor() {
