@@ -208,50 +208,108 @@ function effectuerRequete() {
 
 
 function updateChart(groupedFields) {
-    const canvas = document.getElementById('myLineChart');
+    // Obtenez les canvas des différents graphiques
+    const canvasTemperature = document.getElementById('temperature');
+    const canvasHumidity = document.getElementById('humidity');
+    const canvasContact = document.getElementById('contact');
     const message = document.getElementById('noDataMessage');
 
-    if (Object.keys(groupedFields).length === 0) {
-        // Aucun résultat : afficher le message et cacher le graphique
+    // Masquer tous les graphiques par défaut
+    [canvasTemperature, canvasHumidity, canvasContact].forEach(canvas => {
         canvas.style.display = "none";
+    });
+
+    // Si aucun champ n'est disponible, afficher le message et retourner
+    if (Object.keys(groupedFields).length === 0) {
         message.style.display = "block";
         return;
     }
 
-    // Si des données sont disponibles : afficher le graphique et cacher le message
-    canvas.style.display = "block";
+    // Cacher le message d'erreur si des données sont disponibles
     message.style.display = "none";
 
-    // Réinitialiser les datasets et labels du graphique existant
-    myLineChart.data.labels = []; // Réinitialiser les labels
+    // Initialiser les graphiques pour chaque champ
+    const chartConfigurations = {
+        temperature: {
+            canvas: canvasTemperature,
+            label: 'Température',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        },
+        humidity: {
+            canvas: canvasHumidity,
+            label: 'Humidité',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        },
+        contact: {
+            canvas: canvasContact,
+            label: 'Contact (1 = Fermé, 0 = Ouvert)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            stepped: true, // Style spécifique pour les changements d'état
+        },
+    };
 
-    myLineChart.data.datasets = Object.keys(groupedFields).map((field) => {
-        // Détecter si le champ est "contact" pour appliquer un style spécifique
-        if (field === "contact") {
-            return {
-                label: "Contact (1 = Fermé, 0 = Ouvert)",
-                data: groupedFields[field][0], // 1 ou 0
-                borderColor: "rgba(255, 0, 0, 1)", // Rouge pour distinction
-                backgroundColor: "rgba(255, 0, 0, 0.2)",
-                tension: 0, // Ligne droite
-                stepped: true, // Indiquer des changements d'état par des segments
+    // Mettre à jour chaque graphique en fonction des données disponibles
+    Object.keys(groupedFields).forEach(field => {
+        const config = chartConfigurations[field];
+        if (config) {
+            const canvas = config.canvas;
+            canvas.style.display = "block"; // Afficher le graphique correspondant
+
+            const ctx = canvas.getContext('2d');
+            const data = {
+                labels: groupedFields[field][1], // Dates formatées
+                datasets: [{
+                    label: config.label,
+                    data: groupedFields[field][0], // Valeurs
+                    borderColor: config.borderColor,
+                    backgroundColor: config.backgroundColor,
+                    tension: config.stepped ? 0 : 0.4, // Ligne droite ou courbe
+                    stepped: config.stepped || false, // Seulement pour "contact"
+                }],
             };
+
+            const chartConfig = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: config.label,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Date et heure',
+                            },
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Valeurs',
+                            },
+                        },
+                    },
+                },
+            };
+
+            // Détruire un graphique existant avant d'en créer un nouveau
+            if (canvas.chartInstance) {
+                canvas.chartInstance.destroy();
+            }
+
+            canvas.chartInstance = new Chart(ctx, chartConfig);
         }
-
-        return {
-            label: field.charAt(0).toUpperCase() + field.slice(1), // Nom du champ (capitalisé)
-            data: groupedFields[field][0], // Les valeurs (ex: temperature)
-            borderColor: getRandomColor(), // Couleur de ligne unique
-            backgroundColor: "rgba(75, 192, 192, 0.2)", // Couleur d'arrière-plan
-            tension: 0.4, // Courbe lissée
-        };
     });
-
-    // Ajouter les labels (dates formatées en français)
-    myLineChart.data.labels = groupedFields[Object.keys(groupedFields)[0]][1];
-
-    // Mettre à jour le graphique
-    myLineChart.update();
 }
 
 // Fonction utilitaire pour générer des couleurs aléatoires
