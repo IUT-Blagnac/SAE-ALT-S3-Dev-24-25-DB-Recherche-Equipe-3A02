@@ -51,3 +51,56 @@ async function getSensorTypes() {
         return {}
     }
 }
+
+
+// ---- Exemples d'utilisation ----
+// Cette partie pourrait potentiellement être enlevée quand Esteban implémentera sa récupération automatique
+
+// pour tous les capteurs
+function fetchAllSensorsEvery10Seconds(callback) {
+    
+    // premier appel est immédiat
+    getAllSensors().then(data => callback(data))
+    
+    // puis toutes les 10 secondes
+    return setInterval(async () => {
+        const data = await getAllSensors()
+        callback(data)
+    }, 10000)
+}
+
+// pour une salle spécifique
+function fetchRoomSensorsEvery10Seconds(roomId, callback) {
+
+    // premier appel est immédiat
+    getSensorsByRoom(roomId).then(data => callback(data))
+    
+    // puis toutes les 10 secondes
+    return setInterval(async () => {
+        const data = await getSensorsByRoom(roomId)
+        callback(data)
+    }, 10000)
+}
+
+// pour les types de capteurs
+function fetchSensorTypesEvery10Seconds(callback) {
+
+    // premier appel est immédiat
+    getSensorTypes().then(data => callback(data))
+    
+    // puis toutes les 10 secondes
+    return setInterval(async () => {
+        const data = await getSensorTypes()
+        callback(data)
+    }, 10000)
+}
+
+// export des fonctions
+export {
+    getAllSensors,
+    getSensorsByRoom,
+    getSensorTypes,
+    fetchAllSensorsEvery10Seconds,
+    fetchRoomSensorsEvery10Seconds,
+    fetchSensorTypesEvery10Seconds
+}
