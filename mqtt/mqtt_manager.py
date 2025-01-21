@@ -3,7 +3,6 @@ import re
 import json
 import paho.mqtt.client as mqtt
 from influx_manager import SensorManager
-from api_manager import manager
 import asyncio
 
 BROKER = os.getenv('MQTT_BROKER', '')
@@ -23,27 +22,35 @@ def on_connect(client, userdata, flags, reason_code, properties=None):
         print(f"Failed to connect, return code {reason_code}")
 
 def on_message(client, userdata, msg):
-    """Handler executer a chaque fois que un message est envoyer"""
+    """Handler exécuté à chaque fois qu'un message est envoyé"""
     try:
         topic = msg.topic
         payload = msg.payload.decode()
         print(f"Received MQTT message: {topic} -> {payload}")
-        
-        match = re.search(r"([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)", topic)
-        if not match:
-            print("Message ignoré : topic ne correspond pas au format attendu.")
-            return
-        
-        key1, value1, key2, value2, key3, value3 = match.groups()  
 
+        # Vérifie d'abord si le payload est un JSON valide
         try:
             values = json.loads(payload)
         except json.JSONDecodeError:
-            print("Message ignoré : payload non valide.")
+            print("Message ignoré : payload non JSON")
             return
 
-        influx_manager.write_sensor_data(key1, value1, key2, value2, key3, value3, values)
-        print(f"Données insérées pour sensor_id={value1}, room_id={value2}")
+
+        if not isinstance(values, dict):
+            print("Message ignoré : pas un objet JSON")
+            return
+
+        # Analyse ensuite le topic
+        match = re.search(r"([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)/([^/]+)", topic)
+        if not match:
+            print("Message ignoré : topic ne correspond pas au format attendu")
+            return
+        
+        key2, value2, key3, value3, key4, value4 = match.groups()[2:8]
+        
+        # Enregistre uniquement si on arrive jusqu'ici (topic valide et payload JSON)
+        influx_manager.write_sensor_data(key2, value2, key3, value3, key4, value4, values)
+        print(f"Données insérées pour sensor_id={value2}, room_id={value3}")
 
     except Exception as e:
         print(f"Erreur lors du traitement du message MQTT : {e}")

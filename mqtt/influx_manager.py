@@ -1,3 +1,4 @@
+import json
 from influxdb_client import Point
 from datetime import datetime
 from influx_config import influx_db
@@ -14,14 +15,14 @@ class SensorManager:
 
   
 
-    def write_sensor_data(self, sensor_id_key, sensor_id, room_id_key, room_id, sensor_type_key, sensor_type,  values):
+    def write_sensor_data(self,  key2, value2, key3, value3, key4, value4, values):
         """Trie les valeurs et les enregistre dans le infludb"""
         point = Point("sensor_data") \
-        .tag(sensor_id_key, sensor_id) \
-        .tag(room_id_key, room_id) \
-        .tag(sensor_id_key, sensor_type)
+        .tag(key2, value2) \
+        .tag(key3, value3) \
+        .tag(key4, value4)
 
-        point.field("values", values)
+        point.field("values", json.dumps(values))
 
-        self.influx.write_api.write(bucket="sensors", record=point)
+        self.influx.write_api.write(bucket="sensors2", record=point)
     
