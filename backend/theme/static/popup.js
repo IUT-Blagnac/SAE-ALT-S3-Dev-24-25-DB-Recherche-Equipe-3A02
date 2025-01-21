@@ -53,6 +53,7 @@ async function fetchData(roomName) {
 }
 
 // Gère l'affichage de la fenêtre popup avec les informations de la salle
+
 async function showPopupOnHover(element) {
     const popup = document.getElementById('popup');
     const roomName = element.getAttribute('data-room');
@@ -61,10 +62,15 @@ async function showPopupOnHover(element) {
     const data = await fetchData(roomName);
 
     if (!popup.classList.contains('fixed')){
-        // On update le view avec les nouvelles données
+        // On update le view avec les nouvelles données lorsque le pop-up n'est pas fixe
     document.getElementById('popup-title').innerText = `Données en ${roomName}`;
     document.getElementById('temp-value').innerText = data.temperature;
     document.getElementById('humidity-value').innerText = data.humidity;
+
+    // On positionne la fenêtre popup juste à côté de l'élément cliqué
+    const rect = element.getBoundingClientRect();
+    popup.style.top = `${rect.top + window.scrollY + element.offsetHeight}px`;
+    popup.style.left = `${rect.left + window.scrollX}px`;
 
     // On rend la fenêtre visible
     popup.style.display = 'block';

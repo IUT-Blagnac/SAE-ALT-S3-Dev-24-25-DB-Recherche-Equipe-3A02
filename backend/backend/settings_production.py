@@ -24,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-vrfzi81%klv^h_k=$%m2h0-!*msmh$x!gngkkjvbjld9x-$8ty"
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'default-insecure-key') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 
 
 # Application definition
@@ -127,6 +127,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "backend/theme/static_src"]
+STATIC_ROOT = '/app/staticfiles'
+
+MEDIA_ROOT = '/app/media'
+MEDIA_URL = '/media/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -140,8 +146,16 @@ INTERNAL_IPS = [
 # settings.py
 
 INFLUXDB_CONFIG = {
-    "url": "https://influxdb.endide.com",  # URL de l'instanceù InfluxDB
-    "token": "QFKdKWJHe9ir4doaKlPBFKpxl7JUGR14YMDa-wjcKQ18aw_0b2hZaRDypBoXKjHvKpU9eWzXuZf9eCnbupklyw==",  # Jeton d'accès (InfluxDB v2+)
+    "url": "https://influxdb.endide.com",  # URL de l'instance InfluxDB
+    "token": os.getenv("TOKEN_INFLUXDB"),  # Jeton d'accès (InfluxDB v2+)
     "org": "sae",  # Organisation (InfluxDB v2+)
     "bucket": "sensors",  # Bucket cible
 }
+
+
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

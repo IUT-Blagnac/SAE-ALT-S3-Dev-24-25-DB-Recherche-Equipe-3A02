@@ -1,0 +1,81 @@
+# Use Python 3.10 slim as base image
+FROM python:3.10-slim as builder
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=backend.settings_production
+
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY backend/requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
+
+# Install Tailwind CSS
+RUN npm install -g tailwindcss
+
+# Final stage
+FROM python:3.10-slim
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=backend.settings_production
+
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+    && apt-get install -y nodejs \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy wheels from builder
+COPY --from=builder /app/wheels /wheels
+RUN pip install --no-cache /wheels/*
+
+# Copy project
+COPY backend .
+COPY backend/docker-entrypoint.sh .
+COPY backend/theme/static_src /app/backend/theme/static_src
+
+# Create static and media directories
+RUN mkdir -p /app/staticfiles /app/mediafiles
+
+
+# Run Tailwind build
+RUN python manage.py tailwind install
+RUN python manage.py tailwind build
+
+# Collect static files
+RUN python manage.py collectstatic --noinput
+# Set permissions
+RUN chmod +x docker-entrypoint.sh
+
+# Run as non-root user
+RUN useradd -m django
+RUN chown -R django:django /app
+USER django
+
+RUN pip install gunicorn
+
+# Expose port
+EXPOSE 8000
+
+# Run entrypoint script
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
