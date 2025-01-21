@@ -11,3 +11,14 @@ async function getAllSensors() {
         return {};
     }
 }
+
+// Permet de récuperer getAllSensors toutes les 10 secondes
+function fetchUpdateGetAllSensors() {
+    setInterval(async () => {
+        try {
+            const data = await getAllSensors();
+        } catch (error) {
+            console.error("Error :", error);
+        }
+    }, 10000);
+}
