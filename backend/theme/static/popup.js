@@ -53,31 +53,59 @@ async function fetchData(roomName) {
 }
 
 // Gère l'affichage de la fenêtre popup avec les informations de la salle
-async function showPopup(element) {
+async function showPopupOnHover(element) {
     const popup = document.getElementById('popup');
     const roomName = element.getAttribute('data-room');
 
     // On va chercher les dernières données disponibles
     const data = await fetchData(roomName);
 
-    // On update le view avec les nouvelles données
+    if (!popup.classList.contains('fixed')){
+        // On update le view avec les nouvelles données
     document.getElementById('popup-title').innerText = `Données en ${roomName}`;
     document.getElementById('temp-value').innerText = data.temperature;
     document.getElementById('humidity-value').innerText = data.humidity;
 
-    // On positionne la fenêtre popup juste à côté de l'élément cliqué
-    const rect = element.getBoundingClientRect();
-    popup.style.top = `${rect.top + window.scrollY + element.offsetHeight}px`;
-    popup.style.left = `${rect.left + window.scrollX}px`;
-
     // On rend la fenêtre visible
     popup.style.display = 'block';
+
+    updatePopupPosition(element, popup);
+
+    const mouseMoveHandler = (event) => {
+        if (!popup.classList.contains('fixed')){
+            updatePopupPosition(event, popup);
+        }
+    };
+
+    element.addEventListener('mousemove', mouseMoveHandler);
+
+    element.addEventListener('mouseleave', () => {
+        if (!popup.classList.contains('fixed')) {
+            hidePopupOnHover();
+        }
+        element.removeEventListener('mousemove', mouseMoveHandler);
+    });
+
+    element.addEventListener('click', (event) => {
+        event.stopPropagation();
+        popup.classList.add('fixed');
+        popup.style.top = `${event.pageY + 10}`;
+        popup.style.left = `${event.pageX + 10}`;
+        element.removeEventListener('mousemove', mouseMoveHandler);
+    });
+    }
 }
 
-// Masque la fenêtre popup quand on veut la fermer
-function hidePopup() {
+// Masque la fenêtre popup quand on quitte une zone
+function hidePopupOnHover() {
     document.getElementById('popup').style.display = 'none';
+    popup.classList.remove('fixed');
 }
+
+// Configure les zones cliquables pour afficher la popup au survol
+document.querySelectorAll('path[data-room]').forEach(path => {
+    path.addEventListener('mouseenter', () => showPopupOnHover(path));
+});
 
 // Ferme automatiquement la popup si on clique en dehors
 // Mais la garde ouverte si on clique sur un bouton ou dans la popup
@@ -87,19 +115,16 @@ document.addEventListener('click', (event) => {
                          event.target.classList.contains('trigger-btn') || 
                          event.target.hasAttribute('data-room');
     if (!isClickInside) {
-        hidePopup();
+        hidePopupOnHover();
     }
 });
 
-// Configure les boutons pour qu'ils affichent les données quand on clique dessus
-document.querySelectorAll('.trigger-btn').forEach(button => {
-    button.addEventListener('click', () => showPopup(button));
-});
-
-// Fait la même chose pour les zones cliquables sur le plan
-document.querySelectorAll('path[data-room]').forEach(path => {
-    path.addEventListener('click', () => showPopup(path));
-});
+// Mets à jour la position de la popup
+function updatePopupPosition(event, popup) {
+    const popupOffset = 10; // Décalage pour éviter que la popup soit directement sous le curseur
+    popup.style.top = `${event.pageY + popupOffset}px`;
+    popup.style.left = `${event.pageX + popupOffset}px`;
+}
 
 // Ajoute la fonction de fermeture au bouton × de la popup
-document.querySelector('.close-btn').addEventListener('click', hidePopup);
+document.querySelector('.close-btn').addEventListener('click', () => hidePopupOnHover());
