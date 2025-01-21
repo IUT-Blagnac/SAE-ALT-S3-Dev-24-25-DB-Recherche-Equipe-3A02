@@ -1,0 +1,68 @@
+flowchart LR
+    subgraph Database["Database"]
+        INFLUX[("InfluxDB")]
+    end
+
+
+    subgraph level1 [" "]
+        direction LR
+        subgraph MQTT_Broker["MQTT Broker"]
+            MQTT["Flux de données MQTT"]
+        end
+    
+        subgraph APPMQTT["Backend (Mqtt)"]
+            CLIENTINFLUX["Client influxdb"]
+            CLIENTMQTT["Client mqtt"]
+            
+            CLIENTMQTT --> CLIENTINFLUX
+        end
+        subgraph APP["APP"]
+            direction TB
+            subgraph Backend["Backend (Django)"]
+                API["API Django Ninja"]
+                VIEWS["Views"]
+                
+                API --> VIEWS
+            end
+            subgraph Frontend["Frontend"]
+                UI["Interface Utilisateur"]
+                MAP["Carte Interactive"]
+                GRAPHS["Graphiques"]
+                
+                UI --> MAP & GRAPHS
+                
+            end
+        end
+    end
+
+    CLIENTINFLUX --> Database
+    Database --> Backend
+    MQTT --> CLIENTMQTT
+    Frontend <--> Backend
+
+    %% Styles
+    MQTT:::broker
+    CLIENTINFLUX:::mqtt
+    CLIENTMQTT:::mqtt
+    INFLUX:::database
+    UI:::frontend
+    MAP:::frontend
+    GRAPHS:::frontend
+    API:::backend
+    VIEWS:::backend
+
+    classDef frontend fill:#E6F3FF,stroke:#000000
+    classDef backend fill:#E6FFE6,stroke:#000000
+    classDef database fill:#FFE6E6,stroke:#000000
+    classDef broker fill:#FFF5E6,stroke:#000000
+    classDef mqtt fill:#F5E6FF,stroke:#000000
+    classDef empty fill:none,stroke:none
+
+    %% Styles pour les subgraphs
+    style Frontend stroke:#000000
+    style Backend stroke:#000000
+    style Database stroke:#000000
+    style APP stroke:#000000
+    style MQTT_Broker stroke:#000000
+    style APPMQTT stroke:#000000
+    style level1 fill:none,stroke:none
