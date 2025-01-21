@@ -1,0 +1,39 @@
+@startuml
+
+skin rose
+
+left to right direction
+
+actor Chercheur
+
+rectangle Application {
+    (Consulter la carte du bâtiment) as Carte
+    (Visualiser les informations des capteurs) as Capteurs
+    (Consulter l'historique des données) as Historique
+
+    Chercheur --> Carte
+    Carte ..> (Voir état des portes) : include
+    Carte ..> (Sélectionner une salle) : include
+    Chercheur --> Historique
+
+    (Sélectionner une salle) ..> Capteurs : include
+    Capteurs ..> (Voir température) : include
+    Capteurs ..> (Voir humidité) : include
+
+    ' Groupe pour aligner les filtres verticalement
+    together {
+        (Filtrer par salle)
+        (Filtrer par période)
+        (Filtrer par type de capteur)
+    }
+
+    Historique ..> (Filtrer par salle) : include
+    Historique ..> (Filtrer par période) : include
+    Historique ..> (Filtrer par type de capteur) : include
+
+    Historique ..> (Afficher les graphiques) : include
+    (Afficher les graphiques) ..> (Filtrer par salle) : require
+    (Afficher les graphiques) ..> (Filtrer par période) : require
+}
+
+@enduml
