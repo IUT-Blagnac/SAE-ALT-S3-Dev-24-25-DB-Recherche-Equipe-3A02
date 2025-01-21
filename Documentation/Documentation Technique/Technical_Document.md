@@ -56,12 +56,18 @@ L’architecture de l’application repose sur plusieurs modules interconnectés
 L’API Django, développée avec Django Ninja, expose plusieurs endpoints permettant d’accéder aux données stockées dans InfluxDB.
 
 Principaux endpoints :
-- GET /sensors/data/ : Récupère les données des capteurs avec filtres possibles (salle, type de capteur, période).
-GET /sensors/rooms/ : Liste les salles disponibles et leurs capteurs associés.
-GET /doors/status/ : Retourne l’état actuel des portes sur la carte interactive.
-L’API permet ainsi au frontend de récupérer en temps réel les informations nécessaires à l'affichage des graphiques et de la carte interactive.
+#### 1. GET `/sensors `: Récupérer les dernières valeurs de tous les capteurs
+Cet endpoint retourne uniquement les dernières valeurs connues pour chaque capteur, regroupées par salle.
 
+#### 2. GET `/sensors/{room_id}` : Récupérer les données des capteurs d’une salle
+Cet endpoint retourne toutes les données des capteurs d’une salle spécifique, avec possibilité de filtrer par capteur, type de capteur, période et champs spécifiques.
 
+##### Paramètres
+- `room_id` (str) : Identifiant de la salle.
+- `sensor_id` (list[str], optionnel) : Liste des capteurs à récupérer.
+- `sensor_type` (list[str], optionnel) : Liste des types de capteurs à récupérer.
+- `field` (list[str], optionnel) : Liste des champs à récupérer (ex : température, humidité).
+- `start_time`, `end_time` (str, optionnel) : Plage temporelle pour filtrer les données.
 
 ## IV. Fonctionnalités de l'application
 
