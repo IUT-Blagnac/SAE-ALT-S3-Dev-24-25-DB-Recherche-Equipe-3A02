@@ -1,20 +1,21 @@
 // Récupère les données des capteurs depuis l'API locale
-// En cas d'erreur, renvoie un tableau vide pour éviter les crashs
+// En cas d'erreur, renvoie un objet vide pour éviter les crashs
 async function getSensorData() {
     try {
         const response = await fetch('http://localhost:8000/api/sensors');
         return await response.json();
     } catch (error) {
         console.error('Erreur lors de la récupération des données:', error);
-        return [];
+        return {};
     }
 }
 
-// Ne garde que les données qui correspondent à la salle sélectionnée
-function filterRoomData(data, roomId) {
-    console.log(data);
-    console.log(roomId);
-    return data.filter(sensor => sensor.room_id === roomId);
+// Récupère les données des capteurs pour une salle spécifique
+function getRoomData(data, roomId) {
+    if (data[roomId] && data[roomId].sensors) {
+        return data[roomId].sensors;
+    }
+    return [];
 }
 
 // Cherche la dernière valeur disponible pour un type de mesure spécifique
@@ -29,33 +30,29 @@ function getLatestValue(roomData, field) {
 async function fetchData(roomName) {
     // On essaie d'abord de récupérer les vraies données
     const sensorData = await getSensorData();
-    const roomData = filterRoomData(sensorData, roomName);
+    const roomData = getRoomData(sensorData, roomName);
     
     const realData = {
         temperature: getLatestValue(roomData, 'temperature'),
-        humidity: getLatestValue(roomData, 'humidity'),
-        co2: getLatestValue(roomData, 'co2'),
-        eco2: getLatestValue(roomData, 'eco2')
+        humidity: getLatestValue(roomData, 'humidity')
     };
 
     // Valeurs par défaut au cas où les capteurs ne renvoient rien
     const testData = {
         temperature: '22°C',
-        humidity: '45%',
-        co2: '400 ppm',
-        eco2: '450 ppm'
+        humidity: '45%'
     };
 
     // On ajoute les unités de mesure aux valeurs récupérées
     const formattedData = {
         temperature: realData.temperature ? `${realData.temperature}°C` : testData.temperature,
-        humidity: realData.humidity ? `${realData.humidity}%` : testData.humidity,
+        humidity: realData.humidity ? `${realData.humidity}%` : testData.humidity
     };
 
     return formattedData;
 }
 
-// Permet de faire l'affichage de la fenêtre popup avec les informations de la salle
+// Gère l'affichage de la fenêtre popup avec les informations de la salle
 async function showPopup(element) {
     const popup = document.getElementById('popup');
     const roomName = element.getAttribute('data-room');
@@ -67,7 +64,6 @@ async function showPopup(element) {
     document.getElementById('popup-title').innerText = `Données en ${roomName}`;
     document.getElementById('temp-value').innerText = data.temperature;
     document.getElementById('humidity-value').innerText = data.humidity;
-
 
     // On positionne la fenêtre popup juste à côté de l'élément cliqué
     const rect = element.getBoundingClientRect();
