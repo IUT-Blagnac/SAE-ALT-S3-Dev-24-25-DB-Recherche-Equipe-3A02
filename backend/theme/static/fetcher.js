@@ -40,3 +40,14 @@ async function getSensorsByRoom(roomId, sensorId, sensorType, field, startTime, 
         return {}
     }
 }
+
+// Va chercher la liste des types de capteurs disponibles
+async function getSensorTypes() {
+    try {
+        const response = await fetch(`${apiURL}/sensors_types`)
+        return await response.json()
+    } catch (err) {
+        console.error('Erreur :', err)
+        return {}
+    }
+}
