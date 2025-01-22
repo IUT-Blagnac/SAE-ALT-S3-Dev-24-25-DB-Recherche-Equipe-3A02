@@ -39,6 +39,60 @@ def get_all_last_sensors(request):
 
     return room_data
 
+@router.get("/rooms", response={200: dict[str, dict]})
+def get_data_by_rooms(
+    request,
+    room_ids: List[str] = Query(...),  # Liste des room_ids obligatoires
+    sensor_id: List[str] = Query(default=None),
+    sensor_type: List[str] = Query(default=None),
+    field: List[str] = Query(None),
+    start_time: str = None,
+    end_time: str = None
+):
+    start_time_dt = ""
+    end_time_dt = ""
+
+    if start_time:
+        start_time_dt = isoparse(start_time).isoformat()
+    if end_time:
+        end_time_dt = isoparse(end_time).isoformat()
+    
+    print(f"Paramètres : room_ids : {room_ids}\nsensor_id : {sensor_id}\nsensor_type : {sensor_type}\nstart_time_dt : {start_time_dt}\nend_time_dt : {end_time_dt}\nfield : {field}")
+
+    rooms_data = {}
+
+    for room_id in room_ids:
+        result = db.get(
+            room_id=room_id,
+            sensor_id=sensor_id,
+            sensor_type=sensor_type,
+            start_time=start_time_dt,
+            end_time=end_time_dt,
+            field=field,
+            return_object=True
+        )
+
+        if not result:
+            continue
+
+        room_data = {
+            "sensors": []
+        }
+
+        for data in result:
+            sensor = {
+                "name": data.sensor_id,
+                "type": data.sensor_type,
+                "field": data.field,
+                "timestamp": data.time,
+                "value": data.value
+            }
+            room_data["sensors"].append(sensor)
+        
+        rooms_data[room_id] = room_data
+
+    return rooms_data
+
     
 
 @router.get("/{room_id}", response={200: dict[str, dict]})
