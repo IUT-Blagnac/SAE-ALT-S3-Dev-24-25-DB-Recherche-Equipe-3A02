@@ -53,7 +53,7 @@ async function getSensorTypes() {
 }
 
 
-// ---- Exemples d'utilisation ----
+// ---- Exemples d'utilisations ----
 // Cette partie pourrait potentiellement être enlevée quand Esteban implémentera sa récupération automatique
 
 // pour tous les capteurs
