@@ -42,7 +42,7 @@ def get_all_last_sensors(request):
 @router.get("/{path:path}", response={200: dict})
 def get_sensor_data(request, path: str):
     """
-    Route dynamique pour gérer des URL de type room/C104/sensors/TC100/id/1.
+    Route dynamique pour gérer des URL de type 
     Les paramètres sont extraits dynamiquement du chemin.
     """
     # Découper le chemin en segments
