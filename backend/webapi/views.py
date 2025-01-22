@@ -45,17 +45,13 @@ def get_sensor_data(request, path: str):
     Route dynamique pour gérer des URL de type 
     Les paramètres sont extraits dynamiquement du chemin.
     """
-    # Découper le chemin en segments
     path_parts = path.split("/")
-    params = {path_parts[i]: path_parts[i + 1] for i in range(0, len(path_parts), 2) if i + 1 < len(path_parts)}
 
-    # Récupérer les filtres
-    room_id = params.get("room")
-    sensor_type = params.get("sensors")
-    sensor_id = params.get("id")
+    result = db.get(key1=path_parts[0], value1=path_parts[1], key2=path_parts[2], value2=path_parts[3], key3=path_parts[4], value3=path_parts[5], return_object=True)
+    if not result:
+        return {}
 
-    # Simuler une requête à la base de données (remplacez par votre logique réelle)
-    result = db.get(room_id=room_id, sensor_id=sensor_id, sensor_type=sensor_type)
+    room_data = {}
 
     if not result:
         return {}
@@ -63,32 +59,27 @@ def get_sensor_data(request, path: str):
     room_data = {}
 
     for data in result:
-        # Récupérer les informations depuis les données retournées
-        fields = data.get("fields", {})
-        room_id = fields.get("room_id", "unknown_room")
-
         sensor = {
-            "name": fields.get("sensor_id", "unknown_sensor"),
-            "type": fields.get("sensor_type", "unknown_type"),
-            "field": fields.get("_field", "unknown_field"),
-            "timestamp": data.get("time"),
-            "value": fields.get("_value"),
+            data.key3: data.value3,
+            data.key2: data.value2,
+            "field": data.field,
+            "timestamp": data.time,  
+            "value": data.value
         }
 
-        # Ajouter les capteurs à la salle correspondante
-        if room_id not in room_data:
-            room_data[room_id] = {"sensors": []}
+        if data.value1 not in room_data:
+            room_data[data.value1] = {"sensors": []}
 
-        room_data[room_id]["sensors"].append(sensor)
+        room_data[data.value1]["sensors"].append(sensor)
 
-    return room_data
+    return room_data 
 
 
 
 @router.get("/rooms", response={200: dict[str, dict]})
 def get_data_by_rooms(
     request,
-    room_ids: List[str] = Query(...),  # Liste des room_ids obligatoires
+    room_ids: List[str] = Query(...), 
     sensor_id: List[str] = Query(default=None),
     sensor_type: List[str] = Query(default=None),
     field: List[str] = Query(None),
@@ -103,15 +94,14 @@ def get_data_by_rooms(
     if end_time:
         end_time_dt = isoparse(end_time).isoformat()
     
-    print(f"Paramètres : room_ids : {room_ids}\nsensor_id : {sensor_id}\nsensor_type : {sensor_type}\nstart_time_dt : {start_time_dt}\nend_time_dt : {end_time_dt}\nfield : {field}")
 
     rooms_data = {}
 
     for room_id in room_ids:
         result = db.get(
-            room_id=room_id,
-            sensor_id=sensor_id,
-            sensor_type=sensor_type,
+            value1=room_id,
+            value2=sensor_id,
+            value3=sensor_type,
             start_time=start_time_dt,
             end_time=end_time_dt,
             field=field,
@@ -127,11 +117,11 @@ def get_data_by_rooms(
 
         for data in result:
             sensor = {
-                "name": data.sensor_id,
-                "type": data.sensor_type,
-                "field": data.field,
-                "timestamp": data.time,
-                "value": data.value
+            data.key3: data.value3,
+            data.key2: data.value2,
+            "field": data.field,
+            "timestamp": data.time,  
+            "value": data.value
             }
             room_data["sensors"].append(sensor)
         
@@ -149,7 +139,7 @@ def get_data_by_room(request, room_id: str, sensor_id: list[str] = Query(default
     end_time_dt = ""
 
     if start_time:
-        start_time_dt = isoparse(start_time).isoformat()  # Convertir en datetime puis en isoformat
+        start_time_dt = isoparse(start_time).isoformat()  
     if end_time:
         end_time_dt = isoparse(end_time).isoformat() 
     
