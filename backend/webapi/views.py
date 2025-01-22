@@ -22,27 +22,27 @@ def get_all_last_sensors(request):
     room_data = {}
 
     for data in results:
-        room_id = data.room_id
+        
 
         sensor = {
-            "name": data.sensor_id,
-            "type": data.sensor_type,
+            data.key3: data.value3,
+            data.key2: data.value2,
             "field": data.field,
             "timestamp": data.time,  
             "value": data.value
         }
 
-        if room_id not in room_data:
-            room_data[room_id] = {"sensors": []}
+        if data.value1 not in room_data:
+            room_data[data.value1] = {"sensors": []}
 
-        room_data[room_id]["sensors"].append(sensor)
+        room_data[data.value1]["sensors"].append(sensor)
 
     return room_data
 
 @router.get("/{path:path}", response={200: dict})
 def get_sensor_data(request, path: str):
     """
-    Route dynamique pour gérer des URL de type room/C104/sensors/TC100/id/1.
+    Route dynamique pour gérer des URL de type 
     Les paramètres sont extraits dynamiquement du chemin.
     """
     # Découper le chemin en segments
@@ -155,28 +155,30 @@ def get_data_by_room(request, room_id: str, sensor_id: list[str] = Query(default
     
     print(f"tout les parametres : room_id : {room_id}\nsensor_id : {sensor_id}\nsensor_type : {sensor_type}\nstart_time_dt : {start_time_dt}\nend_time_dt : {end_time_dt}\nfield : {field}")
 
-    result = db.get(room_id=room_id, sensor_id=sensor_id, sensor_type=sensor_type, start_time=start_time_dt, end_time=end_time_dt, field=field, return_object=True)
+    result = db.get(value1=room_id, value2=sensor_id, value3=sensor_type, start_time=start_time_dt, end_time=end_time_dt, field=field, return_object=True)
 
     if not result:
         return {}
 
-    room_data = {
-        room_id: {
-            "sensors": []
-        }
-    }
+    room_data = {}
 
     for data in result:
+        
+
         sensor = {
-            "name": data.sensor_id,  
-            "type": data.sensor_type,  
+            data.key3: data.value3,
+            data.key2: data.value2,
             "field": data.field,
             "timestamp": data.time,  
-            "value": data.value  
+            "value": data.value
         }
-        room_data[room_id]["sensors"].append(sensor)
-    
-    return room_data
+
+        if data.value1 not in room_data:
+            room_data[data.value1] = {"sensors": []}
+
+        room_data[data.value1]["sensors"].append(sensor)
+
+    return room_data 
 
 
 @router2.get("", response={200: dict[str, SensorTypeOut]})

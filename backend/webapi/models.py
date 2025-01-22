@@ -8,7 +8,7 @@ class SensorType(models.Model):
     Modèle représentant un type de capteur.
     
     Un type de capteur inclut son nom (e.g. capteur de température),
-    une liste de champs qu'il mesure (e.g. température, humidité),
+    le champ qu'il mesure
     et une description du capteur.
     """
     name = models.CharField(max_length=100, unique=True)

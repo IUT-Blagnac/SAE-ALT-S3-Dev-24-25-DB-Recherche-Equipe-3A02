@@ -28,30 +28,19 @@ def on_message(client, userdata, msg):
         topic = msg.topic
         payload = msg.payload.decode()
         print(f"Received MQTT message: {topic} -> {payload}")
-        
-        match = re.search(r"room/([^/]+)/sensor/([^/]+)/id/(\d+)", topic)
-        if not match:
-            print("Message ignoré : topic ne correspond pas au format attendu.")
-            return
-        
-        room_id = match.group(1)
-        sensor_id = match.group(2)
 
+        # Vérifie d'abord si le payload est un JSON valide
         try:
             values = json.loads(payload)
         except json.JSONDecodeError:
             print("Message ignoré : payload non valide.")
             return
-
-        influx_manager.write_sensor_data(sensor_id, room_id, values)
-        print(f"Données insérées pour sensor_id={sensor_id}, room_id={room_id}")
-
-        # Notifier les clients WebSocket
-        asyncio.run(manager.broadcast(json.dumps({
-            "room_id": room_id,
-            "sensor_id": sensor_id,
-            "values": values
-        })))
+        
+        key2, value2, key3, value3, key4, value4 = match.groups()[2:8]
+        
+        # Enregistre uniquement si on arrive jusqu'ici (topic valide et payload JSON)
+        influx_manager.write_sensor_data(key2, value2, key3, value3, key4, value4, values)
+        print(f"Données insérées pour sensor_id={value2}, room_id={value3}")
 
     except Exception as e:
         print(f"Erreur lors du traitement du message MQTT : {e}")
