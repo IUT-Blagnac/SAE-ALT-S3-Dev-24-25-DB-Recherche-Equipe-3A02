@@ -4358,4 +4358,37 @@
     </div>
 
     <script src="../static/popup.js"></script>
+
+    <script>
+        const svgElement = document.getElementById('map');
+        const initialViewBox = { x: 0, y: 0, width: 923, height: 491 };
+        let viewBox = svgElement.viewBox.baseVal;
+        const zoomFactor = 0.9; 
+    
+        svgElement.addEventListener('wheel', (event) => {
+            event.preventDefault();
+    
+            const { width, height, x, y } = viewBox;
+    
+            if (event.deltaY < 0) {
+                const newWidth = Math.max(width * zoomFactor, 200);
+                const newHeight = Math.max(height * zoomFactor, 200);
+    
+                const mouseX = event.offsetX / svgElement.clientWidth;
+                const mouseY = event.offsetY / svgElement.clientHeight;
+    
+                viewBox.x += (width - newWidth) * mouseX;
+                viewBox.y += (height - newHeight) * mouseY;
+                viewBox.width = newWidth;
+                viewBox.height = newHeight;
+            } else {
+
+                viewBox.width = initialViewBox.width;
+                viewBox.height = initialViewBox.height;
+                viewBox.x = initialViewBox.x;
+                viewBox.y = initialViewBox.y;
+
+            }
+        });
+    </script>
     {% endblock %}
