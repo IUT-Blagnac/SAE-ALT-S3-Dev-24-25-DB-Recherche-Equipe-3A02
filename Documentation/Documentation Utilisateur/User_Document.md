@@ -66,6 +66,18 @@ L'application offre la possibilité de surveiller en temps réel, ou à un momen
 **Description de ces fonctionnalités**
 
 --_Rajouter des images des fonctionnalités_--
+
+### Ajout d'une nouvelle salle dans le fichier SVG et l'application
+**Fichier SVG :**
+
+Il faut ouvrir Figma et créer un nouveau projet et faites un clique-glisser et déposer le fichier SVG dans le nouveau projet figma.
+
+Dirigez-vous sur la layer3. Prennez l'outil "Stylo" et faites la délimitaion de la salle. Il est important de cliquer pour faire des points et non glisser, car glisser fait des arcs et non des lignes. Pour ajouter le nom/numéro de la salle, mettez vous sur layer2 et ajouter du texte en utilisant l'outil "texte". Vous pouvez également changer le style pour mieux correspondre à vos attentes avec les outils se trouvant dans la barre à droite.
+
+
+Ensuite, vous faites "exporter" et vois choisissez le format SVG. Ouvrez le fichier SVG avec Notepad++ ou votre application bloc-note et remplacer la balise <svg></svg> dans le code ('SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/backend/theme/template/map.html') avec. 
+
+En bas de code, vous allez touver une balise <g></g> ayant pour id 'layer3'. Ce couche désigne tous les délimitations d'espaces. Dans la ligne n'ayant pas de caractère "id=salleC\[numeroSalle]Region" ni de "data-room=C\[numeroSalle]", ajoutez ces deux propriétés en suivant les exemples des autres salles.
  
 ---
 
