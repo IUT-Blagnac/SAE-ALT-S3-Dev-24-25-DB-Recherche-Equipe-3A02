@@ -1,7 +1,7 @@
 from .models import SensorType
 from typing import List, Optional
 from django.http import JsonResponse
-from ninja import Router, Schema, Query 
+from ninja import Router, Schema, Query, Path 
 from services.influxdb_client_django import CapteurResult, InfluxDB
 from dateutil.parser import isoparse
 
@@ -38,6 +38,47 @@ def get_all_last_sensors(request):
         room_data[room_id]["sensors"].append(sensor)
 
     return room_data
+
+@router.get("/{path:path}", response={200: dict})
+def get_sensor_data(request, path: str):
+    """
+    Route dynamique pour gérer des URL de type room/C104/sensors/TC100/id/1.
+    Les paramètres sont extraits dynamiquement du chemin.
+    """
+    # Découper le chemin en segments
+    path_parts = path.split("/")
+    params = {path_parts[i]: path_parts[i + 1] for i in range(0, len(path_parts), 2) if i + 1 < len(path_parts)}
+
+    # Récupérer les filtres
+    room_id = params.get("room")
+    sensor_type = params.get("sensors")
+    sensor_id = params.get("id")
+
+    # Simuler une requête à la base de données (remplacez par votre logique réelle)
+    results = db.get(room_id=room_id, sensor_id=sensor_id, sensor_type=sensor_type)
+
+    # Construire le JSON de réponse
+    response = {
+        "filters": {
+            "room": room_id,
+            "sensor_id": sensor_id,
+            "sensor_value": sensor_type,
+        },
+        "data": [
+            {
+                "name": data.sensor_id,
+                "type": data.sensor_type,
+                "field": data.field,
+                "timestamp": data.time,
+                "value": data.value
+            }
+            for data in results
+        ]
+    }
+
+    return response
+
+
 
 @router.get("/rooms", response={200: dict[str, dict]})
 def get_data_by_rooms(
@@ -92,6 +133,7 @@ def get_data_by_rooms(
         rooms_data[room_id] = room_data
 
     return rooms_data
+
 
     
 
