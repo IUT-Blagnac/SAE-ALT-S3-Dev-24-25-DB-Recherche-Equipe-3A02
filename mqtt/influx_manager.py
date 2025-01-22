@@ -13,14 +13,13 @@ class SensorManager:
     def __init__(self):
         self.influx = influx_db
 
-  
-
-    def write_sensor_data(self,  key2, value2, key3, value3, key4, value4, values):
+    def write_sensor_data(self, topic, key2, value2, key3, value3, key4, value4, values):
         """Trie les valeurs et les enregistre dans le infludb"""
         point = Point("sensor_data") \
         .tag(key2, value2) \
         .tag(key3, value3) \
-        .tag(key4, value4)
+        .tag(key4, value4) \
+        .field("topic_url", topic) 
 
         point.field("values", json.dumps(values))
 
