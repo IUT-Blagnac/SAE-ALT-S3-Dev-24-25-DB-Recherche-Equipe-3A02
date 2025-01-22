@@ -5,7 +5,7 @@ async function getSensorData() {
     try {
         return await getAllSensors();
     } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
+        console.error('Erreur :', error);
         return {};
     }
 }
