@@ -49,10 +49,10 @@
             {% for option in salles %}
             <label class="flex items-center space-x-2">
               <input
-                type="checkbox"
+                type="radio"
                 name="filter1[]"
                 value="{{ option.value }}"
-                class="cursor-pointer rounded bg-grey-700 text-red-500"
+                class="cursor-pointer bg-grey-700 text-red-500"
                 id="salle"
               />
               <span>{{ option.label }}</span>

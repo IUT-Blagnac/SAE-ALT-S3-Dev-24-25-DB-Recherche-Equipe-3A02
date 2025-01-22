@@ -140,8 +140,8 @@ function effectuerRequete() {
         }
 
         requete = document.getElementById("requete-api");
-        requete.style.display =  "block"
-        requete.textContent = "requête généré : "+constructrequete
+        requete.style.display =  "block";
+        requete.textContent = constructrequete;
 
         // Effectuer la requête
         fetch(constructrequete)
