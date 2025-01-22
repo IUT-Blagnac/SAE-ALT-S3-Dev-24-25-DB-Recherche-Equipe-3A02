@@ -43,13 +43,12 @@ class SensorManager:
         sensor_type = self.detect_sensor_type(filtered_values)
         print(sensor_type)
         point = Point("sensor_data") \
-        .tag("sensor_id", sensor_id) \
-        .tag("room_id", room_id) \
-        .tag("sensor_type", sensor_type)
+        .tag(key2, value2) \
+        .tag(key3, value3) \
+        .tag(key4, value4) \
+        .field("topic_url", topic) 
 
-        print(filtered_values)
-    
-        for field_name, value in filtered_values.items():
-            point.field(field_name, value)
-        self.influx.write_api.write(bucket="sensors", record=point)
+        point.field("values", json.dumps(values))
+
+        self.influx.write_api.write(bucket="sensors2", record=point)
     

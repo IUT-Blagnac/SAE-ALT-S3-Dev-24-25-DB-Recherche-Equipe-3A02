@@ -9,11 +9,7 @@ app.include_router(api_router)
 
 # Lancer le client MQTT dans un thread séparé
 if __name__ == "__main__":
-    import threading
-    import uvicorn
-
-    mqtt_thread = threading.Thread(target=start_mqtt, daemon=True)
-    mqtt_thread.start()
+    start_mqtt()
 
     # Lancer le serveur FastAPI
     uvicorn.run(app, host="0.0.0.0", port=8001)
