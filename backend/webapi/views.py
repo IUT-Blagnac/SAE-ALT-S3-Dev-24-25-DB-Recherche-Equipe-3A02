@@ -55,28 +55,33 @@ def get_sensor_data(request, path: str):
     sensor_id = params.get("id")
 
     # Simuler une requête à la base de données (remplacez par votre logique réelle)
-    results = db.get(room_id=room_id, sensor_id=sensor_id, sensor_type=sensor_type)
+    result = db.get(room_id=room_id, sensor_id=sensor_id, sensor_type=sensor_type)
 
-    # Construire le JSON de réponse
-    response = {
-        "filters": {
-            "room": room_id,
-            "sensor_id": sensor_id,
-            "sensor_value": sensor_type,
-        },
-        "data": [
-            {
-                "name": data.sensor_id,
-                "type": data.sensor_type,
-                "field": data.field,
-                "timestamp": data.time,
-                "value": data.value
-            }
-            for data in results
-        ]
-    }
+    if not result:
+        return {}
 
-    return response
+    room_data = {}
+
+    for data in result:
+        # Récupérer les informations depuis les données retournées
+        fields = data.get("fields", {})
+        room_id = fields.get("room_id", "unknown_room")
+
+        sensor = {
+            "name": fields.get("sensor_id", "unknown_sensor"),
+            "type": fields.get("sensor_type", "unknown_type"),
+            "field": fields.get("_field", "unknown_field"),
+            "timestamp": data.get("time"),
+            "value": fields.get("_value"),
+        }
+
+        # Ajouter les capteurs à la salle correspondante
+        if room_id not in room_data:
+            room_data[room_id] = {"sensors": []}
+
+        room_data[room_id]["sensors"].append(sensor)
+
+    return room_data
 
 
 
