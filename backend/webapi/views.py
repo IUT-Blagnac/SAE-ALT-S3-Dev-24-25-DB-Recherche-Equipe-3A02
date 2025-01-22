@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from ninja import Router, Schema, Query 
 from services.influxdb_client_django import CapteurResult, InfluxDB
 from dateutil.parser import isoparse
+from django.http import StreamingHttpResponse
 
 class SensorTypeOut(Schema):
     fields: list
@@ -39,7 +40,7 @@ def get_all_last_sensors(request):
 
     return room_data
 
-    
+
 
 @router.get("/{room_id}", response={200: dict[str, dict]})
 def get_data_by_room(request, room_id: str, sensor_id: list[str] = Query(default=None),sensor_type: list[str] = Query(default=None), field: list[str] = Query(None), start_time: str = None, end_time: str = None):
@@ -96,3 +97,9 @@ def get_sensor_types(request):
         }
     
     return JsonResponse(response_data)
+
+
+def data_map(request):
+    def event_stream():
+        yield "data: Mise à jour en temps réel\n\n"
+    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
