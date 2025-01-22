@@ -2,16 +2,39 @@ var salleSelect = null;
 var typeSelect = [];
 var datedeDebut = null;
 var datedeFin = null;
+let parametres_type = null;
+let parametres_salle = null;
+
+let visible = false;
 
 // ecoute des clics
 document.addEventListener("DOMContentLoaded", function () {
+    get_parametre();
+    requete = document.getElementById("requete-api");
+    requete.style.display =  "none";
+
     // Écouter les clics sur les salles
     document.querySelectorAll("input[name='filter1[]']").forEach((checkbox) => {
       checkbox.addEventListener("change", (event) => {
         const salleValue = event.target.value;
         const isChecked = event.target.checked;
         salleSelect = salleValue;
-        effectuerRequete();
+        if (isChecked) {
+            requete_fixe = document.getElementById("fixed-text");
+            requete_fixe.style.display = "block";
+            visible = true;
+
+            effectuerRequete();
+        }
+        else {
+            const allCanvases = document.querySelectorAll('canvas');
+            allCanvases.forEach((canvas) => deleteCanva(canvas.id));  
+            requete = document.getElementById("requete-api");
+            requete.style.display =  "none";
+            requete_fixe = document.getElementById("fixed-text");
+            requete_fixe.style.display = "none";
+            visible = false;
+        }   
       });
     });
   
@@ -89,52 +112,18 @@ conversion = {
     "humidité" : "humidity",
     "contact" : "contact"
 }
-// 
-// function effectuerRequete() {
-//     if (salleSelect && typeSelect) {
-//         console.log("requete possible");
-//         var constructrequete = "http://localhost:8000/api/sensors/"+salleSelect;
-//         if (typeSelect.length != 0 || datedeDebut || datedeFin) {
-//             constructrequete += "?"
-//         }
-//         typeSelect.forEach(function(element) {
-//             debut = "";
-//             if (constructrequete[constructrequete.length - 1] != "?") {
-//                 debut = "&";
-//             }
-//             constructrequete += debut+"field="+conversion[element];
-//         });    
-//         if (datedeDebut) {
-//             debut = "";
-//             if (constructrequete[constructrequete.length - 1] != "?") {
-//                 debut = "&";
-//             }
-//             constructrequete += debut+"start_time="+datedeDebut;
-//         }
-//         if (datedeFin) {
-//             debut = "";
-//             if (constructrequete[constructrequete.length - 1] != "?") {
-//                 debut = "&";
-//             }
-//             constructrequete += debut+"&end_time="+datedeFin;
-//         }
-//         console.log(constructrequete);
-
-
-    
-    
-//     } 
-// }
 
 function effectuerRequete() {
+    if (!visible) {
+        return;
+    }
     if (salleSelect && typeSelect) {
-        console.log("Requête possible");
         let constructrequete = `http://localhost:8000/api/sensors/${salleSelect}`;
         const params = [];
 
         // Ajouter les champs sélectionnés
         typeSelect.forEach((element) => {
-            params.push(`field=${conversion[element]}`);
+            params.push(`field=${element}`);
         });
 
         // Ajouter les dates si présentes
@@ -150,7 +139,9 @@ function effectuerRequete() {
             constructrequete += `?${params.join("&")}`;
         }
 
-        console.log(constructrequete);
+        requete = document.getElementById("requete-api");
+        requete.style.display =  "block"
+        requete.textContent = "requête généré : "+constructrequete
 
         // Effectuer la requête
         fetch(constructrequete)
@@ -206,86 +197,130 @@ function effectuerRequete() {
     }
 }
 
+function get_parametre() {
+    fetch("http://localhost:8000/api/parametres/").then((response) => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json(); // Transformer la réponse en JSON
+    })
+    .then((data) => {
+        console.log(data);
+        parametres_salle = data['room'];
+        parametres_type = data['type'];
+    })
 
-function updateChart(groupedFields) {
-    // Obtenez les canvas des différents graphiques
-    const canvasTemperature = document.getElementById('temperature');
-    const canvasHumidity = document.getElementById('humidity');
-    const canvasContact = document.getElementById('contact');
-    const message = document.getElementById('noDataMessage');
+}
 
-    // Liste des canvas dans l'ordre
-    const canvases = [canvasTemperature, canvasHumidity, canvasContact];
+// graphiques
+function generateCanva(canvasId) {
+    // Création de l'élément canvas
+    const canvas = document.createElement('canvas');
+    canvas.id = canvasId;
+    canvas.width = 400;
+    canvas.height = 200;
+    canvas.style.display = 'none';
+    canvas.style.margin = '20px 0'; // Espace entre les graphiques
+    canvas.style.marginTop = "5rem";
+    canvas.style.border = '1px solid #ddd';
+    canvas.style.borderRadius = '8px';
 
-    // Masquer tous les graphiques et leurs séparateurs par défaut
-    canvases.forEach((canvas) => {
-        canvas.style.display = "none";
-        const separator = document.querySelector(`.separator[data-associated-canvas="${canvas.id}"]`);
-        if (separator) separator.style.display = "none";
+    // Ajout du wrapper dans le DOM
+    document.getElementById("canva-container").appendChild(canvas);
+
+    const downloadButton = document.createElement('button');
+    downloadButton.id = "button"+canvasId;
+    downloadButton.textContent = 'Télécharger le graphique';
+    downloadButton.style.marginTop = '10px';
+    downloadButton.style.display = 'block';
+
+    downloadButton.addEventListener('click', () => {
+        downloadChartWithBackground(canvasId, `${canvasId}.png`);
     });
 
-    // Si aucun champ n'est disponible, afficher le message et retourner
+    canvas.parentNode.appendChild(downloadButton);
+
+}
+
+
+
+function deleteCanva(canvasId) {
+    // Sélectionner le canvas par son ID
+    const canvas = document.getElementById(canvasId);
+
+    // Vérifier si le canvas existe
+    if (canvas) {
+        // Trouver le bouton de téléchargement associé
+        const downloadButton = document.getElementById("button" + canvasId);
+
+        // Supprimer le canvas du DOM
+        canvas.parentNode.removeChild(canvas);
+
+        // Supprimer le bouton de téléchargement s'il existe
+        if (downloadButton) {
+            downloadButton.parentNode.removeChild(downloadButton);
+        }
+
+        // Trouver le separator associé via l'attribut data-associated-canvas
+        const separator = document.querySelector(`.separator[data-associated-canvas="${canvasId}"]`);
+
+        // Supprimer le separator s'il existe
+        if (separator) {
+            separator.parentNode.removeChild(separator);
+        }
+    } else {
+        console.warn(`Canvas avec l'id "${canvasId}" n'existe pas.`);
+    }
+}
+
+
+function generateChart() {
+    
+}
+
+function updateChart(groupedFields) {
+    const message = document.getElementById('noDataMessage');
+
+    // Supprimer tous les canvas existants
+    const allCanvases = document.querySelectorAll('canvas');
+    allCanvases.forEach((canvas) => deleteCanva(canvas.id));
+
+    // Créer des canvas pour chaque type dans groupedFields
+    Object.keys(groupedFields).forEach((field) => {
+        generateCanva(field);
+    });
+
+    // Si aucun champ n'est disponible, afficher un message et retourner
     if (Object.keys(groupedFields).length === 0) {
-        message.style.display = "block";
+        message.style.display = 'block';
         return;
     }
 
-    // Cacher le message d'erreur si des données sont disponibles
-    message.style.display = "none";
+    message.style.display = 'none';
 
-    // Initialiser les graphiques pour chaque champ
-    const chartConfigurations = {
-        temperature: {
-            canvas: canvasTemperature,
-            label: 'Température',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        },
-        humidity: {
-            canvas: canvasHumidity,
-            label: 'Humidité',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-        },
-        contact: {
-            canvas: canvasContact,
-            label: 'Contact (1 = Fermé, 0 = Ouvert)',
-            borderColor: 'rgba(255, 206, 86, 1)',
-            backgroundColor: 'rgba(255, 206, 86, 0.2)',
-            stepped: true,
-        },
-    };
-
-    // Liste des graphiques visibles
-    const visibleCanvases = [];
-
-    // Configurer et afficher les graphiques disponibles
-    canvases.forEach((canvas) => {
-        const field = canvas.id;
-        const config = chartConfigurations[field];
-        if (groupedFields[field] && config) {
-            // Afficher le graphique
-            canvas.style.display = "block";
-            visibleCanvases.push(canvas); // Ajouter à la liste des graphiques visibles
-
+    // Configurer et afficher les graphiques dynamiquement
+    Object.entries(groupedFields).forEach(([field, data]) => {
+        const canvas = document.getElementById(field);
+        if (canvas) {
+            canvas.style.display = 'block';
             const ctx = canvas.getContext('2d');
-            const data = {
-                labels: groupedFields[field][1],
+
+            const chartData = {
+                labels: data[1], // Labels (ex : date et heure)
                 datasets: [
                     {
-                        label: config.label,
-                        data: groupedFields[field][0],
-                        borderColor: config.borderColor,
-                        backgroundColor: config.backgroundColor,
-                        tension: config.stepped ? 0 : 0.4,
-                        stepped: config.stepped || false,
+                        label: field.charAt(0).toUpperCase() + field.slice(1), // Nom dynamique
+                        data: data[0], // Données
+                        borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`, // Couleur aléatoire
+                        backgroundColor: `hsla(${Math.random() * 360}, 70%, 50%, 0.2)`,
+                        tension: 0.4, // Courbe lissée par défaut
                     },
                 ],
             };
 
             const chartConfig = {
                 type: 'line',
-                data: data,
+                data: chartData,
                 options: {
                     responsive: true,
                     plugins: {
@@ -294,7 +329,7 @@ function updateChart(groupedFields) {
                         },
                         title: {
                             display: true,
-                            text: config.label,
+                            text: `${field}`,
                         },
                     },
                     scales: {
@@ -314,7 +349,6 @@ function updateChart(groupedFields) {
                 },
             };
 
-            // Détruire un graphique existant avant d'en créer un nouveau
             if (canvas.chartInstance) {
                 canvas.chartInstance.destroy();
             }
@@ -324,14 +358,17 @@ function updateChart(groupedFields) {
     });
 
     // Gérer les séparateurs dynamiquement
+    const visibleCanvases = Array.from(document.querySelectorAll('canvas')).filter(
+        (canvas) => canvas.style.display === 'block'
+    );
+
     visibleCanvases.forEach((canvas, index) => {
         const separator = document.querySelector(`.separator[data-associated-canvas="${canvas.id}"]`);
         if (separator && index < visibleCanvases.length - 1) {
-            separator.style.display = "block"; // Afficher uniquement si ce n'est pas le dernier graphique
+            separator.style.display = 'block';
         }
     });
 }
-
 
 // Fonction utilitaire pour générer des couleurs aléatoires
 function getRandomColor() {
@@ -342,48 +379,30 @@ function getRandomColor() {
 }
 
 
-// graphique
-const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [{
-      label: 'Sales',
-      data: [65, 59, 80, 81, 56, 55],
-      borderColor: 'rgba(75, 192, 192, 1)',
-      backgroundColor: 'rgba(75, 192, 192, 0.2)',
-      tension: 0.4, // Ajoute une courbe aux lignes
-    }]
-  };
+function downloadChartWithBackground(canvasId, filename = 'chart.png') {
+    const originalCanvas = document.getElementById(canvasId);
+    if (!originalCanvas) {
+        console.error(`Canvas avec l'ID "${canvasId}" introuvable.`);
+        return;
+    }
 
-const config = {
-type: 'line',
-data: data,
-options: {
-    responsive: true, // Rendre le graphique responsive
-    plugins: {
-    legend: {
-        position: 'top', // Position de la légende
-    },
-    title: {
-        display: true,
-        text: 'Chart.js Line Chart' // Titre du graphique
-    }
-    },
-    scales: {
-    x: {
-        title: {
-        display: true,
-        text: 'Date et heure'
-        }
-    },
-    y: {
-        title: {
-        display: true,
-        text: 'Valeurs'
-        }
-    }
-    }
+    // Créer un canvas temporaire pour ajouter un fond blanc
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+
+    tempCanvas.width = originalCanvas.width;
+    tempCanvas.height = originalCanvas.height;
+
+    // Dessiner un fond blanc
+    tempCtx.fillStyle = '#ffffff';
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+    // Dessiner le contenu du graphique par-dessus le fond blanc
+    tempCtx.drawImage(originalCanvas, 0, 0);
+
+    // Télécharger l'image
+    const link = document.createElement('a');
+    link.href = tempCanvas.toDataURL('image/png');
+    link.download = filename;
+    link.click();
 }
-};
-
-const ctx = document.getElementById('myLineChart').getContext('2d');
-const myLineChart = new Chart(ctx, config);

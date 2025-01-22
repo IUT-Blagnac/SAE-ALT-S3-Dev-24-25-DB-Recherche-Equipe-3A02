@@ -312,12 +312,24 @@ class InfluxDB:
         
         return dictionnaire_capteur
 
+    def get_type_and_salle(self):
+        objects = self.get(return_object=True)
+        salles = []
+        type_data = []
+
+        for object in objects:
+            if object.room_id not in salles and object.room_id not in ["F999", "unknown"]:
+                salles.append(object.room_id)
+            if object.field not in type_data and object.field not in ["json_values", "values"]:
+                type_data.append(object.field)
+
+        return {"room" : salles, "type" : type_data}
+
 client = InfluxDB()
-result = client.get(room_id="C104", field=['temperature', 'humidity'], start_time="2025-01-13T21:15:12.224Z", end_time="2025-01-13T21:36:26.004Z", return_object=True)
+result = client.get_type_and_salle()
 
 print(len(result))
-for r in result:
-    print(r.afficher())
+print(result)
 
 
 

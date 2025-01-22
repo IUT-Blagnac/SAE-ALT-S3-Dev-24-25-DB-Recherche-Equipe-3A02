@@ -3,6 +3,21 @@
 
 {% block stylesheets %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  .canvas-wrapper {
+      margin: 20px 0; /* Espace entre les graphiques */
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+  }
+
+  .separator {
+      height: 2px;
+      background-color: #ccc;
+      margin: 30px 0;
+  }
+</style>
+
 {% endblock %}
 
 {% block body %}
@@ -127,22 +142,13 @@
       </div>
     </div>
   </div>
-
-  <div class="flex-1 p-8" style="margin-left: 16rem;">
-    <!-- Température -->
-    <canvas id="temperature" width="400" height="200" style="display: none; padding-bottom: 20px;"></canvas>
-    <div class="separator" data-associated-canvas="temperature" style="display: none; height: 2px; background-color: #ccc; margin-bottom: 50px; padding: 10px 0;"></div>
-  
-    <!-- Humidité -->
-    <canvas id="humidity" width="400" height="200" style="display: none; padding-bottom: 20px;"></canvas>
-    <div class="separator" data-associated-canvas="humidity" style="display: none; height: 2px; background-color: #ccc; margin-bottom: 50px; padding: 10px 0;"></div>
-  
-    <!-- Contact -->
-    <canvas id="contact" width="400" height="200" style="display: none; padding-bottom: 20px;"></canvas>
-    <div id="noDataMessage" style="display: none;">Aucune donnée disponible.</div>
+  <div id="fixed-text" style="display: none; position: fixed; top: 1rem; left: 18rem; right: 2rem; background-color: white; z-index: 10; padding: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <p id="requete-api" syle="display: none;">Aucun lien disponible</p>
   </div>
-  
-  
+  <div class="flex-1 p-8" id="canva-container" style="margin-left: 16rem;">
+    <div id="noDataMessage" style="display: none; padding-top: 2rem;">Aucune donnée disponible.</div>
+  </div>
+
   
 </div>
 

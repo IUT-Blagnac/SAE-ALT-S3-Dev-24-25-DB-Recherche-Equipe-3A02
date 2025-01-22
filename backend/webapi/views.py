@@ -98,8 +98,5 @@ def get_sensor_types(request):
     
     return JsonResponse(response_data)
 
-
-def data_map(request):
-    def event_stream():
-        yield "data: Mise à jour en temps réel\n\n"
-    return StreamingHttpResponse(event_stream(), content_type="text/event-stream")
+def get_salles_and_types(request):
+    return JsonResponse(db.get_type_and_salle())
