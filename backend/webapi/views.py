@@ -39,7 +39,7 @@ def get_all_last_sensors(request):
 
     return room_data
 
-@router.get("/{path:path}", response={200: dict})
+@router.get("mqtt/{path:path}", response={200: dict})
 def get_sensor_data(request, path: str):
     """
     Route dynamique pour gérer des URL de type 
@@ -137,6 +137,7 @@ def get_data_by_room(request, room_id: str, sensor_id: list[str] = Query(default
 
     start_time_dt = ""
     end_time_dt = ""
+    
 
     if start_time:
         start_time_dt = isoparse(start_time).isoformat()  
