@@ -9,7 +9,7 @@ from backend import settings
 from webapi.models import SensorType
 
 @dataclass
-class listCapteur:
+class ListCapteur:
     capteur = []
     start_time = datetime
     end_time = datetime
@@ -194,7 +194,8 @@ class InfluxDB:
         """
         return "[" + ", ".join([f'"{value}"' for value in values]) + "]"
 
-    def get(self, key1="room", key2="sensor", key3="id", value1=[], value2=[], value3=[], field=[], start_time=None, end_time=None, last=False, return_object=False) -> dict:
+    def get(self, key1="room", key2="sensor", key3="id", value1=[], value2=[], value3=[],
+        field=[], start_time=None, end_time=None, last=False, return_object=False) -> dict:
         """
         Récupère les données depuis InfluxDB avec des filtres personnalisés et permet de choisir les champs à retourner.
         """
@@ -205,7 +206,7 @@ class InfluxDB:
 
 
         if not (key1 and key2 and key3):
-            query = f'from(bucket: "sensors2") |> range(start: 0) |> filter(fn: (r) => r._field == "topic_url")'
+            query = 'from(bucket: "sensors2") |> range(start: 0) |> filter(fn: (r) => r._field == "topic_url")'
             result = self.query_api.query(query)
             key1, key2, key3 = result[0].split("/")
     
@@ -235,12 +236,12 @@ class InfluxDB:
             range_filter = f'|> range(start: {start_time}Z, stop: {end_time}Z)'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
         if last:
-            all_query += f'\n|> last()'
+            all_query += '\n|> last()'
         if return_object: 
             print(all_query)       
             result = self(all_query)
             if(not result):
-                return []
+                return {}
             self._last_result = self.transform_json_to_dataclass(result)
             return self._last_result
 
