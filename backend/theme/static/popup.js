@@ -24,7 +24,7 @@ function getRoomData(data, roomId) {
     return [];
 }
 
-// permet de récupérer la dernière valeur d'un champ spécifique
+// permet de récupérer la dernière valeur d'un champ spécifique 
 function getLatestValue(roomData, field) {
     const sensorData = roomData.find(sensor => sensor.field === field);
     return sensorData ? sensorData.value : null;
