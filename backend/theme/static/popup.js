@@ -30,6 +30,17 @@ function getLatestValue(roomData, field) {
     return sensorData ? sensorData.value : null;
 }
 
+// permet de récupérer l'heure de la dernière valeur reçue
+function getLatestTimestamp(roomData) {
+    const latestTimestamp = roomData.reduce((latest, sensor) => {
+        const sensorTimestamp = new Date(sensor.timestamp).getTime();
+        return sensorTimestamp > latest ? sensorTimestamp : latest;
+    }, 0);
+
+    // renvoie la l'heure de la dernière valeur reçue
+    return latestTimestamp ? new Date(latestTimestamp).toLocaleString('fr-FR') : null;
+}
+
 // Permet de formatter une valeur avec son unité correspondante
 function formatValue(value, field) {
 
@@ -52,13 +63,15 @@ async function fetchData(roomName) {
     
     const realData = {
         temperature: getLatestValue(roomData, 'temperature'),
-        humidity: getLatestValue(roomData, 'humidity')
+        humidity: getLatestValue(roomData, 'humidity'),
+        timestamp: getLatestTimestamp(roomData, 'timestamp')
     };
 
     // formate les données avec leurs unités
     const formattedData = {
         temperature: formatValue(realData.temperature, 'temperature'),
-        humidity: formatValue(realData.humidity, 'humidity')
+        humidity: formatValue(realData.humidity, 'humidity'),
+        timestamp: formatValue(realData.timestamp, 'timestamp')
     };
 
     return formattedData;
@@ -77,6 +90,7 @@ async function showPopupOnHover(element) {
         document.getElementById('popup-title').innerText = `Données en ${roomName}`;
         document.getElementById('temp-value').innerText = data.temperature;
         document.getElementById('humidity-value').innerText = data.humidity;
+        document.getElementById('last-data-recieved-value').innerText = data.timestamp;
 
         // On positionne la fenêtre popup juste à côté de l'élément cliqué
         const rect = element.getBoundingClientRect();
