@@ -1,51 +1,72 @@
-import { getAllSensors } from './fetcher.js';
+// Importation de fetcher
+// import { getAllSensors, getSensorsByRoom } from './fetcher.js'
 
-// Récupère les données des capteurs depuis l'API
-async function getSensorData() {
+// Importation de fetch simulator
+import { getAllSensors } from './fetch-simulator.js'
+
+// Permet de récupérer les données des capteurs depuis l'API
+// async function getJson(){
+//     try {
+//         const response = await fetch(`${apiURL}/sensors`)
+//         return await response.json()
+//     } catch (error) {
+//         console.error('Erreur :', error)
+//         return {}
+//     }
+// }
+
+// Permet de récupérer les données fake
+async function getJson() {
+    return await getAllSensors()
+}
+
+// Permet de mettre à jour les couleurs et les rotations des portes en fonction de leur status
+async function updateDoorStatus() {
     try {
-        return await getAllSensors();
-    } catch (error) {
-        console.error('Erreur :', error);
-        return {};
+        
+        // on récupère les données
+        const sensorData = await getJson()
+        
+        // on récupère tous les paths correspondant à ceux des portes dans le SVG
+        const doorPaths = document.querySelectorAll('path[data-door]')
+        
+        // on parcourt les paths pour mettre à jour les couleurs et les rotations
+        doorPaths.forEach(path => {
+            const roomId = path.getAttribute('data-door')
+            
+            // verification si la salle a des données et ensuite recherche des capteurs dans la salle
+            if (sensorData[roomId] && sensorData[roomId].sensors) {
+
+                const doorSensor = sensorData[roomId].sensors.find(
+                    sensor => sensor.type === 'door_sensor' && sensor.field === 'contact'
+                )
+                
+                // attribution des couleurs en fonction de la valeur du capteur
+                if (doorSensor) {
+                    path.setAttribute('fill', doorSensor.value === false ? 'gray' : 'black')
+                } else {
+                    path.setAttribute('fill', 'white')
+                }
+            } else {
+                path.setAttribute('fill', 'white')
+            }
+        })
+    } catch (err) {
+        console.error('Erreur :', err)
     }
 }
 
-// Récupère les données des capteurs pour une salle spécifique
-function getRoomData(data, roomId) {
-    if (data[roomId] && data[roomId].sensors) {
-        return data[roomId].sensors;
-    }
-    return [];
+// Permet de faire l'update de status de porte à l'initialisation de la page et ensuite toutes les 10 secondes
+function initializeUpdateDoorStatus() {
+    updateDoorStatus()
+        return setInterval(updateDoorStatus, 10000)
 }
 
-// Permet de récupérer la dernière valeur d'un champ spécifique
-function getLatestValue(roomData, field) {
-    const sensorData = roomData.find(sensor => sensor.field === field);
-    return sensorData ? sensorData.value : null;
+// export des fonctios au cas ou vous voulez les appeller autre part
+export {
+    updateDoorStatus,
+    initializeUpdateDoorStatus
 }
 
-// Fonction qui met à jour la couleur des capteurs de porte
-async function updateDoorSensorColors() {
-    const sensorData = await getSensorData();
-
-    // Sélectionner tous les éléments <path> associés à des capteurs de porte
-    document.querySelectorAll('path[data-room]').forEach(path => {
-        const roomName = path.getAttribute('data-room');
-        const roomData = getRoomData(sensorData, roomName);
-
-        // Obtenir la dernière valeur du capteur de contact (field: 'contact')
-        const contactValue = getLatestValue(roomData, 'contact');
-
-        // Changer la couleur en fonction de la valeur du capteur
-        if (contactValue === true) {
-            path.setAttribute('fill', 'red');  // Porte ouverte (true)
-        } else if (contactValue === false) {
-            path.setAttribute('fill', 'green');  // Porte fermée (false)
-        } else {
-            path.setAttribute('fill', 'yellow');  // Pas de données (null)
-        }
-    });
-}
-
-// Mettre à jour les couleurs des capteurs de porte dès que la page est chargée
-document.addEventListener('DOMContentLoaded', updateDoorSensorColors);
+// on appelle la fonction pour l'initialisation
+initializeUpdateDoorStatus()
