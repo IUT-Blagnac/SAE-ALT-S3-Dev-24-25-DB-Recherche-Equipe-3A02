@@ -46,6 +46,14 @@ def get_sensor_data(request, path: str):
     Les paramètres sont extraits dynamiquement du chemin.
     """
     path_parts = path.split("/")
+    if path_parts[1] == "*":
+        path_parts[1] = ""
+
+    if path_parts[3] == "*":
+        path_parts[3] = ""
+
+    if path_parts[5] == "*":
+        path_parts[5] = ""
 
     result = db.get(key1=path_parts[0], value1=path_parts[1], key2=path_parts[2], value2=path_parts[3], key3=path_parts[4], value3=path_parts[5], return_object=True)
     if not result:
@@ -133,7 +141,7 @@ def get_data_by_rooms(
     
 
 @router.get("/{room_id}", response={200: dict[str, dict]})
-def get_data_by_room(request, room_id: str, sensor_id: list[str] = Query(default=None),sensor_type: list[str] = Query(default=None), field: list[str] = Query(None), start_time: str = None, end_time: str = None):
+def get_data_by_rooom(request, room_id: str, sensor_id: list[str] = Query(default=None),sensor_type: list[str] = Query(default=None), field: list[str] = Query(None), start_time: str = None, end_time: str = None):
 
     start_time_dt = ""
     end_time_dt = ""
