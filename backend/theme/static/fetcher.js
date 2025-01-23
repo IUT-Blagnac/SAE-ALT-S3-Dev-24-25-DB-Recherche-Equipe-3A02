@@ -2,7 +2,7 @@
 // URL de base pour l'API
 const apiURL = 'http://localhost:8000/api'
 
-// Permet de récupérer tous les capteurs disponibles
+// Permet de récupérer tous les sensors
 async function getAllSensors() {
     try {
         const response = await fetch(`${apiURL}/sensors`)
@@ -13,7 +13,7 @@ async function getAllSensors() {
     }
 }
 
-// Permet de récupérer les capteurs pour une salle spécifique
+// Permet de récupérer les sensors pour une salle
 async function getSensorsByRoom(roomId, sensorId, sensorType, field, startTime, endTime) {
     try {
         
@@ -41,7 +41,7 @@ async function getSensorsByRoom(roomId, sensorId, sensorType, field, startTime, 
     }
 }
 
-// Va chercher la liste des types de capteurs disponibles
+// Va chercher la liste des types de sensor
 async function getSensorTypes() {
     try {
         const response = await fetch(`${apiURL}/sensors_types`)
@@ -57,7 +57,7 @@ async function getSensorTypes() {
 // Cette partie pourrait potentiellement être enlevée quand Esteban implémentera sa récupération automatique
 
 // pour tous les capteurs
-function fetchAllSensorsEvery10Seconds(callback) {
+function fetchAllSensorsPeriodically(callback) {
     
     // premier appel est immédiat
     getAllSensors().then(data => callback(data))
@@ -70,7 +70,7 @@ function fetchAllSensorsEvery10Seconds(callback) {
 }
 
 // pour une salle spécifique
-function fetchRoomSensorsEvery10Seconds(roomId, callback) {
+function fetchRoomSensorsPeriodically(roomId, callback) {
 
     // premier appel est immédiat
     getSensorsByRoom(roomId).then(data => callback(data))
@@ -83,7 +83,7 @@ function fetchRoomSensorsEvery10Seconds(roomId, callback) {
 }
 
 // pour les types de capteurs
-function fetchSensorTypesEvery10Seconds(callback) {
+function fetchSensorTypesPeriodically(callback) {
 
     // premier appel est immédiat
     getSensorTypes().then(data => callback(data))
@@ -100,7 +100,7 @@ export {
     getAllSensors,
     getSensorsByRoom,
     getSensorTypes,
-    fetchAllSensorsEvery10Seconds,
-    fetchRoomSensorsEvery10Seconds,
-    fetchSensorTypesEvery10Seconds
+    fetchAllSensorsPeriodically,
+    fetchRoomSensorsPeriodically,
+    fetchSensorTypesPeriodically
 }
