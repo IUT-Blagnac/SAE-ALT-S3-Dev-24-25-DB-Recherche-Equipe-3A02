@@ -1,16 +1,22 @@
-// Récupère les données des capteurs depuis l'API locale
-// En cas d'erreur, renvoie un objet vide pour éviter les crashs
+import { getAllSensors, getSensorsByRoom } from './fetcher.js';
+
+// Dictionnaire des unités
+const typeUnite = {
+    temperature: '°C',
+    humidity: '%',
+};
+
+// Permet de récuperer les données des capteurs depuis l'API
 async function getSensorData() {
     try {
-        const response = await fetch('http://localhost:8000/api/sensors');
-        return await response.json();
+        return await getAllSensors();
     } catch (error) {
-        console.error('Erreur lors de la récupération des données:', error);
+        console.error('Erreur :', error);
         return {};
     }
 }
 
-// Récupère les données des capteurs pour une salle spécifique
+// Permet de récuperer les données des capteurs pour une salle
 function getRoomData(data, roomId) {
     if (data[roomId] && data[roomId].sensors) {
         return data[roomId].sensors;
@@ -18,17 +24,29 @@ function getRoomData(data, roomId) {
     return [];
 }
 
-// Cherche la dernière valeur disponible pour un type de mesure spécifique
-// Par exemple: température, humidité, etc.
+// permet de récupérer la dernière valeur d'un champ spécifique
 function getLatestValue(roomData, field) {
     const sensorData = roomData.find(sensor => sensor.field === field);
     return sensorData ? sensorData.value : null;
 }
 
-// Fonction principale qui récupère soit les données réelles des capteurs,
-// soit des données de test si les capteurs ne répondent pas
+// Permet de formatter une valeur avec son unité correspondante
+function formatValue(value, field) {
+
+    // valeur null ou undefined alors on retourne '--'
+    if (value === null || value === undefined) {
+        return '--';
+    }
+    
+    // on ajoute l'unité correspondante
+    const unite = typeUnite[field] || '';
+    return `${value}${unite}`;
+}
+
+// Permet de récupérer les données pour une salle
 async function fetchData(roomName) {
-    // On essaie d'abord de récupérer les vraies données
+    
+    // récupère les données
     const sensorData = await getSensorData();
     const roomData = getRoomData(sensorData, roomName);
     
@@ -37,23 +55,16 @@ async function fetchData(roomName) {
         humidity: getLatestValue(roomData, 'humidity')
     };
 
-    // Valeurs par défaut au cas où les capteurs ne renvoient rien
-    const testData = {
-        temperature: '22°C',
-        humidity: '45%'
-    };
-
-    // On ajoute les unités de mesure aux valeurs récupérées
+    // formate les données avec leurs unités
     const formattedData = {
-        temperature: realData.temperature ? `${realData.temperature}°C` : testData.temperature,
-        humidity: realData.humidity ? `${realData.humidity}%` : testData.humidity
+        temperature: formatValue(realData.temperature, 'temperature'),
+        humidity: formatValue(realData.humidity, 'humidity')
     };
 
     return formattedData;
 }
 
 // Gère l'affichage de la fenêtre popup avec les informations de la salle
-
 async function showPopupOnHover(element) {
     const popup = document.getElementById('popup');
     const roomName = element.getAttribute('data-room');
@@ -63,58 +74,65 @@ async function showPopupOnHover(element) {
 
     if (!popup.classList.contains('fixed')){
         // On update le view avec les nouvelles données lorsque le pop-up n'est pas fixe
-    document.getElementById('popup-title').innerText = `Données en ${roomName}`;
-    document.getElementById('temp-value').innerText = data.temperature;
-    document.getElementById('humidity-value').innerText = data.humidity;
+        document.getElementById('popup-title').innerText = `Données en ${roomName}`;
+        document.getElementById('temp-value').innerText = data.temperature;
+        document.getElementById('humidity-value').innerText = data.humidity;
 
-    // On positionne la fenêtre popup juste à côté de l'élément cliqué
-    const rect = element.getBoundingClientRect();
-    popup.style.top = `${rect.top + window.scrollY + element.offsetHeight}px`;
-    popup.style.left = `${rect.left + window.scrollX}px`;
+        // On positionne la fenêtre popup juste à côté de l'élément cliqué
+        const rect = element.getBoundingClientRect();
+        popup.style.top = `${rect.top + window.scrollY + element.offsetHeight}px`;
+        popup.style.left = `${rect.left + window.scrollX}px`;
 
-    // On rend la fenêtre visible
-    popup.style.display = 'block';
+        // On rend la fenêtre visible
+        popup.style.display = 'block';
 
-    updatePopupPosition(element, popup);
+        updatePopupPosition(element, popup);
 
-    const mouseMoveHandler = (event) => {
-        if (!popup.classList.contains('fixed')){
-            updatePopupPosition(event, popup);
-        }
-    };
+        const mouseMoveHandler = (event) => {
+            if (!popup.classList.contains('fixed')){
+                updatePopupPosition(event, popup);
+            }
+        };
 
-    element.addEventListener('mousemove', mouseMoveHandler);
+        element.addEventListener('mousemove', mouseMoveHandler);
 
-    element.addEventListener('mouseleave', () => {
-        if (!popup.classList.contains('fixed')) {
-            hidePopupOnHover();
-        }
-        element.removeEventListener('mousemove', mouseMoveHandler);
-    });
+        element.addEventListener('mouseleave', () => {
+            if (!popup.classList.contains('fixed')) {
+                hidePopupOnHover();
+            }
+            element.removeEventListener('mousemove', mouseMoveHandler);
+        });
 
-    element.addEventListener('click', (event) => {
-        event.stopPropagation();
-        popup.classList.add('fixed');
-        popup.style.top = `${event.pageY + 10}`;
-        popup.style.left = `${event.pageX + 10}`;
-        element.removeEventListener('mousemove', mouseMoveHandler);
-    });
+        element.addEventListener('click', (event) => {
+            event.stopPropagation();
+            popup.classList.add('fixed');
+            popup.style.top = `${event.pageY + 10}px`;
+            popup.style.left = `${event.pageX + 10}px`;
+            element.removeEventListener('mousemove', mouseMoveHandler);
+        });
     }
 }
 
 // Masque la fenêtre popup quand on quitte une zone
 function hidePopupOnHover() {
-    document.getElementById('popup').style.display = 'none';
+    const popup = document.getElementById('popup');
+    popup.style.display = 'none';
     popup.classList.remove('fixed');
 }
 
-// Configure les zones cliquables pour afficher la popup au survol
+// Mets à jour la position de la popup
+function updatePopupPosition(event, popup) {
+    const popupOffset = 10; // Décalage pour éviter que la popup soit directement sous le curseur
+    popup.style.top = `${event.pageY + popupOffset}px`;
+    popup.style.left = `${event.pageX + popupOffset}px`;
+}
+
+// Configuration des événements pour les zones sur SVG
 document.querySelectorAll('path[data-room]').forEach(path => {
     path.addEventListener('mouseenter', () => showPopupOnHover(path));
 });
 
 // Ferme automatiquement la popup si on clique en dehors
-// Mais la garde ouverte si on clique sur un bouton ou dans la popup
 document.addEventListener('click', (event) => {
     const popup = document.getElementById('popup');
     const isClickInside = popup.contains(event.target) || 
@@ -124,13 +142,6 @@ document.addEventListener('click', (event) => {
         hidePopupOnHover();
     }
 });
-
-// Mets à jour la position de la popup
-function updatePopupPosition(event, popup) {
-    const popupOffset = 10; // Décalage pour éviter que la popup soit directement sous le curseur
-    popup.style.top = `${event.pageY + popupOffset}px`;
-    popup.style.left = `${event.pageX + popupOffset}px`;
-}
 
 // Ajoute la fonction de fermeture au bouton × de la popup
 document.querySelector('.close-btn').addEventListener('click', () => hidePopupOnHover());
