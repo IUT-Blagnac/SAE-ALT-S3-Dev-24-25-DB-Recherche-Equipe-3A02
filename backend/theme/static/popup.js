@@ -1,5 +1,11 @@
 import { getAllSensors, getSensorsByRoom } from './fetcher.js';
 
+// Dictionnaire des unités
+const typeUnite = {
+    temperature: '°C',
+    humidity: '%',
+};
+
 // Récupère les données des capteurs depuis l'API
 async function getSensorData() {
     try {
@@ -24,6 +30,18 @@ function getLatestValue(roomData, field) {
     return sensorData ? sensorData.value : null;
 }
 
+// Formate une valeur avec son unité correspondante
+function formatValue(value, field) {
+    // Si la valeur est nulle ou undefined, renvoie un tiret
+    if (value === null || value === undefined) {
+        return '-';
+    }
+    
+    // Récupère l'unité depuis le dictionnaire, sinon laisse sans unité
+    const unit = typeUnite[field] || '';
+    return `${value}${unit}`;
+}
+
 // Permet de récupérer les données pour une salle
 async function fetchData(roomName) {
     // récupère les données
@@ -35,16 +53,10 @@ async function fetchData(roomName) {
         humidity: getLatestValue(roomData, 'humidity')
     };
 
-    // valeurs de test pour le développement ou si les données réelles ne sont pas disponibles
-    const testData = {
-        temperature: '-',
-        humidity: '-'
-    };
-
-    // on formate les données pour les afficher
+    // formate les données avec leurs unités
     const formattedData = {
-        temperature: realData.temperature ? `${realData.temperature}°C` : testData.temperature,
-        humidity: realData.humidity ? `${realData.humidity}%` : testData.humidity
+        temperature: formatValue(realData.temperature, 'temperature'),
+        humidity: formatValue(realData.humidity, 'humidity')
     };
 
     return formattedData;
