@@ -7,9 +7,10 @@ const fakeData = {
                 { "name": "unknown", "type": "unknown", "field": "values", "timestamp": "2025-01-21T10:12:10.659Z", "value": 1737454329921 }
             ]
         },
-        "C002": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:05:30.413Z", "value": false }] },
+        "C002": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:05:30.413Z", "value": true }] },
         "C101": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T21:37:50.210Z", "value": false }] },
-        "C102": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:20:06.822Z", "value": true }] },
+        "C102": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:20:06.822Z", "value": false }] },
+        "C103": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:05:30.413Z", "value": true }] },
         "C104": {
             "sensors": [
                 { "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T19:17:59.542Z", "value": true },
@@ -17,14 +18,16 @@ const fakeData = {
                 { "name": "ZTH02", "type": "th_sensor", "field": "temperature", "timestamp": "2025-01-15T21:37:50.131Z", "value": 20.9 }
             ]
         },
+        "C105": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T21:37:50.210Z", "value": true }] },
         "C106": {
             "sensors": [
-                { "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T21:37:49.978Z", "value": false },
+                { "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T21:37:49.978Z", "value": true },
                 { "name": "ZTH02", "type": "th_sensor", "field": "humidity", "timestamp": "2025-01-15T21:40:46.628Z", "value": 25 },
                 { "name": "ZTH02", "type": "th_sensor", "field": "temperature", "timestamp": "2025-01-15T21:40:46.628Z", "value": 59 }
             ]
         },
-        "C107": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T21:37:50.058Z", "value": false }] }
+        "C107": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T21:37:50.058Z", "value": true }] },
+        "C108": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:05:30.413Z", "value": true }] }
     },
     sensorTypes: {
         "th_sensor": { 
