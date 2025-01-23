@@ -6,7 +6,7 @@ const typeUnite = {
     humidity: '%',
 };
 
-// Récupère les données des capteurs depuis l'API
+// Permet de récuperer les données des capteurs depuis l'API
 async function getSensorData() {
     try {
         return await getAllSensors();
@@ -16,7 +16,7 @@ async function getSensorData() {
     }
 }
 
-// Récupère les données des capteurs pour une salle
+// Permet de récuperer les données des capteurs pour une salle
 function getRoomData(data, roomId) {
     if (data[roomId] && data[roomId].sensors) {
         return data[roomId].sensors;
@@ -30,20 +30,22 @@ function getLatestValue(roomData, field) {
     return sensorData ? sensorData.value : null;
 }
 
-// Formate une valeur avec son unité correspondante
+// Permet de formatter une valeur avec son unité correspondante
 function formatValue(value, field) {
-    // Si la valeur est nulle ou undefined, renvoie un tiret
+
+    // valeur null ou undefined alors on retourne '--'
     if (value === null || value === undefined) {
-        return '-';
+        return '--';
     }
     
-    // Récupère l'unité depuis le dictionnaire, sinon laisse sans unité
-    const unit = typeUnite[field] || '';
-    return `${value}${unit}`;
+    // on ajoute l'unité correspondante
+    const unite = typeUnite[field] || '';
+    return `${value}${unite}`;
 }
 
 // Permet de récupérer les données pour une salle
 async function fetchData(roomName) {
+    
     // récupère les données
     const sensorData = await getSensorData();
     const roomData = getRoomData(sensorData, roomName);
