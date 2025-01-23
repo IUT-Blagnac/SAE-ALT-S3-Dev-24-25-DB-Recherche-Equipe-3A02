@@ -202,15 +202,14 @@ class InfluxDB:
     |> range(start: 0)        
     |> filter(fn: (r) => r["_measurement"] == "sensor_data")"""
 
+
+
         if not (key1 and key2 and key3):
             query = f'from(bucket: "sensors2") |> range(start: 0) |> filter(fn: (r) => r._field == "topic_url")'
-    
             result = self.query_api.query(query)
- 
-            print(result)
             key1, key2, key3 = result[0].split("/")
     
-
+        print(key1)
         if value1:
             if isinstance(value1, str):
                 value1 = [value1]
