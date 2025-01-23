@@ -38,8 +38,7 @@ async function fetchSensorsByRoom(roomId, sensorId, sensorType, field, startTime
         }
 
         const response = await fetch(url)
-        roomSensors[roomId] = await response.json()
-        return roomSensors[roomId]
+        return await response.json()
     } catch (err) {
         console.error(`Erreur pour la salle ${roomId}:`, err)
         return {}
@@ -59,17 +58,18 @@ async function fetchSensorTypes() {
 }
 
 // Permet de récupérer tous les sensors
-function getAllSensors() {
+async function getAllSensors() {
     return allSensors
 }
 
 // Permet de récupérer les sensors pour une salle
-function getSensorsByRoom(roomId, sensorId, sensorType, field, startTime, endTime) {
-    return fetchSensorsByRoom(roomId, sensorId, sensorType, field, startTime, endTime)
+async function getSensorsByRoom(roomId, sensorId, sensorType, field, startTime, endTime) {
+    roomSensors[roomId] = await fetchSensorsByRoom(roomId, sensorId, sensorType, field, startTime, endTime)
+    return roomSensors[roomId]
 }
 
 // Va chercher la liste des types de sensor
-function getSensorTypes() {
+async function getSensorTypes() {
     return sensorTypes
 }
 
@@ -79,7 +79,7 @@ function getSensorTypes() {
 // pour tous les capteurs
 function fetchAllSensorsPeriodically(callback) {
     // premier appel est immédiat
-    fetchAllSensors().then(data => callback(data))
+    getAllSensors().then(data => callback(data))
     
     // puis toutes les 10 secondes
     return setInterval(async () => {
@@ -91,7 +91,7 @@ function fetchAllSensorsPeriodically(callback) {
 // pour une salle spécifique
 function fetchRoomSensorsPeriodically(roomId, callback) {
     // premier appel est immédiat
-    fetchSensorsByRoom(roomId).then(data => callback(data))
+    getSensorsByRoom(roomId).then(data => callback(data))
     
     // puis toutes les 10 secondes
     return setInterval(async () => {
@@ -103,7 +103,7 @@ function fetchRoomSensorsPeriodically(roomId, callback) {
 // pour les types de capteurs
 function fetchSensorTypesPeriodically(callback) {
     // premier appel est immédiat
-    fetchSensorTypes().then(data => callback(data))
+    getSensorTypes().then(data => callback(data))
     
     // puis toutes les 5 minutes
     return setInterval(async () => {
@@ -111,6 +111,26 @@ function fetchSensorTypesPeriodically(callback) {
         callback(sensorTypes)
     }, 5 * 60 * 1000)
 }
+
+// Initialisation au chargement du document
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        
+        // on fait un premier fetch pour initialiser les données
+        await fetchAllSensors()
+        
+        // fetch des types de capteurs
+        await fetchSensorTypes()
+        
+        // update des données toutes les 10 secondes
+        fetchAllSensorsPeriodically((data) => {})
+        
+        fetchSensorTypesPeriodically((data) => {})
+        
+    } catch (error) {
+        console.error('Erreur : ', error)
+    }
+})
 
 // export des fonctions
 export {
