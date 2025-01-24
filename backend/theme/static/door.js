@@ -2,7 +2,7 @@
 // import { getAllSensors, getSensorsByRoom } from './fetcher.js'
 
 // Importation de fetch simulator
-import { getAllSensors } from './fetch-simulator.js'
+import { getAllSensors } from './fetcher.js'
 
 // Permet de récupérer les données des capteurs depuis l'API
 // async function getJson(){
@@ -37,7 +37,13 @@ async function updateDoorStatus() {
     try {
         
         // on récupère les données
-        const sensorData = await getJson()
+        let sensorData = {};
+        while (Object.keys(sensorData).length === 0) {
+            sensorData = await getJson();
+            if (Object.keys(sensorData).length === 0) {
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            }
+        }
         
         // on récupère tous les paths correspondant à ceux des portes dans le SVG
         const doorPaths = document.querySelectorAll('path[data-door]')
@@ -47,10 +53,10 @@ async function updateDoorStatus() {
             const roomId = path.getAttribute('data-door')
             
             // verification si la salle a des données et ensuite recherche des capteurs dans la salle
-            if (sensorData[roomId] && sensorData[roomId].sensors) {
+            if (sensorData[roomId]?.sensors) {
 
                 const doorSensor = sensorData[roomId].sensors.find(
-                    sensor => sensor.type === 'door_sensor' && sensor.field === 'contact'
+                    sensor => sensor.field === 'contact'
                 )
                 
                 // attribution des couleurs en fonction de la valeur du capteur
