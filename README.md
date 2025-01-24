@@ -33,13 +33,13 @@ L'équipe de ce projet est constitué de 7 personnes. Voici leurs noms, rôles, 
 
 | Nom du membre de l'équipe | Rôle dans l'équipe | Répartition de travail |
 |---------------------------|--------------------|------------------------|
-|[Ophélie WINTERHOFF](https://github.com/ophewinx) | Cheffe d'équipe, Développeuse | .% |
-|[Zachary IVARS](https://github.com/Traimix05) | Product Owner, Développeur | .% |
-|[Yahya MAGAZ](https://github.com/Magaz-Yahya) | SCRUM Master, Développeur | .% |
-|[Naila BON](https://github.com/naila-bon) | Développeuse | .% |
-|[Adrien FAURÉ](https://github.com/AirbnbEcoPlus) | Développeur | .% | 
-|[Esteban GARNIL](https://github.com/estbanGarnil) | Développeur | .% |
-|[Mete YALÇIN](https://github.com/MetelsCoding) | Développeur| .% |
+|[Ophélie WINTERHOFF](https://github.com/ophewinx) | Cheffe d'équipe, Développeuse | 13.33% |
+|[Zachary IVARS](https://github.com/Traimix05) | Product Owner, Développeur | 13.33% |
+|[Yahya MAGAZ](https://github.com/Magaz-Yahya) | SCRUM Master, Développeur | 13.33% |
+|[Naila BON](https://github.com/naila-bon) | Développeuse | 13.33% |
+|[Adrien FAURÉ](https://github.com/AirbnbEcoPlus) | Développeur | 20.00% | 
+|[Esteban GARNIL](https://github.com/estbanGarnil) | Développeur | 13.33% |
+|[Mete YALÇIN](https://github.com/MetelsCoding) | Développeur| 13.33% |
 
 
 Tutrice & tuteur enseignant.e.s de l'équipe : [Cassandre Vey](cassandre.vey@irit.fr), [Remi Boulle](remi.boulle@univ-tlse2.fr) & [Esther Pendaries](esther.pendaries@univ-tlse2.fr)
@@ -64,12 +64,16 @@ Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](http
 - Lien vers [Backlog](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/issues)
 - Liste des Sprints :
   - [Sprint 1](https://github.com/orgs/IUT-Blagnac/projects/296)
-  - (Sprint 2)[]
+  - (Sprint 2)[https://github.com/orgs/IUT-Blagnac/projects/306]
 - Liste des ODJs et leurs CRs :
 
   | Ordres du Jour | Compte-rendus |
   |----------------|---------------|
   | [ODJ 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/07-01-2025/Ordre%20Du%20Jour%2007-01-2025.pdf) | [CR 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/07-01-2025/CR%20Re%CC%81union%2007-01-2025.pdf)|
+  | [ODJ 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/14-01-2025/Ordre%20Du%20Jour%2014-01-2025.pdf) | [CR 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/14-01-2025/CR%20Re%CC%81union%2014-01-2025.pdf)|
+  | [ODJ 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/16-01-2025/Ordre%20Du%20Jour%2016-01-2025.pdf) | [CR 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/16-01-2025/CR%20Re%CC%81union%2016-01-2025.pdf)|
+  | [ODJ 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/Ordre%20Du%20Jour%2017-01-2025.pdf) | [CR 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/CR%20Re%CC%81union%2017-01-2025.pdf)|
+  | [ODJ 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/22-01-2025/Ordre%20Du%20Jour%2022-01-2025.pdf) | [CR 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/22-01-2025/CR%20Re%CC%81union%2022-01-2025.pdf)|
 
 
 ## Contexte général
