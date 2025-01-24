@@ -52,7 +52,7 @@ La méthodologie repose sur l'identification des besoins des utilisateurs et la 
 
 ### 2. Environnement de test
 
-- **Navigateur** : Tests effectués sur Chrome, Firefox et Edge.
+- **Navigateur** : Tests effectués sur Chrome, Firefox, Edge et Safari.
 - **Base de données** : InfluxDB, SQLite3
 - **Serveur de développement** : Django, Guvicorn
 
