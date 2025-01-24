@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime, time, timezone
 import json
+from typing import Optional
 import pytz
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
@@ -27,6 +28,17 @@ class CapteurResult:
     value2 : str
     key3 : str
     value3 : str
+
+    def get_value_by_key(self, key: str) -> Optional[str]:
+        """Retourne la valeur associée à une clé spécifique."""
+        if self.key1 == key:
+            return self.value1
+        elif self.key2 == key:
+            return self.value2
+        elif self.key3 == key:
+            return self.value3
+        return None
+
 
     def afficher(self):
         texte = f"time: {self.time_fr}\nvalue: {self.value}\nfield: {self.field}\nroom_id: {self.room_id}\nsensor_type: {self.sensor_type}\n----------------"
@@ -335,3 +347,17 @@ class InfluxDB:
                     all_differents.append(item)  # Ajouter le plus récent
 
         return all_differents
+    
+    def get_type_and_salle(self):
+        objects = self.get(return_object=True)
+        salles = []
+        type_data = []
+
+        for object in objects:
+            print(object)
+            if object.get_value_by_key("room") not in salles and object.get_value_by_key("room") not in ["F999", "unknown"]:
+                salles.append(object.get_value_by_key("room"))
+            if object.field not in type_data and object.field not in ["json_values", "values"]:
+                type_data.append(object.field)
+
+        return {"room" : salles, "type" : type_data}
