@@ -194,16 +194,16 @@ class InfluxDB:
         """
         return "[" + ", ".join([f'"{value}"' for value in values]) + "]"
 
-    def isInstanceFilterLink(self, pf_key, pf_value, pf_all_query):
+    def is_instance_filter_link(self, pf_key, pf_value, pf_all_query):
         if isinstance(pf_value, str):
             pf_value = [pf_value]
         if pf_key != None:
-            resFilter = f'|> filter(fn: (r) => contains(value: r["{pf_key}"], set: {self.format_list(pf_value)}))'
+            res_filter = f'|> filter(fn: (r) => contains(value: r["{pf_key}"], set: {self.format_list(pf_value)}))'
         else:
-            resFilter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(pf_value)}))'
+            res_filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(pf_value)}))'
 
-        
-        pf_all_query += f"\n{resFilter}"
+
+        pf_all_query += f"\n{res_filter}"
         return pf_all_query
 
     def get(self, key1="room", key2="sensor", key3="id", value1=[], value2=[], value3=[],
