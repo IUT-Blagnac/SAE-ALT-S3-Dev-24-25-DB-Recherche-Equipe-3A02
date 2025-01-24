@@ -200,12 +200,12 @@ class InfluxDB:
         """
         return "[" + ", ".join([f'"{value}"' for value in values]) + "]"
     
-    def isInstanceFilterLink(self, pf_key, pf_value, pf_all_query):
+    def is_instance_filter_link(self, pf_key, pf_value, pf_all_query):
         if isinstance(pf_value, str):
             pf_value = [pf_value]
-        resFilter = f'|> filter(fn: (r) => contains(value: r["' + pf_key + '"], set: {self.format_list(pf_value)}))'
+        res_filter = f'|> filter(fn: (r) => contains(value: r["{pf_key}"], set: {self.format_list(pf_value)}))'
         
-        pf_all_query += f"\n{resFilter}"
+        pf_all_query += f"\n{res_filter}"
         return pf_all_query
 
     def get(self, room_id=[], sensor_id=[], sensor_type=[], field=[], start_time=None, end_time=None, last=False, return_object=False) -> dict:
@@ -237,10 +237,7 @@ class InfluxDB:
         return self(all_query)
     
     def transform_json_to_dataclass(self, data_entry):
-        if isinstance(data_entry, str):
-            contenu = json.loads(data_entry) 
-        else:
-            contenu = data_entry
+        contenu = json.load(data_entry) if isinstance(data_entry, str) else data_entry
 
         dataclass_tab = []
         for item in contenu:
@@ -314,6 +311,3 @@ result = client.get(room_id="C104", field=['temperature', 'humidity'], start_tim
 print(len(result))
 for r in result:
     print(r.afficher())
-
-
-
