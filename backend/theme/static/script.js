@@ -276,8 +276,6 @@ function deleteCanva(canvasId) {
   }
 }
 
-function generateChart() {}
-
 function updateChart(groupedFields) {
   const message = document.getElementById("noDataMessage");
 
