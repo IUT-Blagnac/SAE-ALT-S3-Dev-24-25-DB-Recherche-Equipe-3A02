@@ -4236,7 +4236,7 @@
         svgElement.addEventListener('wheel', (event) => {
             event.preventDefault();
     
-            const { width, height, x, y } = viewBox;
+            const { width, height } = viewBox;
     
             if (event.deltaY < 0) {
                 const newWidth = Math.max(width * zoomFactor, 200);

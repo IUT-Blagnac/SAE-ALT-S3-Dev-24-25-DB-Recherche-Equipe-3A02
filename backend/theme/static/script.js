@@ -1,7 +1,7 @@
-var salleSelect = null;
-var typeSelect = [];
-var datedeDebut = null;
-var datedeFin = null;
+let salleSelect = null;
+let typeSelect = [];
+let datedeDebut = null;
+let datedeFin = null;
 
 // ecoute des clics
 document.addEventListener("DOMContentLoaded", function () {
@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("input[name='filter1[]']").forEach((checkbox) => {
     checkbox.addEventListener("change", (event) => {
       const salleValue = event.target.value;
-      const isChecked = event.target.checked;
       salleSelect = salleValue;
       effectuerRequete();
     });
@@ -127,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateAccordionsState();
 });
 
-conversion = {
+var conversion = {
   température: "temperature",
   humidité: "humidity",
   contact: "contact",
@@ -227,7 +226,12 @@ function effectuerRequete() {
           });
 
           // Ajouter la valeur transformée et la date formatée
-          acc[field][0].push(field === "contact" ? (value ? 1 : 0) : value); // 1 pour true, 0 pour false
+          let valueToPush = value
+
+          if (field === "contact"){ 
+                valueToPush = value ? 1 : 0
+            }
+          acc[field][0].push(valueToPush); // 1 pour true, 0 pour false
           acc[field][1].push(dateLocale); // Liste des dates formatées
 
           return acc;

@@ -47,7 +47,7 @@ async function updateDoorStatus() {
             const roomId = path.getAttribute('data-door')
             
             // verification si la salle a des données et ensuite recherche des capteurs dans la salle
-            if (sensorData[roomId] && sensorData[roomId].sensors) {
+            if (sensorData[roomId]?.sensors) {
 
                 const doorSensor = sensorData[roomId].sensors.find(
                     sensor => sensor.type === 'door_sensor' && sensor.field === 'contact'

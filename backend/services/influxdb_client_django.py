@@ -194,6 +194,18 @@ class InfluxDB:
         """
         return "[" + ", ".join([f'"{value}"' for value in values]) + "]"
 
+    def isInstanceAttribution(self, pf_key, pf_value, pf_all_query):
+        if isinstance(pf_value, str):
+            pf_value = [pf_value]
+        if pf_key != None:
+            filter = f'|> filter(fn: (r) => contains(value: r["{pf_key}"], set: {self.format_list(pf_value)}))'
+        else:
+            filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(pf_value)}))'
+
+        
+        pf_all_query += f"\n{filter}"
+        return pf_all_query
+
     def get(self, key1="room", key2="sensor", key3="id", value1=[], value2=[], value3=[],
         field=[], start_time=None, end_time=None, last=False, return_object=False) -> dict:
         """
@@ -212,26 +224,13 @@ class InfluxDB:
     
         print(key1)
         if value1:
-            if isinstance(value1, str):
-                value1 = [value1]
-            value1_filter = f'|> filter(fn: (r) => contains(value: r["{key1}"], set: {self.format_list(value1)}))'
-
-            all_query += f"\n{value1_filter}"
+            all_query = self.isInstanceAttribution(key1, value1, all_query)
         if value2:
-            if isinstance(value2, str):
-                value2 = [value2]
-            value2_filter = f'|> filter(fn: (r) => contains(value: r["{key2}"], set: {self.format_list(value2)}))'
-            all_query += f"\n{value2_filter}"
+            all_query = self.isInstanceAttribution(key2, value2, all_query)
         if value3:
-            if isinstance(value3, str):
-                value3 = [value3]
-            value3_filter = f'|> filter(fn: (r) => contains(value: r["{key3}"], set: {self.format_list(value3)}))'
-            all_query += f"\n{value3_filter}"
+            all_query = self.isInstanceAttribution(key3, value3, all_query)
         if field:
-            if isinstance(field, str):
-                field = [field]
-            field_filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(field)}))'
-            all_query += f"\n{field_filter}"
+            all_query = self.isInstanceAttribution(None, field, all_query)
         if start_time and end_time:
             range_filter = f'|> range(start: {start_time}Z, stop: {end_time}Z)'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
@@ -247,13 +246,10 @@ class InfluxDB:
 
         print(all_query)
         return self(all_query)
-    
-    def transform_json_to_dataclass(self, data_entry):
-        if isinstance(data_entry, str):
-            contenu = json.loads(data_entry)
-        else:
-            contenu = data_entry
         
+    def transform_json_to_dataclass(self, data_entry):
+        contenu = json.load(data_entry) if isinstance(data_entry, str) else data_entry
+                    
         dataclass_tab = []
         
         for item in contenu:
@@ -339,7 +335,3 @@ class InfluxDB:
                     all_differents.append(item)  # Ajouter le plus récent
 
         return all_differents
-    
-
-
-
