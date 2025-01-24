@@ -10,7 +10,7 @@ let visible = false;
 // ecoute des clics
 document.addEventListener("DOMContentLoaded", function () {
   get_parametre();
-  requete = document.getElementById("requete-api");
+  let requete = document.getElementById("requete-api");
   requete.style.display = "none";
 
   // Écouter les clics sur les salles
@@ -20,14 +20,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (salleValue) {
       salleSelect = salleValue;
-      requete_fixe = document.getElementById("fixed-text");
+      let requete_fixe = document.getElementById("fixed-text");
       requete_fixe.style.display = "block";
       visible = true;
       effectuerRequete();
     } else {
       const allCanvases = document.querySelectorAll("canvas");
       allCanvases.forEach((canvas) => deleteCanva(canvas.id));
-      requete = document.getElementById("requete-api");
+      let requete = document.getElementById("requete-api");
       requete.style.display = "none";
       requete_fixe = document.getElementById("fixed-text");
       requete_fixe.style.display = "none";
@@ -119,86 +119,112 @@ conversion = {
 };
 
 function effectuerRequete() {
-  if (!visible) {
-    return;
-  }
-  if (salleSelect && typeSelect) {
-    let constructrequete = `http://localhost:8000/api/sensors/${salleSelect}`;
+    if (!visible) return;
+
+    if (salleSelect && typeSelect) {
+        const constructrequete = createRequestUrl();
+        displayRequestUrl(constructrequete);
+        fetchSensorData(constructrequete);
+    }
+}
+
+function createRequestUrl() {
+    let url = `http://localhost:8000/api/sensors/${salleSelect}`;
+    const params = createParams();
+    
+    if (params.length > 0) {
+        url += `?${params.join("&")}`;
+    }
+    
+    return url;
+}
+
+function createParams() {
     const params = [];
 
-    // Ajouter les champs sélectionnés
     typeSelect.forEach((element) => {
-      params.push(`field=${element}`);
+        params.push(`field=${element}`);
     });
 
-    // Ajouter les dates si présentes
     if (datedeDebut) {
-      params.push(`start_time=${datedeDebut}`);
+        params.push(`start_time=${datedeDebut}`);
     }
     if (datedeFin) {
-      params.push(`end_time=${datedeFin}`);
+        params.push(`end_time=${datedeFin}`);
     }
 
-    // Ajouter les paramètres à l'URL
-    if (params.length > 0) {
-      constructrequete += `?${params.join("&")}`;
-    }
+    return params;
+}
 
-    requete = document.getElementById("requete-api");
+function displayRequestUrl(url) {
+    const requete = document.getElementById("requete-api");
     requete.style.display = "block";
-    requete.textContent = constructrequete;
+    requete.textContent = url;
+}
 
-    // Effectuer la requête
-    fetch(constructrequete)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json(); // Transformer la réponse en JSON
-      })
-      .then((data) => {
-        console.log("Données reçues :", data);
+function fetchSensorData(url) {
+    fetch(url)
+        .then(handleResponse)
+        .then(processData)
+        .catch(handleError);
+}
 
-        // Récupérer la clé dynamique (par exemple, C104)
-        const key = Object.keys(data)[0];
-        const sensors = key && data[key]?.sensors ? data[key].sensors : [];
+function handleResponse(response) {
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+}
 
-        // Regrouper les valeurs et dates en format français par champ
-        const groupedFields = sensors.reduce((acc, sensor) => {
-          const { field, value, timestamp } = sensor;
+function processData(data) {
+    console.log("Données reçues :", data);
+    const sensors = extractSensors(data);
+    const groupedFields = groupSensors(sensors);
+    console.log("Champs regroupés :", groupedFields);
+    updateChart(groupedFields);
+}
 
-          // Initialiser les listes doubles si elles n'existent pas
-          if (!acc[field]) {
-            acc[field] = [[], []]; // [valeurs, dates françaises]
-          }
+function extractSensors(data) {
+    const key = Object.keys(data)[0];
+    return key && data[key]?.sensors ? data[key].sensors : [];
+}
 
-          // Convertir le timestamp en format français
-          const dateLocale = new Date(timestamp).toLocaleString("fr-FR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-          });
+function groupSensors(sensors) {
+    return sensors.reduce((acc, sensor) => {
+        const { field, value, timestamp } = sensor;
+        initializeFieldAccumulator(acc, field);
+        const dateLocale = formatDate(timestamp);
+        const result = formatValue(field, value);
+        acc[field][0].push(result);
+        acc[field][1].push(dateLocale);
+        return acc;
+    }, {});
+}
 
-          // Ajouter la valeur transformée et la date formatée
-          acc[field][0].push(field === "contact" ? (value ? 1 : 0) : value); // 1 pour true, 0 pour false
-          acc[field][1].push(dateLocale); // Liste des dates formatées
+function initializeFieldAccumulator(acc, field) {
+    if (!acc[field]) {
+        acc[field] = [[], []]; // [valeurs, dates françaises]
+    }
+}
 
-          return acc;
-        }, {});
+function formatDate(timestamp) {
+    return new Date(timestamp).toLocaleString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    });
+}
 
-        console.log("Champs regroupés :", groupedFields);
+function formatValue(field, value) {
+    return field === "contact" ? (value ? 1 : 0) : value;
+}
 
-        // Mettre à jour le graphique avec les données regroupées
-        updateChart(groupedFields);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des données :", error);
-        updateChart({}); // Appeler avec un objet vide pour afficher le message d'erreur
-      });
-  }
+function handleError(error) {
+    console.error("Erreur lors de la récupération des données :", error);
+    updateChart({}); // Appeler avec un objet vide pour afficher le message d'erreur
 }
 
 function get_parametre() {
