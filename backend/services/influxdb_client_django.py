@@ -316,6 +316,7 @@ class InfluxDB:
     
         return dataclass_tab
 
+
     def get_all_last(self, resultat: list[CapteurResult]=None) -> list[CapteurResult]:
         """
         Conserve uniquement les éléments uniques dans la liste basée sur les champs
