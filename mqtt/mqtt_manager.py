@@ -14,7 +14,15 @@ PASSWORD = os.getenv('MQTT_PASSWORD', '')
 influx_manager = SensorManager()
 
 def on_connect(client, userdata, flags, reason_code, properties=None):
-    """Handler executer une fois que le broker est connecté"""
+    """
+    Handler exécuté lorsque le client MQTT est connecté au broker.
+    
+    :param client: Instance du client MQTT.
+    :param userdata: Données utilisateur (non utilisées ici).
+    :param flags: Indicateurs MQTT.
+    :param reason_code: Code indiquant si la connexion a réussi.
+    :param properties: Propriétés MQTT v5 (non utilisées ici).
+    """
     if reason_code == 0:
         print("Connected to MQTT broker")
         client.subscribe(TOPIC)
@@ -22,7 +30,13 @@ def on_connect(client, userdata, flags, reason_code, properties=None):
         print(f"Failed to connect, return code {reason_code}")
 
 def on_message(client, userdata, msg):
-    """Handler exécuté à chaque fois qu'un message est envoyé"""
+    """
+    Handler exécuté à chaque réception d'un message MQTT.
+    
+    :param client: Instance du client MQTT.
+    :param userdata: Données utilisateur (non utilisées ici).
+    :param msg: Message reçu contenant le sujet et le payload.
+    """
     try:
         topic = msg.topic
         payload = msg.payload.decode()
