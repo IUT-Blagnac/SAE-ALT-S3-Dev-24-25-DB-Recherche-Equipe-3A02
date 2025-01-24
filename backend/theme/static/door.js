@@ -2,7 +2,7 @@
 // import { getAllSensors, getSensorsByRoom } from './fetcher.js'
 
 // Importation de fetch simulator
-import { getAllSensors } from './fetcher.js'
+import { getAllSensors } from './fetch-simulator.js'
 
 // Permet de récupérer les données des capteurs depuis l'API
 // async function getJson(){
@@ -36,34 +36,25 @@ const doorInfo = {
 async function updateDoorStatus() {
     try {
         // on récupère les données
-        let sensorData = {};
-        while (Object.keys(sensorData).length === 0) {
-            sensorData = await getJson();
-            if (Object.keys(sensorData).length === 0) {
-            await new Promise(resolve => setTimeout(resolve, 5000));
-            }
-        }
-
-
+        const sensorData = await getJson();
         
         // on récupère tous les paths correspondant à ceux des portes dans le SVG
         const doorPaths = document.querySelectorAll('path[data-door]');
         
-        // on parcourt les paths pour mettre à jour les couleurs et les rotations
-        doorPaths.forEach(path => {
-            const roomId = path.getAttribute('data-door')
-            
-            // verification si la salle a des données et ensuite recherche des capteurs dans la salle
-            if (sensorData[roomId]?.sensors) {
+        doorPaths.forEach(path => updatePathStyle(path, sensorData));
+    } catch (err) {
+        console.error('Erreur :', err);
+    }
+}
 
-                const doorSensor = sensorData[roomId].sensors.find(
-                    sensor => sensor.field === 'contact'
-                )
-                
-                // attribution des couleurs en fonction de la valeur du capteur
-                if (doorSensor) {
-                    const isOpen = doorSensor.value === false;
-                    path.setAttribute('fill', isOpen ? 'gray' : 'black');
+function updatePathStyle(path, sensorData) {
+    const roomId = path.getAttribute('data-door');
+    
+    // verification si la salle a des données et ensuite recherche des capteurs dans la salle
+    if (!sensorData[roomId]?.sensors) {
+        resetPathStyle(path);
+        return;
+    }
 
     const doorSensor = sensorData[roomId].sensors.find(
         sensor => sensor.type === 'door_sensor' && sensor.field === 'contact'
