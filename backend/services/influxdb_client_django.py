@@ -261,13 +261,14 @@ class InfluxDB:
         
     def transform_json_to_dataclass(self, data_entry):
         contenu = json.load(data_entry) if isinstance(data_entry, str) else data_entry
-                    
+        
         dataclass_tab = []
+        
+        paris_tz = pytz.timezone("Europe/Paris")  # Move timezone initialization outside the loop
         
         for item in contenu:
             topic_keys = item['fields'].get('topic_url').split("/")
             time = item['time']
-            paris_tz = pytz.timezone("Europe/Paris")
             time_in_paris = time.astimezone(paris_tz)
             
             # Récupérer le type de capteur
@@ -275,7 +276,6 @@ class InfluxDB:
             
             try:
                 sensor_config = SensorType.objects.get(name=sensor_type)
-                # Plus besoin de json.loads() car fields est déjà une liste
                 measurement_fields = sensor_config.fields
                 
                 # Récupérer les valeurs du capteur
@@ -284,45 +284,38 @@ class InfluxDB:
                 # Créer une entrée pour chaque mesure
                 for field in measurement_fields:
                     if field in sensor_values:
-                        try:
-                            data = CapteurResult(
-                                time=item['time'],
-                                time_fr=time_in_paris.strftime("%Y-%m-%d %H:%M:%S"),
-                                value=sensor_values[field],
-                                field=field,
-                                key1=topic_keys[0],
-                                key2=topic_keys[1],
-                                key3=topic_keys[2],
-                                value1=item['fields'].get(topic_keys[0], 'unknown'),
-                                value2=sensor_type,
-                                value3=item['fields'].get(topic_keys[2], 'unknown')
-                            )
-                            dataclass_tab.append(data)
-                        except KeyError as e:
-                            print(f"Erreur dans les données : champ manquant {e}")
-                            continue
+                        data = CapteurResult(
+                            time=item['time'],
+                            time_fr=time_in_paris.strftime("%Y-%m-%d %H:%M:%S"),
+                            value=sensor_values[field],
+                            field=field,
+                            key1=topic_keys[0],
+                            key2=topic_keys[1],
+                            key3=topic_keys[2],
+                            value1=item['fields'].get(topic_keys[0], 'unknown'),
+                            value2=sensor_type,
+                            value3=item['fields'].get(topic_keys[2], 'unknown')
+                        )
+                        dataclass_tab.append(data)
                         
             except SensorType.DoesNotExist:
                 # Si le capteur n'est pas multi-mesures, comportement original
-                try:
-                    data = CapteurResult(
-                        time=item['time'],
-                        time_fr=time_in_paris.strftime("%Y-%m-%d %H:%M:%S"),
-                        value=item['fields'].get('_value', 0),
-                        field=item['fields'].get('_field', 'unknown'),
-                        key1=topic_keys[0],
-                        key2=topic_keys[1],
-                        key3=topic_keys[2],
-                        value1=item['fields'].get(topic_keys[0], 'unknown'),
-                        value2=sensor_type,
-                        value3=item['fields'].get(topic_keys[2], 'unknown')
-                    )
-                    dataclass_tab.append(data)
-                except KeyError as e:
-                    print(f"Erreur dans les données : champ manquant {e}")
-                    continue
-        
-        return dataclass_tab 
+                data = CapteurResult(
+                    time=item['time'],
+                    time_fr=time_in_paris.strftime("%Y-%m-%d %H:%M:%S"),
+                    value=item['fields'].get('_value', 0),
+                    field=item['fields'].get('_field', 'unknown'),
+                    key1=topic_keys[0],
+                    key2=topic_keys[1],
+                    key3=topic_keys[2],
+                    value1=item['fields'].get(topic_keys[0], 'unknown'),
+                    value2=sensor_type,
+                    value3=item['fields'].get(topic_keys[2], 'unknown')
+                )
+                dataclass_tab.append(data)
+    
+        return dataclass_tab
+
 
     def get_all_last(self, resultat: list[CapteurResult]=None) -> list[CapteurResult]:
         """
