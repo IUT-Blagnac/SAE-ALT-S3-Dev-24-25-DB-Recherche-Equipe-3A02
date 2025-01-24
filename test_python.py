@@ -14,7 +14,7 @@ INFLUXDB_CONFIG = {
 }
 
 @dataclass
-class listCapteur:
+class ListCapteur:
     capteur : list
     start_time : datetime
     end_time : datetime

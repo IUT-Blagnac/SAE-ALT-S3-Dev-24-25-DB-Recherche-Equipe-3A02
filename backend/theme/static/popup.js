@@ -1,4 +1,4 @@
-import { getAllSensors, getSensorsByRoom } from './fetcher.js';
+import { getAllSensors } from './fetcher.js';
 
 // Dictionnaire des unités
 const typeUnite = {
@@ -18,7 +18,7 @@ async function getSensorData() {
 
 // Permet de récuperer les données des capteurs pour une salle
 function getRoomData(data, roomId) {
-    if (data[roomId] && data[roomId].sensors) {
+    if (data[roomId]?.sensors) {
         return data[roomId].sensors;
     }
     return [];
@@ -64,7 +64,7 @@ async function fetchData(roomName) {
     const realData = {
         temperature: getLatestValue(roomData, 'temperature'),
         humidity: getLatestValue(roomData, 'humidity'),
-        timestamp: getLatestTimestamp(roomData, 'timestamp')
+        timestamp: getLatestTimestamp(roomData)
     };
 
     // formate les données avec leurs unités
