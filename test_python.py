@@ -217,13 +217,13 @@ class InfluxDB:
     |> filter(fn: (r) => r["_measurement"] == "sensor_data")"""
 
         if room_id:
-            all_query = self.isInstanceFilterLink("room_id", room_id, all_query)
+            all_query = self.is_instance_filter_link("room_id", room_id, all_query)
         if sensor_id:
-            all_query = self.isInstanceFilterLink("sensor_id", sensor_id, all_query)
+            all_query = self.is_instance_filter_link("sensor_id", sensor_id, all_query)
         if sensor_type:
-            all_query = self.isInstanceFilterLink("sensor_type", sensor_type, all_query)
+            all_query = self.is_instance_filter_link("sensor_type", sensor_type, all_query)
         if field:
-            all_query = self.isInstanceFilterLink("_field", field, all_query)
+            all_query = self.is_instance_filter_link("_field", field, all_query)
         if start_time and end_time:
             range_filter = f'|> range(start: {start_time}, stop: {end_time})'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
