@@ -143,7 +143,7 @@ function updatePopupPosition(event, popup) {
 
 // Configuration des événements pour les zones sur SVG
 document.querySelectorAll('path[data-room]').forEach(path => {
-    path.addEventListener('mouseenter', async () => await showPopupOnHover(path));
+    path.addEventListener('mouseenter', () => showPopupOnHover(path));
 });
 
 // Ferme automatiquement la popup si on clique en dehors
