@@ -1,29 +1,24 @@
-{% extends 'base.html' %} 
-{% load static %}
-
-{% block stylesheets %}
+{% extends 'base.html' %} {% load static %} {% block stylesheets %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   .canvas-wrapper {
-      margin: 20px 0; /* Espace entre les graphiques */
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+    margin: 20px 0; /* Espace entre les graphiques */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
   }
 
   .separator {
-      height: 2px;
-      background-color: #ccc;
-      margin: 30px 0;
+    height: 2px;
+    background-color: #ccc;
+    margin: 30px 0;
   }
 </style>
 
-{% endblock %}
-
-{% block body %}
+{% endblock %} {% block body %}
 <div class="flex h-screen">
-  <div class="w-64 bg-gray-900 text-white rounded-lg m-4"  style="position: fixed; height: 95%;">
-    <div class="p-4">
+  <div class="w-64 bg-gray-900 text-white rounded-lg m-4  flex flex-col"  style="position: fixed; height: 95%;">
+    <div class="flex-grow overflow-auto p-4">
       <div class="rounded-lg overflow-hidden mb-4">
         <button
           class="accordion-button w-full px-4 py-2 text-left font-medium flex justify-between items-center hover:bg-gray-700 transition-colors duration-200"
@@ -46,18 +41,12 @@
         </button>
         <div id="accordion1" class="hidden px-4 py-2">
           <div class="space-y-2">
-            {% for option in salles %}
-            <label class="flex items-center space-x-2">
-              <input
-                type="radio"
-                name="filter1[]"
-                value="{{ option.value }}"
-                class="cursor-pointer bg-grey-700 text-red-500"
-                id="salle"
-              />
-              <span>{{ option.label }}</span>
-            </label>
-            {% endfor %}
+            <select name="salle" class="w-full p-2 text-slate-950 rounded-md">
+              <option value="">--Choisir une salle--</option>
+              {% for option in salles %}
+              <option value="{{ option.value }}">{{ option.label }}</option>
+              {% endfor %}
+            </select>
           </div>
         </div>
       </div>
@@ -142,17 +131,28 @@
       </div>
     </div>
   </div>
-  <div id="fixed-text" style="display: none; position: fixed; top: 1rem; left: 18rem; right: 2rem; background-color: white; z-index: 10; padding: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+  <div
+    id="fixed-text"
+    style="
+      display: none;
+      position: fixed;
+      top: 1rem;
+      left: 18rem;
+      right: 2rem;
+      background-color: white;
+      z-index: 10;
+      padding: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    "
+  >
     <p id="requete-api" syle="display: none;">Aucun lien disponible</p>
   </div>
-  <div class="flex-1 p-8" id="canva-container" style="margin-left: 16rem;">
-    <div id="noDataMessage" style="display: none; padding-top: 2rem;">Aucune donnée disponible.</div>
+  <div class="flex-1 p-8" id="canva-container" style="margin-left: 16rem">
+    <div id="noDataMessage" style="display: none; padding-top: 2rem">
+      Aucune donnée disponible.
+    </div>
   </div>
-
-  
 </div>
 
 <script src="{% static 'script.js' %}"></script>
 {% endblock %}
-
-
