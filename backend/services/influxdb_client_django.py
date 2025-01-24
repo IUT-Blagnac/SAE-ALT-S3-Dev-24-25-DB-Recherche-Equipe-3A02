@@ -194,16 +194,16 @@ class InfluxDB:
         """
         return "[" + ", ".join([f'"{value}"' for value in values]) + "]"
 
-    def isInstanceAttribution(self, pf_key, pf_value, pf_all_query):
+    def isInstanceFilterLink(self, pf_key, pf_value, pf_all_query):
         if isinstance(pf_value, str):
             pf_value = [pf_value]
         if pf_key != None:
-            filter = f'|> filter(fn: (r) => contains(value: r["{pf_key}"], set: {self.format_list(pf_value)}))'
+            resFilter = f'|> filter(fn: (r) => contains(value: r["{pf_key}"], set: {self.format_list(pf_value)}))'
         else:
-            filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(pf_value)}))'
+            resFilter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(pf_value)}))'
 
         
-        pf_all_query += f"\n{filter}"
+        pf_all_query += f"\n{resFilter}"
         return pf_all_query
 
     def get(self, key1="room", key2="sensor", key3="id", value1=[], value2=[], value3=[],
@@ -224,13 +224,13 @@ class InfluxDB:
     
         print(key1)
         if value1:
-            all_query = self.isInstanceAttribution(key1, value1, all_query)
+            all_query = self.isInstanceFilterLink(key1, value1, all_query)
         if value2:
-            all_query = self.isInstanceAttribution(key2, value2, all_query)
+            all_query = self.isInstanceFilterLink(key2, value2, all_query)
         if value3:
-            all_query = self.isInstanceAttribution(key3, value3, all_query)
+            all_query = self.isInstanceFilterLink(key3, value3, all_query)
         if field:
-            all_query = self.isInstanceAttribution(None, field, all_query)
+            all_query = self.isInstanceFilterLink(None, field, all_query)
         if start_time and end_time:
             range_filter = f'|> range(start: {start_time}Z, stop: {end_time}Z)'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
