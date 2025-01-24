@@ -5,17 +5,25 @@ from ninja import Router, Schema, Query, Path
 from services.influxdb_client_django import CapteurResult, InfluxDB
 from dateutil.parser import isoparse
 
+# Définition du schéma de sortie pour les types de capteurs
 class SensorTypeOut(Schema):
-    fields: list
-    description: str
+    fields: list  # Liste des champs spécifiques au capteur
+    description: str  # Description du type de capteur
 
+# Initialisation du client InfluxDB
 db = InfluxDB()
 
+# Création des routeurs pour définir les routes de l'API
 router = Router()
 router2 = Router()
 
+
 @router.get("", response={200: dict[str, dict]})
 def get_all_last_sensors(request):
+    """
+    Récupère les dernières données de tous les capteurs.
+    Regroupe les capteurs par pièce (room_data).
+    """
     db.get(return_object=True)
     results = db.get_all_last()
 
@@ -94,6 +102,10 @@ def get_data_by_rooms(
     start_time: str = None,
     end_time: str = None
 ):
+    """
+    Récupère les données des capteurs pour les pièces spécifiées.
+    Les filtres incluent capteur, type, champ, et plages de temps.
+    """
     start_time_dt = ""
     end_time_dt = ""
 
@@ -142,6 +154,9 @@ def get_data_by_rooms(
 
 @router.get("/{room_id}", response={200: dict[str, dict]})
 def get_data_by_rooom(request, room_id: str, sensor_id: list[str] = Query(default=None),sensor_type: list[str] = Query(default=None), field: list[str] = Query(None), start_time: str = None, end_time: str = None):
+    """
+    Récupère les données des capteurs pour une pièce donnée, avec des filtres optionnels.
+    """
 
     start_time_dt = ""
     end_time_dt = ""
@@ -154,7 +169,7 @@ def get_data_by_rooom(request, room_id: str, sensor_id: list[str] = Query(defaul
     
     print(f"tout les parametres : room_id : {room_id}\nsensor_id : {sensor_id}\nsensor_type : {sensor_type}\nstart_time_dt : {start_time_dt}\nend_time_dt : {end_time_dt}\nfield : {field}")
 
-    result = db.get(value1=room_id, value2=sensor_id, value3=sensor_type, start_time=start_time_dt, end_time=end_time_dt, field=field, return_object=True)
+    result = db.get(value1=room_id, value2=sensor_type, value3=sensor_id, start_time=start_time_dt, end_time=end_time_dt, return_object=True)
 
     if not result:
         return {}
@@ -164,6 +179,7 @@ def get_data_by_rooom(request, room_id: str, sensor_id: list[str] = Query(defaul
     for data in result:
         
 
+        
         sensor = {
             data.key3: data.value3,
             data.key2: data.value2,
@@ -175,7 +191,12 @@ def get_data_by_rooom(request, room_id: str, sensor_id: list[str] = Query(defaul
         if data.value1 not in room_data:
             room_data[data.value1] = {"sensors": []}
 
-        room_data[data.value1]["sensors"].append(sensor)
+        if field == None:
+            room_data[data.value1]["sensors"].append(sensor)
+        
+        elif data.field in field:
+            room_data[data.value1]["sensors"].append(sensor)
+        
 
     return room_data 
 
