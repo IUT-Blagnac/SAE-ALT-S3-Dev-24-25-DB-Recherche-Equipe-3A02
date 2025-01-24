@@ -101,7 +101,7 @@ L'interface d'historique permet aux utilisateurs de consulter les données pass�
 
 ![Affichage de la page historique](../images/UcConsultHistorique.PNG)
 
-![Affichage de l'historique](../images/AfficherHistorique.PNG)
+![Affichage de l'historique](../images/AfficherDeLHistorique.png)
 
 #### 2.2 Sélection de la salle via un système de filtres
 

@@ -86,7 +86,7 @@ Disponible à l'adresse suivante : http://localhost:8000/historique
 
 - **Sélection des salles** : Vous devez d'abord sélectionner une salle avant de pouvoir choisir d'autres critères comme le type de capteur et la plage de dates.
 
-![Affichage de la page historique](../images/AfficherHistorique.png)
+![Affichage de la page historique](../images/AfficherDeLHistorique.png)
 
 - **Choix des types de capteurs** : Vous pouvez choisir parmi différents types de capteurs :
     - **Current**,
