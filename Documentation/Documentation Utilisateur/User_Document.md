@@ -8,6 +8,8 @@
   - [II. Présentation de l'Application](#ii-présentation-de-lapplication)
   - [III. Installation de l'Application](#iii-installation-de-lapplication)
   - [IV. Navigation dans l'Application](#iv-navigation-dans-lapplication)
+    - [1. Page avec la carte](#1-page-avec-la-carte)
+    - [2. Page Historique](#2-page-historique)
   - [V. Guide pour ajouter une salle dans l'Application](#iv-guide-pour-ajouter-une-salle-dans-lapplication)
 
 _Créé par : Naïla Bon et Ophélie Winterhoff_
@@ -46,26 +48,66 @@ L'application offre la possibilité de surveiller en temps réel, ou à un momen
 4. L'application sera accessible aux adresses suivantes : 
     
     - **Frontend :** http://localhost:8000
-    - **API :** http://localhost:8000/api
+    - **API :** http://localhost:8000/api ou http://localhost:8000/api/docs
 
 ## IV. Navigation dans l'Application
-**Fonctionnalités**
+### Retours sur les fonctionnalités
 
-1. Page avec la carte : 
-   - Navigation sur la carte interactive
-   - Zoom sur des zones spécifiques
-   - Affichage des informations sur les salles via des pop-up 
-   - Accès à la page historique grâce au bouton situé en bas de la page
-  
-2. Page Historique
-    - Sélection des salles
-    - Choix des types de capteurs
-    - Sélection des plages de dates
-    - Affichage des données sous forme de graphiques 
+### 1. **Page avec la carte**
 
-**Description de ces fonctionnalités**
+    Disponible à l'adresse suivante : http://localhost:8000
 
---_Rajouter des images des fonctionnalités_--
+   - **Navigation sur la carte interactive** : Déplacez-vous librement dans le bâtiment pour explorer les différentes zones et salles.
+
+   ![Affichage de la carte](../images/AfficherMap.PNG)
+
+   - **Zoom sur des zones spécifiques** : Utilisez le zoom pour vous concentrer sur une salle ou une zone particulière.
+
+   ![Affichage du zoom sur la carte](../images/Zoom.png)
+
+   - **Affichage des informations sur les salles via des pop-up** : Lorsqu'une salle est survolée (grisée), une fenêtre contextuelle (pop-up) s'affiche avec les données en temps réel des capteurs : température, humidité, et l'heure des dernières données captées. Cela permet de suivre l'état actuel des capteurs sans avoir à aller dans les détails.
+
+   ![Affichage des pop-ups](../images/Pop-up.PNG)
+
+   - **Affichage de l'état des portes** : La carte affiche également l'état des portes (ouvertes ou fermées), basé sur les données des capteurs de contact. 
+
+   ![Affichage de l'état des portes](../images/EtatPortes.PNG)
+
+   - **Accès à la page Historique via la barre d'action** : Une barre d'action en bas de la page permet de naviguer entre la carte interactive et la page Historique. Cette barre d'action est présente sur les deux pages.
+
+   ![Affichage de la barre d'action côté map](../images/ActionBarMap.png)
+   ![Affichage de la barre d'action côté map](../images/ActionBarHistorique.png)
+
+### 2. **Page Historique** : 
+
+Disponible à l'adresse suivante : http://localhost:8000/historique 
+
+**FILTRES :**
+
+- **Sélection des salles** : Vous devez d'abord sélectionner une salle avant de pouvoir choisir d'autres critères comme le type de capteur et la plage de dates.
+
+![Affichage de la page historique](../images/AfficherDeLHistorique.png)
+
+- **Choix des types de capteurs** : Vous pouvez choisir parmi différents types de capteurs :
+    - **Current**,
+    - **Humidity** (pour les capteurs d'humidité),
+    - **Temperature** (pour les capteurs de température),
+    - **Contact** (pour l'état des portes, ouvert représenté par un `0` ou fermé représenté par un `1`).
+- **Sélection des plages de dates** : Sélectionnez une plage de dates pour visualiser les données historiques dans l'intervalle choisi.
+
+![Affichage de la page historique avec les sélections possibles](../images/FiltresEtGraphiques.png)
+
+**GRAPHIQUES :**
+
+- **Affichage des données sous forme de graphiques** : Les données sélectionnées sont affichées sous forme de graphiques, avec des options de téléchargement au format PNG (avec fond blanc). 
+
+![Affichage d'un graphique'](../images/Graphique.png)
+![Affichage d'un graphique exportable'](../images/GraphiqueExport.png)
+
+- **Hover sur les graphiques** : En passant la souris sur les points du graphique, les informations détaillées de chaque donnée (comme la température ou l'humidité à un instant donné) apparaissent.
+
+![Affichage d'un graphique on hover'](../images/GraphiqueHover.png)
+
 
 ## V. Guide pour ajouter une nouvelle salle dans l'application
 
