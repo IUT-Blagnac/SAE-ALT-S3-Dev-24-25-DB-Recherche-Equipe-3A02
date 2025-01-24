@@ -18,6 +18,7 @@ router = Router()
 router2 = Router()
 
 
+
 @router.get("", response={200: dict[str, dict]})
 def get_all_last_sensors(request):
     """
