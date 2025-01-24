@@ -143,6 +143,30 @@ function effectuerRequete() {
     if (params.length > 0) {
       constructrequete += `?${params.join("&")}`;
     }
+}
+
+function formatDate(timestamp) {
+    return new Date(timestamp).toLocaleString("fr-FR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    });
+}
+
+function formatValue(field, value) {
+    if (field === "contact"){
+        return value ? 1 : 0; // soit 1 true, 0 false
+    }
+    return value;
+}
+
+function handleError(error) {
+    console.error("Erreur lors de la récupération des données :", error);
+    updateChart({}); // Appeler avec un objet vide pour afficher le message d'erreur
+}
 
     requete = document.getElementById("requete-api");
     requete.style.display = "block";

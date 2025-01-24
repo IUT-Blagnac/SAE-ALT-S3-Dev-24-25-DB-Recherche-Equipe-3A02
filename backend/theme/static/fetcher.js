@@ -115,22 +115,27 @@ function fetchSensorTypesPeriodically(callback) {
 // Initialisation au chargement du document
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        
         // on fait un premier fetch pour initialiser les données
-        await fetchAllSensors()
+        await fetchAllSensors();
         
         // fetch des types de capteurs
-        await fetchSensorTypes()
+        await fetchSensorTypes();
         
         // update des données toutes les 10 secondes
-        fetchAllSensorsPeriodically((data) => {})
+        fetchAllSensorsPeriodically((data) => {
+            // Traitement des données ici
+            console.log('Données des capteurs mises à jour:', data);
+        });
         
-        fetchSensorTypesPeriodically((data) => {})
+        fetchSensorTypesPeriodically((data) => {
+            // Traitement des types de capteurs ici
+            console.log('Types de capteurs mis à jour:', data);
+        });
         
     } catch (error) {
-        console.error('Erreur : ', error)
+        console.error('Erreur : ', error);
     }
-})
+});
 
 // export des fonctions
 export {
