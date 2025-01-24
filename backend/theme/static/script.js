@@ -1,7 +1,7 @@
 let salleSelect = null;
-var typeSelect = [];
-var datedeDebut = null;
-var datedeFin = null;
+let typeSelect = [];
+let datedeDebut = null;
+let datedeFin = null;
 let parametres_type = null;
 let parametres_salle = null;
 
@@ -34,6 +34,45 @@ document.addEventListener("DOMContentLoaded", function () {
       visible = false;
     }
   });
+
+  // menu deroulants
+  document.querySelectorAll(".accordion-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.getAttribute("data-target");
+      const content = document.getElementById(targetId);
+      const icon = button.querySelector("svg");
+
+      content.classList.toggle("hidden");
+      button.classList.toggle("bg-gray-700");
+      content.classList.toggle("bg-gray-700");
+
+      icon.classList.toggle("rotate-180");
+    });
+  });
+
+  const accordion2Section = document.querySelector(
+    '[data-target="accordion2"]'
+  )?.parentElement;
+  const accordion3Section = document.querySelector(
+    '[data-target="accordion3"]'
+  )?.parentElement;
+
+  // Mise à jour de l'affichage des accordéons
+  function updateAccordionsState() {
+    const isSalleSelected = salleSelectElement.value !== "";
+
+    if (isSalleSelected) {
+      accordion2Section.classList.remove("hidden");
+      accordion3Section.classList.remove("hidden");
+    } else {
+      accordion2Section.classList.add("hidden");
+      accordion3Section.classList.add("hidden");
+    }
+  }
+  salleSelectElement.addEventListener("change", updateAccordionsState);
+
+  // État initial
+  updateAccordionsState();
 });
 
 // Écouter les clics sur les types de données
@@ -72,48 +111,6 @@ document
     console.log(datedeFin);
     effectuerRequete();
   });
-
-// menu deroulants
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll(".accordion-button").forEach((button) => {
-    button.addEventListener("click", () => {
-      const targetId = button.getAttribute("data-target");
-      const content = document.getElementById(targetId);
-      const icon = button.querySelector("svg");
-
-      content.classList.toggle("hidden");
-      button.classList.toggle("bg-gray-700");
-      content.classList.toggle("bg-gray-700");
-
-      icon.classList.toggle("rotate-180");
-    });
-  });
-
-  const salleSelect = document.querySelector('select[name="salle"]');
-  const accordion2Section = document.querySelector(
-    '[data-target="accordion2"]'
-  )?.parentElement;
-  const accordion3Section = document.querySelector(
-    '[data-target="accordion3"]'
-  )?.parentElement;
-
-  // Mise à jour de l'affichage des accordéons
-  function updateAccordionsState() {
-    const isSalleSelected = salleSelect.value !== "";
-
-    if (isSalleSelected) {
-      accordion2Section.classList.remove("hidden");
-      accordion3Section.classList.remove("hidden");
-    } else {
-      accordion2Section.classList.add("hidden");
-      accordion3Section.classList.add("hidden");
-    }
-  }
-  salleSelect.addEventListener("change", updateAccordionsState);
-
-  // État initial
-  updateAccordionsState();
-});
 
 conversion = {
   température: "temperature",
