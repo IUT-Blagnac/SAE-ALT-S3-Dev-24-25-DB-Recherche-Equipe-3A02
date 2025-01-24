@@ -224,13 +224,13 @@ class InfluxDB:
     
         print(key1)
         if value1:
-            all_query = self.isInstanceFilterLink(key1, value1, all_query)
+            all_query = self.is_instance_filter_link(key1, value1, all_query)
         if value2:
-            all_query = self.isInstanceFilterLink(key2, value2, all_query)
+            all_query = self.is_instance_filter_link(key2, value2, all_query)
         if value3:
-            all_query = self.isInstanceFilterLink(key3, value3, all_query)
+            all_query = self.is_instance_filter_link(key3, value3, all_query)
         if field:
-            all_query = self.isInstanceFilterLink(None, field, all_query)
+            all_query = self.is_instance_filter_link(None, field, all_query)
         if start_time and end_time:
             range_filter = f'|> range(start: {start_time}Z, stop: {end_time}Z)'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
