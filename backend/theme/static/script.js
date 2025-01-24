@@ -214,7 +214,10 @@ function formatDate(timestamp) {
 }
 
 function formatValue(field, value) {
-    return field === "contact" ? (value ? 1 : 0) : value;
+    if (field === "contact"){
+        return value ? 1 : 0; // soit 1 true, 0 false
+    }
+    return value;
 }
 
 function handleError(error) {
