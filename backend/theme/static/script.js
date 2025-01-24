@@ -73,25 +73,6 @@ document
     effectuerRequete();
   });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Récupérer toutes les cases des salles
-  const salleCheckboxes = document.querySelectorAll("input[name='filter1[]']");
-
-  // un seul bouton cliquable a la fois
-  salleCheckboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", (event) => {
-      if (event.target.checked) {
-        // Décochez toutes les autres cases sauf celle sélectionnée
-        salleCheckboxes.forEach((otherCheckbox) => {
-          if (otherCheckbox !== event.target) {
-            otherCheckbox.checked = false;
-          }
-        });
-      }
-    });
-  });
-});
-
 // menu deroulants
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".accordion-button").forEach((button) => {
