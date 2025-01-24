@@ -71,6 +71,8 @@ La carte interactive permet de naviguer à travers le bâtiment et d'interagir a
 - La carte du bâtiment est affichée, montrant toutes les salles de cours.
 - La carte est interactive et réagit au survol de la souris, chaque salle devenant plus visible lorsqu'elle est survolée.
 
+![](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/AfficherMap.PNG)
+
 #### 1.2 Pop-ups d'information pour chaque salle
 
 ![Pop-up d'information](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcVoirInfosCapteurs.PNG)
@@ -78,12 +80,16 @@ La carte interactive permet de naviguer à travers le bâtiment et d'interagir a
 - Lorsqu'un utilisateur clique sur une salle, un pop-up apparaît.
 - Le pop-up affiche des informations supplémentaires telles que la température et l'humidité de la salle sélectionnée.
 
+![](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/Pop-up.PNG)
+
 #### 1.3 Indication visuelle de l'état des portes
 
 ![Indication de l'état des portes](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcEtatPortes.PNG)
 
 - Les portes des salles sont indiquées visuellement dans la carte, montrant si elles sont ouvertes ou fermées.
 - Un changement d'état visuel est utilisé pour différencier les portes ouvertes des portes fermées.
+
+![](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/EtatPortes.PNG)
 
 ---
 
@@ -95,6 +101,8 @@ L'interface d'historique permet aux utilisateurs de consulter les données pass�
 
 ![Affichage de la page historique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcConsultHistorique.PNG)
 
+![](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/AfficherHistorique.PNG)
+
 #### 2.2 Sélection de la salle via un système de filtres
 
 ![Sélection de la salle avec filtres](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcFiltres.PNG)
@@ -102,12 +110,16 @@ L'interface d'historique permet aux utilisateurs de consulter les données pass�
 - Un système de filtres permet à l'utilisateur de sélectionner la salle pour afficher son historique.
 - L'utilisateur peut choisir le type de capteur (température, humidité, état des portes) et la période pour laquelle les données doivent être affichées.
 
+![](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/FiltresEtGraphiques.png)
+
 #### 2.3 Visualisation graphique des données sélectionnées
 
 ![Visualisation graphique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/UcAfficherGraphes.PNG)
 
 - Les données historiques sont affichées sous forme de graphiques.
 - Les graphiques montrent les variations des données (température, humidité, état des portes) sur la période choisie.
+
+![](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/Cahier-de-tests/Documentation/images/FiltresEtGraphiques.png)
 
 ---
 
