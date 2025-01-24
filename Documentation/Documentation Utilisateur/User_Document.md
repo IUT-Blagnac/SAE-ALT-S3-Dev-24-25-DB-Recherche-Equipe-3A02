@@ -59,7 +59,7 @@ L'application offre la possibilité de surveiller en temps réel, ou à un momen
 
    - **Navigation sur la carte interactive** : Déplacez-vous librement dans le bâtiment pour explorer les différentes zones et salles.
 
-   ![Affichage de la carte](../images/AfficherMap.png)
+   ![Affichage de la carte](../images/AfficherMap.PNG)
 
    - **Zoom sur des zones spécifiques** : Utilisez le zoom pour vous concentrer sur une salle ou une zone particulière.
 
@@ -67,11 +67,11 @@ L'application offre la possibilité de surveiller en temps réel, ou à un momen
 
    - **Affichage des informations sur les salles via des pop-up** : Lorsqu'une salle est survolée (grisée), une fenêtre contextuelle (pop-up) s'affiche avec les données en temps réel des capteurs : température, humidité, et l'heure des dernières données captées. Cela permet de suivre l'état actuel des capteurs sans avoir à aller dans les détails.
 
-   ![Affichage des pop-ups](../images/Pop-up.png)
+   ![Affichage des pop-ups](../images/Pop-up.PNG)
 
    - **Affichage de l'état des portes** : La carte affiche également l'état des portes (ouvertes ou fermées), basé sur les données des capteurs de contact. 
 
-   ![Affichage de l'état des portes](../images/EtatPortes.png)
+   ![Affichage de l'état des portes](../images/EtatPortes.PNG)
 
    - **Accès à la page Historique via la barre d'action** : Une barre d'action en bas de la page permet de naviguer entre la carte interactive et la page Historique. Cette barre d'action est présente sur les deux pages.
 
