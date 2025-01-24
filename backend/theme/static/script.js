@@ -10,7 +10,7 @@ let visible = false;
 // ecoute des clics
 document.addEventListener("DOMContentLoaded", function () {
     get_parametre();
-    requete = document.getElementById("requete-api");
+    let requete = document.getElementById("requete-api");
     requete.style.display =  "none";
 
     // Écouter les clics sur les salles
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const isChecked = event.target.checked;
         salleSelect = salleValue;
         if (isChecked) {
-            requete_fixe = document.getElementById("fixed-text");
+            let requete_fixe = document.getElementById("fixed-text");
             requete_fixe.style.display = "block";
             visible = true;
 
@@ -29,9 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
         else {
             const allCanvases = document.querySelectorAll('canvas');
             allCanvases.forEach((canvas) => deleteCanva(canvas.id));  
-            requete = document.getElementById("requete-api");
+            let requete = document.getElementById("requete-api");
             requete.style.display =  "none";
-            requete_fixe = document.getElementById("fixed-text");
+            let requete_fixe = document.getElementById("fixed-text");
             requete_fixe.style.display = "none";
             visible = false;
         }   
@@ -107,7 +107,7 @@ document.querySelectorAll(".accordion-button").forEach((button) => {
 });
 });
 
-conversion = {
+let conversion = {
     "température" : "temperature",
     "humidité" : "humidity",
     "contact" : "contact"
@@ -116,8 +116,7 @@ conversion = {
 function effectuerRequete() {
     if (!visible) {
         return;
-    }
-    if (salleSelect && typeSelect) {
+    } else if (salleSelect && typeSelect) {
         let constructrequete = `http://localhost:8000/api/sensors/${salleSelect}`;
         const params = [];
 
@@ -178,7 +177,14 @@ function effectuerRequete() {
                     });
                 
                     // Ajouter la valeur transformée et la date formatée
-                    acc[field][0].push(field === "contact" ? (value ? 1 : 0) : value); // 1 pour true, 0 pour false
+                    let result;
+
+                    if (field === "contact") {
+                        result = value ? 1 : 0; // Assign 1 or 0 based on value
+                    } else {
+                        result = value; // Assign value directly
+                    }
+                    acc[field][0].push(result); // Push the result to the array
                     acc[field][1].push(dateLocale); // Liste des dates formatées
                 
                     return acc;
@@ -273,10 +279,6 @@ function deleteCanva(canvasId) {
     }
 }
 
-
-function generateChart() {
-    
-}
 
 function updateChart(groupedFields) {
     const message = document.getElementById('noDataMessage');
