@@ -199,40 +199,36 @@ class InfluxDB:
         Convertit une liste Python en une liste Flux avec des guillemets doubles.
         """
         return "[" + ", ".join([f'"{value}"' for value in values]) + "]"
+    
+    def isInstanceFilterLink(self, pf_key, pf_value, pf_all_query):
+        if isinstance(pf_value, str):
+            pf_value = [pf_value]
+        resFilter = f'|> filter(fn: (r) => contains(value: r["' + pf_key + '"], set: {self.format_list(pf_value)}))'
+        
+        pf_all_query += f"\n{resFilter}"
+        return pf_all_query
 
     def get(self, room_id=[], sensor_id=[], sensor_type=[], field=[], start_time=None, end_time=None, last=False, return_object=False) -> dict:
         """
         Récupère les données depuis InfluxDB avec des filtres personnalisés et permet de choisir les champs à retourner.
         """
         all_query = """from(bucket: "sensors")
-    |> range(start: 0)        
+    |> range(start: 0)
     |> filter(fn: (r) => r["_measurement"] == "sensor_data")"""
 
         if room_id:
-            if isinstance(room_id, str):
-                room_id = [room_id]
-            room_filter = f'|> filter(fn: (r) => contains(value: r["room_id"], set: {self.format_list(room_id)}))'
-            all_query += f"\n{room_filter}"
+            all_query = self.isInstanceFilterLink("room_id", room_id, all_query)
         if sensor_id:
-            if isinstance(sensor_id, str):
-                sensor_id = [sensor_id]
-            sensor_filter = f'|> filter(fn: (r) => contains(value: r["sensor_id"], set: {self.format_list(sensor_id)}))'
-            all_query += f"\n{sensor_filter}"
+            all_query = self.isInstanceFilterLink("sensor_id", sensor_id, all_query)
         if sensor_type:
-            if isinstance(sensor_type, str):
-                sensor_type = [sensor_type]
-            type_filter = f'|> filter(fn: (r) => contains(value: r["sensor_type"], set: {self.format_list(sensor_type)}))'
-            all_query += f"\n{type_filter}"
+            all_query = self.isInstanceFilterLink("sensor_type", sensor_type, all_query)
         if field:
-            if isinstance(field, str):
-                field = [field]
-            field_filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(field)}))'
-            all_query += f"\n{field_filter}"
+            all_query = self.isInstanceFilterLink("_field", field, all_query)
         if start_time and end_time:
             range_filter = f'|> range(start: {start_time}, stop: {end_time})'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
         if last:
-            all_query += f'\n|> last()'
+            all_query += '\n|> last()'
         if return_object:        
             result = self(all_query)
             self._last_result = self.transform_json_to_dataclass(result)

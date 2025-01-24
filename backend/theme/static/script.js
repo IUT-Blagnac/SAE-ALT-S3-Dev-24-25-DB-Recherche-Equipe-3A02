@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
   updateAccordionsState();
 });
 
-var conversion = {
+let conversion = {
   température: "temperature",
   humidité: "humidity",
   contact: "contact",
