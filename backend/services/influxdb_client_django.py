@@ -335,3 +335,16 @@ class InfluxDB:
                     all_differents.append(item)  # Ajouter le plus récent
 
         return all_differents
+    
+    def get_type_and_salle(self):
+        objects = self.get(return_object=True)
+        salles = []
+        type_data = []
+
+        for object in objects:
+            if object.room_id not in salles and object.room_id not in ["F999", "unknown"]:
+                salles.append(object.room_id)
+            if object.field not in type_data and object.field not in ["json_values", "values"]:
+                type_data.append(object.field)
+
+        return {"room" : salles, "type" : type_data}

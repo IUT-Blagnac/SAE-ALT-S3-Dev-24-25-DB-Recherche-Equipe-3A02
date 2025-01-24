@@ -3,11 +3,26 @@
 
 {% block stylesheets %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  .canvas-wrapper {
+      margin: 20px 0; /* Espace entre les graphiques */
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+  }
+
+  .separator {
+      height: 2px;
+      background-color: #ccc;
+      margin: 30px 0;
+  }
+</style>
+
 {% endblock %}
 
 {% block body %}
 <div class="flex h-screen">
-  <div class="w-64 bg-gray-900 text-white rounded-lg m-4">
+  <div class="w-64 bg-gray-900 text-white rounded-lg m-4"  style="position: fixed; height: 95%;">
     <div class="p-4">
       <div class="rounded-lg overflow-hidden mb-4">
         <button
@@ -34,10 +49,10 @@
             {% for option in salles %}
             <label class="flex items-center space-x-2">
               <input
-                type="checkbox"
+                type="radio"
                 name="filter1[]"
                 value="{{ option.value }}"
-                class="cursor-pointer rounded bg-grey-700 text-red-500"
+                class="cursor-pointer bg-grey-700 text-red-500"
                 id="salle"
               />
               <span>{{ option.label }}</span>
@@ -127,14 +142,14 @@
       </div>
     </div>
   </div>
-
-  <div class="flex-1 p-8">
-    <canvas id="temperature" width="400" height="200" style="display: none;"></canvas>
-    <canvas id="humidity" width="400" height="200" style="display: none;"></canvas>
-    <canvas id="contact" width="400" height="200" style="display: none;"></canvas>
-    <div id="noDataMessage" style="display: none;">Aucune donnée disponible.</div>
-    
+  <div id="fixed-text" style="display: none; position: fixed; top: 1rem; left: 18rem; right: 2rem; background-color: white; z-index: 10; padding: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <p id="requete-api" syle="display: none;">Aucun lien disponible</p>
   </div>
+  <div class="flex-1 p-8" id="canva-container" style="margin-left: 16rem;">
+    <div id="noDataMessage" style="display: none; padding-top: 2rem;">Aucune donnée disponible.</div>
+  </div>
+
+  
 </div>
 
 <script src="{% static 'script.js' %}"></script>
