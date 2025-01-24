@@ -12,11 +12,11 @@ def map(request):
 def historique(request):
     data = db.get_type_and_salle()
     salles = data["room"]
-    type = data["type"]
+    typeDeDonne = data["type"]
 
     context = {
         'salles': [{"value" : f'{salle}', 'label' : f'{salle}'} for salle in salles],
-        'types_données': [{'value' : f'{t}', 'label' : f'{t}'} for t in type],
+        'types_données': [{'value' : f'{t}', 'label' : f'{t}'} for t in typeDeDonne],
         }
     return render(request, 'historique.html', context)
 

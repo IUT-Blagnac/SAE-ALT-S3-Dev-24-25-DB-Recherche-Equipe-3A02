@@ -1,7 +1,7 @@
-var salleSelect = null;
-var typeSelect = [];
-var datedeDebut = null;
-var datedeFin = null;
+let salleSelect = null;
+let typeSelect = [];
+let datedeDebut = null;
+let datedeFin = null;
 let parametres_type = null;
 let parametres_salle = null;
 
