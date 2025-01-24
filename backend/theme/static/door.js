@@ -35,7 +35,6 @@ const doorInfo = {
 // Permet de mettre à jour les couleurs et les rotations des portes en fonction de leur status
 async function updateDoorStatus() {
     try {
-        
         // on récupère les données
         let sensorData = {};
         while (Object.keys(sensorData).length === 0) {
@@ -44,9 +43,11 @@ async function updateDoorStatus() {
             await new Promise(resolve => setTimeout(resolve, 5000));
             }
         }
+
+
         
         // on récupère tous les paths correspondant à ceux des portes dans le SVG
-        const doorPaths = document.querySelectorAll('path[data-door]')
+        const doorPaths = document.querySelectorAll('path[data-door]');
         
         // on parcourt les paths pour mettre à jour les couleurs et les rotations
         doorPaths.forEach(path => {
@@ -64,33 +65,42 @@ async function updateDoorStatus() {
                     const isOpen = doorSensor.value === false;
                     path.setAttribute('fill', isOpen ? 'gray' : 'black');
 
-                    // on récupère le centre du path pour la rotation
-                    const bbox = path.getBBox();
-                    const centerX = bbox.x + bbox.width / 2;
-                    const centerY = bbox.y + bbox.height / 2;
+    const doorSensor = sensorData[roomId].sensors.find(
+        sensor => sensor.type === 'door_sensor' && sensor.field === 'contact'
+    );
 
-                    // on applique la rotation et le décalage si la porte est fermée et sinon on remet à default
-                    if (!isOpen && doorInfo[roomId]) {
-                        const config = doorInfo[roomId];
-                        path.setAttribute('transform', 
-                            `translate(${config.offsetX}, ${config.offsetY}) ` +
-                            `rotate(${config.angle}, ${centerX}, ${centerY})`);
-                    } else {
-                        path.setAttribute('transform', '');
-                    }
-                } else {
-                    path.setAttribute('fill', 'white');
-                    path.setAttribute('transform', '');
-                }
-            } else {
-                path.setAttribute('fill', 'white');
-                path.setAttribute('transform', '');
-            }
-        })
-    } catch (err) {
-        console.error('Erreur :', err)
+    if (doorSensor) {
+        const isOpen = doorSensor.value === false;
+        updatePathColor(path, isOpen);
+        updatePathTransform(path, roomId, isOpen);
+    } else {
+        resetPathStyle(path);
     }
 }
+
+function updatePathColor(path, isOpen) {
+    path.setAttribute('fill', isOpen ? 'gray' : 'black');
+}
+
+function updatePathTransform(path, roomId, isOpen) {
+    if (!isOpen && doorInfo[roomId]) {
+        const config = doorInfo[roomId];
+        const bbox = path.getBBox();
+        const centerX = bbox.x + bbox.width / 2;
+        const centerY = bbox.y + bbox.height / 2;
+        path.setAttribute('transform', 
+            `translate(${config.offsetX}, ${config.offsetY}) ` +
+            `rotate(${config.angle}, ${centerX}, ${centerY})`);
+    } else {
+        path.setAttribute('transform', '');
+    }
+}
+
+function resetPathStyle(path) {
+    path.setAttribute('fill', 'white');
+    path.setAttribute('transform', '');
+}
+
 
 // Permet de faire l'update de status de porte à l'initialisation de la page et ensuite toutes les 10 secondes
 function initializeUpdateDoorStatus() {

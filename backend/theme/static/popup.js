@@ -1,4 +1,4 @@
-import { getAllSensors, getSensorsByRoom } from './fetcher.js';
+import { getAllSensors } from './fetcher.js';
 
 // Dictionnaire des unités
 const typeUnite = {
@@ -18,16 +18,27 @@ async function getSensorData() {
 
 // Permet de récuperer les données des capteurs pour une salle
 function getRoomData(data, roomId) {
-    if (data[roomId] && data[roomId].sensors) {
+    if (data[roomId]?.sensors) {
         return data[roomId].sensors;
     }
     return [];
 }
 
-// permet de récupérer la dernière valeur d'un champ spécifique
+// permet de récupérer la dernière valeur d'un champ spécifique 
 function getLatestValue(roomData, field) {
     const sensorData = roomData.find(sensor => sensor.field === field);
     return sensorData ? sensorData.value : null;
+}
+
+// permet de récupérer l'heure de la dernière valeur reçue
+function getLatestTimestamp(roomData) {
+    const latestTimestamp = roomData.reduce((latest, sensor) => {
+        const sensorTimestamp = new Date(sensor.timestamp).getTime();
+        return sensorTimestamp > latest ? sensorTimestamp : latest;
+    }, 0);
+
+    // renvoie la l'heure de la dernière valeur reçue
+    return latestTimestamp ? new Date(latestTimestamp).toLocaleString('fr-FR') : null;
 }
 
 // Permet de formatter une valeur avec son unité correspondante
@@ -52,13 +63,15 @@ async function fetchData(roomName) {
     
     const realData = {
         temperature: getLatestValue(roomData, 'temperature'),
-        humidity: getLatestValue(roomData, 'humidity')
+        humidity: getLatestValue(roomData, 'humidity'),
+        timestamp: getLatestTimestamp(roomData)
     };
 
     // formate les données avec leurs unités
     const formattedData = {
         temperature: formatValue(realData.temperature, 'temperature'),
-        humidity: formatValue(realData.humidity, 'humidity')
+        humidity: formatValue(realData.humidity, 'humidity'),
+        timestamp: formatValue(realData.timestamp, 'timestamp')
     };
 
     return formattedData;
@@ -77,6 +90,7 @@ async function showPopupOnHover(element) {
         document.getElementById('popup-title').innerText = `Données en ${roomName}`;
         document.getElementById('temp-value').innerText = data.temperature;
         document.getElementById('humidity-value').innerText = data.humidity;
+        document.getElementById('last-data-recieved-value').innerText = data.timestamp;
 
         // On positionne la fenêtre popup juste à côté de l'élément cliqué
         const rect = element.getBoundingClientRect();

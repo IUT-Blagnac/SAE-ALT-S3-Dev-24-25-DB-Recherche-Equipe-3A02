@@ -14,7 +14,7 @@ INFLUXDB_CONFIG = {
 }
 
 @dataclass
-class listCapteur:
+class ListCapteur:
     capteur : list
     start_time : datetime
     end_time : datetime
@@ -199,40 +199,36 @@ class InfluxDB:
         Convertit une liste Python en une liste Flux avec des guillemets doubles.
         """
         return "[" + ", ".join([f'"{value}"' for value in values]) + "]"
+    
+    def is_instance_filter_link(self, pf_key, pf_value, pf_all_query):
+        if isinstance(pf_value, str):
+            pf_value = [pf_value]
+        res_filter = f'|> filter(fn: (r) => contains(value: r["{pf_key}"], set: {self.format_list(pf_value)}))'
+        
+        pf_all_query += f"\n{res_filter}"
+        return pf_all_query
 
     def get(self, room_id=[], sensor_id=[], sensor_type=[], field=[], start_time=None, end_time=None, last=False, return_object=False) -> dict:
         """
         Récupère les données depuis InfluxDB avec des filtres personnalisés et permet de choisir les champs à retourner.
         """
         all_query = """from(bucket: "sensors")
-    |> range(start: 0)        
+    |> range(start: 0)
     |> filter(fn: (r) => r["_measurement"] == "sensor_data")"""
 
         if room_id:
-            if isinstance(room_id, str):
-                room_id = [room_id]
-            room_filter = f'|> filter(fn: (r) => contains(value: r["room_id"], set: {self.format_list(room_id)}))'
-            all_query += f"\n{room_filter}"
+            all_query = self.is_instance_filter_link("room_id", room_id, all_query)
         if sensor_id:
-            if isinstance(sensor_id, str):
-                sensor_id = [sensor_id]
-            sensor_filter = f'|> filter(fn: (r) => contains(value: r["sensor_id"], set: {self.format_list(sensor_id)}))'
-            all_query += f"\n{sensor_filter}"
+            all_query = self.is_instance_filter_link("sensor_id", sensor_id, all_query)
         if sensor_type:
-            if isinstance(sensor_type, str):
-                sensor_type = [sensor_type]
-            type_filter = f'|> filter(fn: (r) => contains(value: r["sensor_type"], set: {self.format_list(sensor_type)}))'
-            all_query += f"\n{type_filter}"
+            all_query = self.is_instance_filter_link("sensor_type", sensor_type, all_query)
         if field:
-            if isinstance(field, str):
-                field = [field]
-            field_filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(field)}))'
-            all_query += f"\n{field_filter}"
+            all_query = self.is_instance_filter_link("_field", field, all_query)
         if start_time and end_time:
             range_filter = f'|> range(start: {start_time}, stop: {end_time})'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
         if last:
-            all_query += f'\n|> last()'
+            all_query += '\n|> last()'
         if return_object:        
             result = self(all_query)
             self._last_result = self.transform_json_to_dataclass(result)
@@ -241,10 +237,7 @@ class InfluxDB:
         return self(all_query)
     
     def transform_json_to_dataclass(self, data_entry):
-        if isinstance(data_entry, str):
-            contenu = json.loads(data_entry) 
-        else:
-            contenu = data_entry
+        contenu = json.load(data_entry) if isinstance(data_entry, str) else data_entry
 
         dataclass_tab = []
         for item in contenu:
@@ -318,6 +311,3 @@ result = client.get(room_id="C104", field=['temperature', 'humidity'], start_tim
 print(len(result))
 for r in result:
     print(r.afficher())
-
-
-

@@ -1,6 +1,7 @@
 # Documentation Technique - Recherches DashBoard
 
 ## Sommaire
+
 - [Documentation Technique - Recherches DashBoard](#documentation-technique---recherches-dashboard)
   - [Sommaire](#sommaire)
   - [I. Introduction](#i-introduction)
@@ -10,6 +11,10 @@
   - [III. Architecture](#iii-architecture)
     - [1. Architecture de l'application](#1-architecture-de-lapplication)
   - [IV. Fonctionnalités de l'application](#iv-fonctionnalités-de-lapplication)
+  - [V. Routes API](#v-routes-api)
+  - [VI. Structure du Projet](#vi-structure-du-projet)
+  - [VII. Technologies Utilisées](#vii-technologies-utilisées)
+
 
 ![Logo IUT](../images/Logo_IUT.png)
 
@@ -49,26 +54,6 @@ L’architecture de l’application repose sur plusieurs modules interconnectés
 
 ![Shema de l'architecture](../images/archi.png)
 
-### 3.2. Schéma de la base de donnée
-
-### 3.3. Présentation de l'api django
-
-L’API Django, développée avec Django Ninja, expose plusieurs endpoints permettant d’accéder aux données stockées dans InfluxDB.
-
-Principaux endpoints :
-#### 1. GET `/sensors `: Récupérer les dernières valeurs de tous les capteurs
-Cet endpoint retourne uniquement les dernières valeurs connues pour chaque capteur, regroupées par salle.
-
-#### 2. GET `/sensors/{room_id}` : Récupérer les données des capteurs d’une salle
-Cet endpoint retourne toutes les données des capteurs d’une salle spécifique, avec possibilité de filtrer par capteur, type de capteur, période et champs spécifiques.
-
-##### Paramètres
-- `room_id` (str) : Identifiant de la salle.
-- `sensor_id` (list[str], optionnel) : Liste des capteurs à récupérer.
-- `sensor_type` (list[str], optionnel) : Liste des types de capteurs à récupérer.
-- `field` (list[str], optionnel) : Liste des champs à récupérer (ex : température, humidité).
-- `start_time`, `end_time` (str, optionnel) : Plage temporelle pour filtrer les données.
-
 ## IV. Fonctionnalités de l'application
 
 ### 4.1 Carte interactive
@@ -94,3 +79,82 @@ Cet endpoint retourne toutes les données des capteurs d’une salle spécifique
 
 #### 4.2.2 Visualisation graphique
 - Affichage des graphiques des données sélectionnées
+
+
+## V. Routes API
+
+### 1. Récupération des Dernières Données de Capteurs
+
+#### `GET /api/sensors`
+
+- **Description** : Récupère les dernières données de tous les capteurs
+
+### 2. Requête Dynamique MQTT
+
+#### `GET /api/sensors/mqtt/{path:path}`
+
+- **Description** : Route dynamique pour requêtes flexibles
+- **Paramètres** : Chemin dynamique permettant des filtres multiples
+
+### 3. Récupération par Salles
+
+#### `GET /api/sensors/rooms`
+
+- **Description** : Récupère les données des capteurs pour les pièces spécifiées
+- **Paramètres optionnels** :
+  - `room_ids` : Liste des identifiants de salles
+  - `sensor_id` : Filtrage par ID de capteur
+  - `sensor_type` : Filtrage par type de capteur
+  - `field` : Filtrage par champ spécifique
+  - `start_time` : Début de la plage temporelle
+  - `end_time` : Fin de la plage temporelle
+
+### 4. Données d'une Salle Spécifique
+
+#### `GET /api/sensors/{room_id}`
+
+- **Description** : Récupère les données des capteurs d'une salle
+- **Paramètres optionnels** :
+  - `room_id` : Identifiant de la salle
+  - `sensor_id` : Filtrage par ID de capteur
+  - `sensor_type` : Filtrage par type de capteur
+  - `field` : Filtrage par champ spécifique
+  - `start_time` : Début de la plage temporelle
+  - `end_time` : Fin de la plage temporelle
+
+### 5. Types de Capteurs
+
+#### `GET /api/sensor_types`
+
+- **Description** : Récupère tous les types de capteurs
+
+
+## VI. Structure du Projet
+
+```
+backend/
+├── backend/
+├── services/
+│   └── influxdb_client_django.py
+├── theme/
+│   ├── static/                    # Fichier static 
+│   │   ├── carte.svg
+│   │   └── scripts.js             # Fichiers JavaScript
+│   ├── templates/                 # HTML templates
+│   │   ├── base.html
+│   │   ├── historique.html
+│   │   └── tmap.html
+├── web/                           # Routage des pages web
+└── webapi/                        # API entre InfluxDB et UI
+```
+
+## VII. Technologies Utilisées
+
+- Django
+- Django Ninja
+- InfluxDB
+- MQTT
+- JavaScript
+- Chart.js
+
+
