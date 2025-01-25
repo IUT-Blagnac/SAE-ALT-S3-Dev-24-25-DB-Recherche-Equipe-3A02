@@ -56,8 +56,8 @@ Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](http
 
   | User Story | Lien vers User Story | Étape de réalisation | % restant |
   |------------|----------------------|----------------------|-----------|
-  | Visualisation en temps réel de l'état des salles | [US1](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93015121&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C2) | ToDo | 100% |
-  |Consultation de l'historique de l'état des salles | [US2](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93017220&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C3) | ToDo | 100% |
+  | Visualisation en temps réel de l'état des salles | [US1](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93015121&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C2) | Terminé | 0% |
+  |Consultation de l'historique de l'état des salles | [US2](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93017220&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C3) | Terminé | 0% |
   
 - Tests unitaires et [cahier de tests](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Documentation/Cahier%20de%20tests/Test_Book.md)
 - Indicateurs de qualité du code (dette technique) :
