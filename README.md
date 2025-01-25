@@ -1,4 +1,4 @@
-# SAÉ 3.01 2023-2024
+# SAÉ 3.01 2024-2025
 
 [comment]: <> (/!\ A MODIFIER !!!)
 [comment]: <> (:baseURL: https://github.com/IUT-Blagnac/sae3-01-template)
