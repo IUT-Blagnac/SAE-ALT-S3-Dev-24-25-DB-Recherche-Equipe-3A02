@@ -1,14 +1,16 @@
 from dataclasses import dataclass
 from datetime import datetime, time, timezone
 import json
+from typing import Optional
 import pytz
 from influxdb_client import InfluxDBClient
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 from backend import settings
+from webapi.models import SensorType
 
 @dataclass
-class listCapteur:
+class ListCapteur:
     capteur = []
     start_time = datetime
     end_time = datetime
@@ -20,9 +22,23 @@ class CapteurResult:
     time_fr : str
     value : float
     field : str
-    room_id : str 
-    sensor_id : str 
-    sensor_type : str
+    key1 : str 
+    value1 : str
+    key2 : str 
+    value2 : str
+    key3 : str
+    value3 : str
+
+    def get_value_by_key(self, key: str) -> Optional[str]:
+        """Retourne la valeur associée à une clé spécifique."""
+        if self.key1 == key:
+            return self.value1
+        elif self.key2 == key:
+            return self.value2
+        elif self.key3 == key:
+            return self.value3
+        return None
+
 
     def afficher(self):
         texte = f"time: {self.time_fr}\nvalue: {self.value}\nfield: {self.field}\nroom_id: {self.room_id}\nsensor_type: {self.sensor_type}\n----------------"
@@ -41,9 +57,9 @@ class CapteurResult:
         
         return (
             self.field == other.field and
-            self.room_id == other.room_id and
-            self.sensor_id == other.sensor_id and
-            self.sensor_type == other.sensor_type
+            self.value1 == other.value1 and
+            self.value2 == other.value2 and
+            self.value3 == other.value3
         )
 
     def compare_to_list(self, other_list) -> bool:
@@ -190,77 +206,116 @@ class InfluxDB:
         """
         return "[" + ", ".join([f'"{value}"' for value in values]) + "]"
 
-    def get(self, room_id=[], sensor_id=[], sensor_type=[], field=[], start_time=None, end_time=None, last=False, return_object=False) -> dict:
+    def is_instance_filter_link(self, pf_key, pf_value, pf_all_query):
+        if isinstance(pf_value, str):
+            pf_value = [pf_value]
+        if pf_key != None:
+            res_filter = f'|> filter(fn: (r) => contains(value: r["{pf_key}"], set: {self.format_list(pf_value)}))'
+        else:
+            res_filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(pf_value)}))'
+
+
+        pf_all_query += f"\n{res_filter}"
+        return pf_all_query
+
+    def get(self, key1="room", key2="sensor", key3="id", value1=[], value2=[], value3=[],
+        field=[], start_time=None, end_time=None, last=False, return_object=False) -> dict:
         """
         Récupère les données depuis InfluxDB avec des filtres personnalisés et permet de choisir les champs à retourner.
         """
-        all_query = """from(bucket: "sensors")
+        all_query = """from(bucket: "sensors2")
     |> range(start: 0)        
     |> filter(fn: (r) => r["_measurement"] == "sensor_data")"""
 
-        if room_id:
-            if isinstance(room_id, str):
-                room_id = [room_id]
-            room_filter = f'|> filter(fn: (r) => contains(value: r["room_id"], set: {self.format_list(room_id)}))'
-            all_query += f"\n{room_filter}"
-        if sensor_id:
-            if isinstance(sensor_id, str):
-                sensor_id = [sensor_id]
-            sensor_filter = f'|> filter(fn: (r) => contains(value: r["sensor_id"], set: {self.format_list(sensor_id)}))'
-            all_query += f"\n{sensor_filter}"
-        if sensor_type:
-            if isinstance(sensor_type, str):
-                sensor_type = [sensor_type]
-            type_filter = f'|> filter(fn: (r) => contains(value: r["sensor_type"], set: {self.format_list(sensor_type)}))'
-            all_query += f"\n{type_filter}"
+
+
+        if not (key1 and key2 and key3):
+            query = 'from(bucket: "sensors2") |> range(start: 0) |> filter(fn: (r) => r._field == "topic_url")'
+            result = self.query_api.query(query)
+            key1, key2, key3 = result[0].split("/")
+    
+        print(key1)
+        if value1:
+            all_query = self.is_instance_filter_link(key1, value1, all_query)
+        if value2:
+            all_query = self.is_instance_filter_link(key2, value2, all_query)
+        if value3:
+            all_query = self.is_instance_filter_link(key3, value3, all_query)
         if field:
-            if isinstance(field, str):
-                field = [field]
-            field_filter = f'|> filter(fn: (r) => contains(value: r["_field"], set: {self.format_list(field)}))'
-            all_query += f"\n{field_filter}"
+            all_query = self.is_instance_filter_link(None, field, all_query)
         if start_time and end_time:
-            range_filter = f'|> range(start: {start_time}, stop: {end_time})'
+            range_filter = f'|> range(start: {start_time}Z, stop: {end_time}Z)'
             all_query = all_query.replace('|> range(start: 0)', range_filter)
         if last:
-            all_query += f'\n|> last()'
-        if return_object:        
+            all_query += '\n|> last()'
+        if return_object: 
+            print(all_query)       
             result = self(all_query)
             if(not result):
-                return []
+                return {}
             self._last_result = self.transform_json_to_dataclass(result)
             return self._last_result
 
+        print(all_query)
         return self(all_query)
-    
+        
     def transform_json_to_dataclass(self, data_entry):
-        if isinstance(data_entry, str):
-            contenu = json.loads(data_entry) 
-        else:
-            contenu = data_entry
-
+        contenu = json.load(data_entry) if isinstance(data_entry, str) else data_entry
+        
         dataclass_tab = []
+        
+        paris_tz = pytz.timezone("Europe/Paris")  # Move timezone initialization outside the loop
+        
         for item in contenu:
-
+            topic_keys = item['fields'].get('topic_url').split("/")
             time = item['time']
-            paris_tz = pytz.timezone("Europe/Paris")
             time_in_paris = time.astimezone(paris_tz)
-
+            
+            # Récupérer le type de capteur
+            sensor_type = item['fields'].get(topic_keys[1], 'unknown')
+            
             try:
+                sensor_config = SensorType.objects.get(name=sensor_type)
+                measurement_fields = sensor_config.fields
+                
+                # Récupérer les valeurs du capteur
+                sensor_values = json.loads(item['fields'].get('_value', '{}'))
+                
+                # Créer une entrée pour chaque mesure
+                for field in measurement_fields:
+                    if field in sensor_values:
+                        data = CapteurResult(
+                            time=item['time'],
+                            time_fr=time_in_paris.strftime("%Y-%m-%d %H:%M:%S"),
+                            value=sensor_values[field],
+                            field=field,
+                            key1=topic_keys[0],
+                            key2=topic_keys[1],
+                            key3=topic_keys[2],
+                            value1=item['fields'].get(topic_keys[0], 'unknown'),
+                            value2=sensor_type,
+                            value3=item['fields'].get(topic_keys[2], 'unknown')
+                        )
+                        dataclass_tab.append(data)
+                        
+            except SensorType.DoesNotExist:
+                # Si le capteur n'est pas multi-mesures, comportement original
                 data = CapteurResult(
-                    time=item['time'],  # Assurez-vous que 'time' est déjà au format datetime
+                    time=item['time'],
                     time_fr=time_in_paris.strftime("%Y-%m-%d %H:%M:%S"),
-                    value=item['fields'].get('_value', 0),  # Valeur par défaut si absent
+                    value=item['fields'].get('_value', 0),
                     field=item['fields'].get('_field', 'unknown'),
-                    room_id=item['fields'].get('room_id', 'unknown'),
-                    sensor_id=item['fields'].get('sensor_id', 'unknown'),
-                    sensor_type=item['fields'].get('sensor_type', 'unknown')
+                    key1=topic_keys[0],
+                    key2=topic_keys[1],
+                    key3=topic_keys[2],
+                    value1=item['fields'].get(topic_keys[0], 'unknown'),
+                    value2=sensor_type,
+                    value3=item['fields'].get(topic_keys[2], 'unknown')
                 )
-            except KeyError as e:
-                print(f"Erreur dans les données : champ manquant {e}")
-                continue
-
-            dataclass_tab.append(data)
+                dataclass_tab.append(data)
+    
         return dataclass_tab
+
 
     def get_all_last(self, resultat: list[CapteurResult]=None) -> list[CapteurResult]:
         """
@@ -286,6 +341,16 @@ class InfluxDB:
 
         return all_differents
     
+    def get_type_and_salle(self):
+        objects = self.get(return_object=True)
+        salles = []
+        type_data = []
 
+        for object in objects:
+            print(object)
+            if object.get_value_by_key("room") not in salles and object.get_value_by_key("room") not in ["F999", "unknown"]:
+                salles.append(object.get_value_by_key("room"))
+            if object.field not in type_data and object.field not in ["json_values", "values"]:
+                type_data.append(object.field)
 
-
+        return {"room" : salles, "type" : type_data}

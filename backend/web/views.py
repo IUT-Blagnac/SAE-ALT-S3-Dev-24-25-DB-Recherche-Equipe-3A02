@@ -1,6 +1,7 @@
 from django.shortcuts import render
+from services.influxdb_client_django import CapteurResult, InfluxDB
 
-# Create your views here.
+db = InfluxDB()
 
 def home(request):
     return render(request, "map.html")
@@ -9,22 +10,13 @@ def map(request):
     return render(request, "map.html")
 
 def historique(request):
+    data = db.get_type_and_salle()
+    salles = data["room"]
+    type_de_donne = data["type"]
+
     context = {
-        'salles': [
-            {'value': 'C101', 'label': 'C101'},
-            {'value': 'C102', 'label': 'C102'},
-            {'value': 'C103', 'label': 'C103'},
-            {'value': 'C104', 'label': 'C104'},
-            {'value': 'C105', 'label': 'C105'},
-            {'value': 'C106', 'label': 'C106'},
-            {'value': 'C107', 'label': 'C107'},
-            {'value': 'C108', 'label': 'C108'},
-        ],
-        'types_données': [
-            {'value': 'température', 'label': 'température 1'},
-            {'value': 'humidité', 'label': 'humidité'},
-            {'value': 'contact', 'label': 'contact'},
-        ],
-    }
+        'salles': [{"value" : f'{salle}', 'label' : f'{salle}'} for salle in salles],
+        'types_données': [{'value' : f'{t}', 'label' : f'{t}'} for t in type_de_donne],
+        }
     return render(request, 'historique.html', context)
 

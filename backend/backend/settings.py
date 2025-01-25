@@ -127,7 +127,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "backend/theme/static_src"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -141,8 +140,8 @@ INTERNAL_IPS = [
 # settings.py
 
 INFLUXDB_CONFIG = {
-    "url": "https://influxdb.endide.com",  # URL de l'instance InfluxDB
-    "token": os.getenv("TOKEN_INFLUXDB"),  # Jeton d'accès (InfluxDB v2+)
+    "url": "https://influxdb.endide.com",  # URL de l'instanceù InfluxDB
+    "token": "QFKdKWJHe9ir4doaKlPBFKpxl7JUGR14YMDa-wjcKQ18aw_0b2hZaRDypBoXKjHvKpU9eWzXuZf9eCnbupklyw==",  # Jeton d'accès (InfluxDB v2+)
     "org": "sae",  # Organisation (InfluxDB v2+)
-    "bucket": "sensors",  # Bucket cible
+    "bucket": "sensors2",  # Bucket cible
 }
