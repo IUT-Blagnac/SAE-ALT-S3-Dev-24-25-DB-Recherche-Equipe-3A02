@@ -1,19 +1,5 @@
-// Importation de fetcher
-// import { getAllSensors, getSensorsByRoom } from './fetcher.js'
-
 // Importation de fetch simulator
 import { getAllSensors } from './fetcher.js'
-
-// Permet de récupérer les données des capteurs depuis l'API
-// async function getJson(){
-//     try {
-//         const response = await fetch(`${apiURL}/sensors`)
-//         return await response.json()
-//     } catch (error) {
-//         console.error('Erreur :', error)
-//         return {}
-//     }
-// }
 
 // Permet de récupérer les données fake
 async function getJson() {
@@ -40,11 +26,10 @@ async function updateDoorStatus() {
         while (Object.keys(sensorData).length === 0) {
             sensorData = await getJson();
             if (Object.keys(sensorData).length === 0) {
-            await new Promise(resolve => setTimeout(resolve, 5000));
+                await new Promise(resolve => setTimeout(resolve, 5000));
             }
         }
  
-        
         // on récupère tous les paths correspondant à ceux des portes dans le SVG
         const doorPaths = document.querySelectorAll('path[data-door]');
         
@@ -54,7 +39,6 @@ async function updateDoorStatus() {
             
             // verification si la salle a des données et ensuite recherche des capteurs dans la salle
             if (sensorData[roomId]?.sensors) {
- 
                 const doorSensor = sensorData[roomId].sensors.find(
                     sensor => sensor.field === 'contact'
                 )
@@ -63,45 +47,41 @@ async function updateDoorStatus() {
                 if (doorSensor) {
                     const isOpen = doorSensor.value === false;
                     path.setAttribute('fill', isOpen ? 'gray' : 'black');
+                    
+                    // on récupère le centre du path pour le décalage et la rotation et on applique les valeurs correspondantes
+                    const bbox = path.getBBox();
+                    const centerX = bbox.x + bbox.width / 2;
+                    const centerY = bbox.y + bbox.height / 2;
+                    
+                    if (!isOpen && doorInfo[roomId]) {
+                        const config = doorInfo[roomId];
+                        path.setAttribute('transform', 
+                            `translate(${config.offsetX}, ${config.offsetY}) ` +
+                            `rotate(${config.angle}, ${centerX}, ${centerY})`);
+                    } else {
+                        path.setAttribute('transform', '');
+                    }
+                } else {
+                    path.setAttribute('fill', 'white');
+                    path.setAttribute('transform', '');
                 }
+            } else {
+                path.setAttribute('fill', 'white');
+                path.setAttribute('transform', '');
             }
         });
     } catch (error) {
         console.error('Erreur lors de la mise à jour du statut des portes :', error);
     }
- }
-
-function updatePathColor(path, isOpen) {
-    path.setAttribute('fill', isOpen ? 'gray' : 'black');
 }
-
-function updatePathTransform(path, roomId, isOpen) {
-    if (!isOpen && doorInfo[roomId]) {
-        const config = doorInfo[roomId];
-        const bbox = path.getBBox();
-        const centerX = bbox.x + bbox.width / 2;
-        const centerY = bbox.y + bbox.height / 2;
-        path.setAttribute('transform', 
-            `translate(${config.offsetX}, ${config.offsetY}) ` +
-            `rotate(${config.angle}, ${centerX}, ${centerY})`);
-    } else {
-        path.setAttribute('transform', '');
-    }
-}
-
-function resetPathStyle(path) {
-    path.setAttribute('fill', 'white');
-    path.setAttribute('transform', '');
-}
-
 
 // Permet de faire l'update de status de porte à l'initialisation de la page et ensuite toutes les 10 secondes
 function initializeUpdateDoorStatus() {
     updateDoorStatus()
-        return setInterval(updateDoorStatus, 10000)
+    return setInterval(updateDoorStatus, 10000)
 }
 
-// export des fonctios au cas ou vous voulez les appeller autre part
+// export des fonctions au cas où vous voulez les appeler autre part
 export {
     updateDoorStatus,
     initializeUpdateDoorStatus

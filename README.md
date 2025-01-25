@@ -1,4 +1,4 @@
-# SAÉ 3.01 2023-2024
+# SAÉ 3.01 2024-2025
 
 [comment]: <> (/!\ A MODIFIER !!!)
 [comment]: <> (:baseURL: https://github.com/IUT-Blagnac/sae3-01-template)
@@ -11,7 +11,7 @@
 
 ## Table de matière
 
-- [SAÉ 3.01 2023-2024](#saé-301-2023-2024)
+- [SAÉ 3.01 2024-2025](#saé-301-2024-2025)
   - [Table de matière](#table-de-matière)
   - [Équipe](#équipe)
   - [Gestion de projet et Qualité](#gestion-de-projet-et-qualité)
@@ -34,12 +34,12 @@ L'équipe de ce projet est constitué de 7 personnes. Voici leurs noms, rôles, 
 | Nom du membre de l'équipe | Rôle dans l'équipe | Répartition de travail |
 |---------------------------|--------------------|------------------------|
 |[Ophélie WINTERHOFF](https://github.com/ophewinx) | Cheffe d'équipe, Développeuse | 13.33% |
-|[Zachary IVARS](https://github.com/Traimix05) | Product Owner, Développeur | 13.33% |
+|[Zachary IVARS](https://github.com/Trailmix05) | Product Owner, Développeur | 13.33% |
 |[Yahya MAGAZ](https://github.com/Magaz-Yahya) | SCRUM Master, Développeur | 13.33% |
 |[Naila BON](https://github.com/naila-bon) | Développeuse | 13.33% |
 |[Adrien FAURÉ](https://github.com/AirbnbEcoPlus) | Développeur | 20.00% | 
-|[Esteban GARNIL](https://github.com/estbanGarnil) | Développeur | 13.33% |
-|[Mete YALÇIN](https://github.com/MetelsCoding) | Développeur| 13.33% |
+|[Esteban GARNIL](https://github.com/estebanGarnil) | Développeur | 13.33% |
+|[Mete YALÇIN](https://github.com/MeteIsCoding) | Développeur| 13.33% |
 
 
 Tutrice & tuteur enseignant.e.s de l'équipe : [Cassandre Vey](cassandre.vey@irit.fr), [Remi Boulle](remi.boulle@univ-tlse2.fr) & [Esther Pendaries](esther.pendaries@univ-tlse2.fr)
@@ -49,31 +49,31 @@ Tutrice & tuteur enseignant.e.s de l'équipe : [Cassandre Vey](cassandre.vey@iri
 Chaque sprint (une semaine et demi) nous livrons une nouvelle version de notre application (release).
 Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](https://docs.github.com/en/repositories/releasing-projects-on-github).
 
-- Version courante : [v0.0.1]()
-- Lien vers la doc technique : [Documentation Technique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Documentation/Doc%20Technique/Technical_Document.md)
-- Lien vers la doc utilisateur : [Documentation Utilisateur](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Documentation/Documentation%20Utilisateur/User_Document.md)
+- Version courante : [v2.0.0]()
+- Lien vers la doc technique : [Documentation Technique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Documentation/Documentation%20Technique/Technical_Document.md)
+- Lien vers la doc utilisateur : [Documentation Utilisateur](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Documentation/Documentation%20Utilisateur/User_Document.md)
 - Liste des User Stories avec leurs (User Stories/Todo/In progress/In review/Done) et % restant :
 
   | User Story | Lien vers User Story | Étape de réalisation | % restant |
   |------------|----------------------|----------------------|-----------|
-  | Visualisation en temps réel de l'état des salles | [US1](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93015121&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C2) | ToDo | 100% |
-  |Consultation de l'historique de l'état des salles | [US2](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93017220&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C3) | ToDo | 100% |
+  | Visualisation en temps réel de l'état des salles | [US1](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93015121&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C2) | Terminé | 0% |
+  |Consultation de l'historique de l'état des salles | [US2](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93017220&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C3) | Terminé | 0% |
   
-- Tests unitaires et [cahier de tests](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Documentation/Cahier%20de%20tests/Test_Book.md)
+- Tests unitaires et [cahier de tests](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Documentation/Cahier%20de%20tests/Test_Book.md)
 - Indicateurs de qualité du code (dette technique) :
 - Lien vers [Backlog](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/issues)
 - Liste des Sprints :
   - [Sprint 1](https://github.com/orgs/IUT-Blagnac/projects/296)
-  - (Sprint 2)[https://github.com/orgs/IUT-Blagnac/projects/306]
+  - [Sprint 2](https://github.com/orgs/IUT-Blagnac/projects/306)
 - Liste des ODJs et leurs CRs :
 
   | Ordres du Jour | Compte-rendus |
   |----------------|---------------|
-  | [ODJ 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/07-01-2025/Ordre%20Du%20Jour%2007-01-2025.pdf) | [CR 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/07-01-2025/CR%20Re%CC%81union%2007-01-2025.pdf)|
-  | [ODJ 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/14-01-2025/Ordre%20Du%20Jour%2014-01-2025.pdf) | [CR 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/14-01-2025/CR%20Re%CC%81union%2014-01-2025.pdf)|
-  | [ODJ 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/16-01-2025/Ordre%20Du%20Jour%2016-01-2025.pdf) | [CR 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/16-01-2025/CR%20Re%CC%81union%2016-01-2025.pdf)|
-  | [ODJ 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/Ordre%20Du%20Jour%2017-01-2025.pdf) | [CR 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/CR%20Re%CC%81union%2017-01-2025.pdf)|
-  | [ODJ 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/22-01-2025/Ordre%20Du%20Jour%2022-01-2025.pdf) | [CR 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/22-01-2025/CR%20Re%CC%81union%2022-01-2025.pdf)|
+  | [ODJ 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf) | [CR 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/14-01-2025/CR%20R%C3%A9union%2014-01-2025.pdf)|
+  | [ODJ 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf) | [CR 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf)|
+  | [ODJ 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/16-01-2025/Ordre%20du%20Jour%2016-01-2025.pdf) | [CR 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/16-01-2025/CR%20R%C3%A9union%2016-01-2025.pdf)|
+  | [ODJ 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/Ordre%20Du%20Jour%2017-01-2025.pdf) | [CR 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/17-01-2025/CR%20R%C3%A9union%20Client%2017-01-2025%20CV.pdf) \| [CR 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/17-01-2025/CR%20R%C3%A9union%20Client%2017-01-2025%20AVDB.pdf)|
+  | [ODJ 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/22-01-2025/Ordre%20Du%20Jour%2022-01-2025.pdf) | [CR 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/22-01-2025/CR%20R%C3%A9union%20Client%2022-01-2025%20CV.pdf)|
 
 
 ## Contexte général
@@ -97,9 +97,29 @@ Les contraintes sont :
 
 ## Réalisations 
 
-TIP: Mettez ici toutes les informations nécessaire à l'utilisation de votre dépôt (comment on installe votre application, où sont les docs, etc.)
-
 ### Installation de notre application
+
+**Prérequis :**
+- **Docker** et **Docker Compose** doivent être préalablement installés sur la machine
+- **InfluxDB** sera automatiquement déployé via Docker
+
+**Instructions d'installation**
+1. Clonez le repository :
+   
+   ```bash
+   git clone https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02.git
+2. Allez dans le répertoire du projet : 
+   
+   ```bash
+   cd SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02
+3. Lancez les conteneurs Docker : 
+
+    ```bash
+    docker-compose up
+4. L'application sera accessible aux adresses suivantes : 
+    
+    - **Frontend :** http://localhost:8000
+    - **API :** http://localhost:8000/api ou http://localhost:8000/api/docs
 
 ### Aborescence
 Les documents se trouverons dans un premier temps un répertoir appelé `Documentation`. Dans ce répertoir `Documentation` vous trouverez : 
