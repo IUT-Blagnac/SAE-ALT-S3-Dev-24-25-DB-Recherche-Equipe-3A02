@@ -18,6 +18,7 @@ router = Router()
 router2 = Router()
 
 
+
 @router.get("", response={200: dict[str, dict]})
 def get_all_last_sensors(request):
     """
@@ -191,10 +192,7 @@ def get_data_by_rooom(request, room_id: str, sensor_id: list[str] = Query(defaul
         if data.value1 not in room_data:
             room_data[data.value1] = {"sensors": []}
 
-        if field == None:
-            room_data[data.value1]["sensors"].append(sensor)
-        
-        elif data.field in field:
+        if field == None or data.field in field:
             room_data[data.value1]["sensors"].append(sensor)
         
 
