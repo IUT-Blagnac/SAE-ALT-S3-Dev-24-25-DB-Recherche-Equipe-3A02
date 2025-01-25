@@ -141,9 +141,19 @@ Pas de release ! (au moins une maquette  à ce stade).
 Pas de cahier de tests.
 je noterais le sprint 2 et le sprint 3 car très insuffisant sur ce sprint.
 
+Evaluation 17/01 Sprint 1
+Backlog sprint ok, gestion des tâches ok mais pas de cahier de tests.  Documentations très peu avancées. Je pourrais au moins avoir le contexte  et qq schémas de conception (UC par ex) dans la doc technique. Release OK
+Note 3,2/5
+
+
 ### communication
 Pas de CR de réunion ni d'ODJ 
 Attention il en faut au moins 2 au cours du projet
+
+ODJ : Pensez à mettre le responsable de chaque section de la réunion et à estimer le temps de ces sections 
+CR : Je demande plutôt la réunion de rétrospective de sprint qui a lieu après la présentation au client de la release (sprint review) et qui fait état du retour client puis des difficultés / réussites du sprint et préparation du sprint suivant.
+note : 1,5/2,5
+
 
 ### retour RB
 

@@ -24,11 +24,10 @@
 
 Cette application web a été développée pour le bâtiment de recherche afin de permettre aux chercheurs de surveiller l'état des capteurs des différentes salles. L'application s'inscrit dans un contexte de recherche où une surveillance précise des conditions environnementales est essentielle pour garantir la validité des expériences.
 
-
-
 ## II. Présentation de l'application
 
 ### 1. Cas d'utilisation
+
 
 L'application permet aux chercheurs de :
 - Naviguer sur la carte interactive du bâtiment
@@ -156,5 +155,3 @@ backend/
 - MQTT
 - JavaScript
 - Chart.js
-
-
