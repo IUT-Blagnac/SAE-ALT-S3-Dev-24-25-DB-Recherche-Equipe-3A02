@@ -11,7 +11,7 @@
 
 ## Table de matière
 
-- [SAÉ 3.01 2023-2024](#saé-301-2023-2024)
+- [SAÉ 3.01 2024-2025](#saé-301-2024-2025)
   - [Table de matière](#table-de-matière)
   - [Équipe](#équipe)
   - [Gestion de projet et Qualité](#gestion-de-projet-et-qualité)
