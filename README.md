@@ -50,8 +50,8 @@ Chaque sprint (une semaine et demi) nous livrons une nouvelle version de notre a
 Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](https://docs.github.com/en/repositories/releasing-projects-on-github).
 
 - Version courante : [v2.0.0]()
-- Lien vers la doc technique : [Documentation Technique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Documentation/Documentation%20Technique/Technical_Document.md)
-- Lien vers la doc utilisateur : [Documentation Utilisateur](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Documentation/Documentation%20Utilisateur/User_Document.md)
+- Lien vers la doc technique : [Documentation Technique](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Documentation/Documentation%20Technique/Technical_Document.md)
+- Lien vers la doc utilisateur : [Documentation Utilisateur](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Documentation/Documentation%20Utilisateur/User_Document.md)
 - Liste des User Stories avec leurs (User Stories/Todo/In progress/In review/Done) et % restant :
 
   | User Story | Lien vers User Story | Étape de réalisation | % restant |
@@ -59,7 +59,7 @@ Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](http
   | Visualisation en temps réel de l'état des salles | [US1](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93015121&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C2) | Terminé | 0% |
   |Consultation de l'historique de l'état des salles | [US2](https://github.com/orgs/IUT-Blagnac/projects/296/views/1?pane=issue&itemId=93017220&issue=IUT-Blagnac%7CSAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02%7C3) | Terminé | 0% |
   
-- Tests unitaires et [cahier de tests](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Documentation/Cahier%20de%20tests/Test_Book.md)
+- Tests unitaires et [cahier de tests](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Documentation/Cahier%20de%20tests/Test_Book.md)
 - Indicateurs de qualité du code (dette technique) :
 - Lien vers [Backlog](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/issues)
 - Liste des Sprints :
@@ -69,11 +69,11 @@ Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](http
 
   | Ordres du Jour | Compte-rendus |
   |----------------|---------------|
-  | [ODJ 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf) | [CR 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/14-01-2025/CR%20R%C3%A9union%2014-01-2025.pdf)|
-  | [ODJ 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf) | [CR 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf)|
-  | [ODJ 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/16-01-2025/Ordre%20du%20Jour%2016-01-2025.pdf) | [CR 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/16-01-2025/CR%20R%C3%A9union%2016-01-2025.pdf)|
-  | [ODJ 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/Ordre%20Du%20Jour%2017-01-2025.pdf) | [CR 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/17-01-2025/CR%20R%C3%A9union%20Client%2017-01-2025%20CV.pdf) \| [CR 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/17-01-2025/CR%20R%C3%A9union%20Client%2017-01-2025%20AVDB.pdf)|
-  | [ODJ 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/22-01-2025/Ordre%20Du%20Jour%2022-01-2025.pdf) | [CR 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/develop/Gestion%20de%20projet/22-01-2025/CR%20R%C3%A9union%20Client%2022-01-2025%20CV.pdf)|
+  | [ODJ 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf) | [CR 07-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/14-01-2025/CR%20R%C3%A9union%2014-01-2025.pdf)|
+  | [ODJ 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf) | [CR 14-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/14-01-2025/Ordre%20du%20Jour%2014-01-2025.pdf)|
+  | [ODJ 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/16-01-2025/Ordre%20du%20Jour%2016-01-2025.pdf) | [CR 16-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/16-01-2025/CR%20R%C3%A9union%2016-01-2025.pdf)|
+  | [ODJ 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/Ordre%20Du%20Jour%2017-01-2025.pdf) | [CR 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/CR%20R%C3%A9union%20Client%2017-01-2025%20CV.pdf) \| [CR 17-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/17-01-2025/CR%20R%C3%A9union%20Client%2017-01-2025%20AVDB.pdf)|
+  | [ODJ 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/22-01-2025/Ordre%20Du%20Jour%2022-01-2025.pdf) | [CR 22-01-2025](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/blob/master/Gestion%20de%20projet/22-01-2025/CR%20R%C3%A9union%20Client%2022-01-2025%20CV.pdf)|
 
 
 ## Contexte général
