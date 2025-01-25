@@ -97,6 +97,8 @@ Les contraintes sont :
 
 ## Réalisations 
 
+### Installation de notre application
+
 **Prérequis :**
 - **Docker** et **Docker Compose** doivent être préalablement installés sur la machine
 - **InfluxDB** sera automatiquement déployé via Docker
@@ -118,7 +120,6 @@ Les contraintes sont :
     
     - **Frontend :** http://localhost:8000
     - **API :** http://localhost:8000/api ou http://localhost:8000/api/docs
-### Installation de notre application
 
 ### Aborescence
 Les documents se trouverons dans un premier temps un répertoir appelé `Documentation`. Dans ce répertoir `Documentation` vous trouverez : 
