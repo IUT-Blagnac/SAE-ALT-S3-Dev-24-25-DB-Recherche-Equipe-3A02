@@ -34,12 +34,12 @@ L'équipe de ce projet est constitué de 7 personnes. Voici leurs noms, rôles, 
 | Nom du membre de l'équipe | Rôle dans l'équipe | Répartition de travail |
 |---------------------------|--------------------|------------------------|
 |[Ophélie WINTERHOFF](https://github.com/ophewinx) | Cheffe d'équipe, Développeuse | 13.33% |
-|[Zachary IVARS](https://github.com/Traimix05) | Product Owner, Développeur | 13.33% |
+|[Zachary IVARS](https://github.com/Trailmix05) | Product Owner, Développeur | 13.33% |
 |[Yahya MAGAZ](https://github.com/Magaz-Yahya) | SCRUM Master, Développeur | 13.33% |
 |[Naila BON](https://github.com/naila-bon) | Développeuse | 13.33% |
 |[Adrien FAURÉ](https://github.com/AirbnbEcoPlus) | Développeur | 20.00% | 
-|[Esteban GARNIL](https://github.com/estbanGarnil) | Développeur | 13.33% |
-|[Mete YALÇIN](https://github.com/MetelsCoding) | Développeur| 13.33% |
+|[Esteban GARNIL](https://github.com/estebanGarnil) | Développeur | 13.33% |
+|[Mete YALÇIN](https://github.com/MeteIsCoding) | Développeur| 13.33% |
 
 
 Tutrice & tuteur enseignant.e.s de l'équipe : [Cassandre Vey](cassandre.vey@irit.fr), [Remi Boulle](remi.boulle@univ-tlse2.fr) & [Esther Pendaries](esther.pendaries@univ-tlse2.fr)
@@ -64,7 +64,7 @@ Nous utilisons pour cela les fonctionnalités de GitHub pour les [Releases](http
 - Lien vers [Backlog](https://github.com/IUT-Blagnac/SAE-ALT-S3-Dev-24-25-DB-Recherche-Equipe-3A02/issues)
 - Liste des Sprints :
   - [Sprint 1](https://github.com/orgs/IUT-Blagnac/projects/296)
-  - (Sprint 2)[https://github.com/orgs/IUT-Blagnac/projects/306]
+  - [Sprint 2](https://github.com/orgs/IUT-Blagnac/projects/306)
 - Liste des ODJs et leurs CRs :
 
   | Ordres du Jour | Compte-rendus |
