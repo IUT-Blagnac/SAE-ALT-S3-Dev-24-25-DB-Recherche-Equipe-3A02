@@ -9,7 +9,7 @@ const fakeData = {
         },
         "C002": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:05:30.413Z", "value": true }] },
         "C101": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T21:37:50.210Z", "value": false }] },
-        "C102": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:20:06.822Z", "value": false }] },
+        "C102": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:20:06.822Z", "value": true }] },
         "C103": { "sensors": [{ "name": "TS0203", "type": "door_sensor", "field": "contact", "timestamp": "2025-01-15T22:05:30.413Z", "value": true }] },
         "C104": {
             "sensors": [
