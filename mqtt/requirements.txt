@@ -4,8 +4,6 @@ asgiref==3.8.1
 certifi==2024.12.14
 charset-normalizer==3.4.1
 click==8.1.8
-Django==5.1.4
-django-ninja==1.3.0
 fastapi==0.115.6
 h11==0.14.0
 idna==3.10
@@ -24,5 +22,3 @@ sqlparse==0.5.3
 starlette==0.41.3
 typing_extensions==4.12.2
 urllib3==2.3.0
-uvicorn==0.34.0
-websockets==14.1

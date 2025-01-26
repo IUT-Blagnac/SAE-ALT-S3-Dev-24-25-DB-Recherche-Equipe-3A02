@@ -31,6 +31,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = [os.getenv('ALLOWED_HOSTS')]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 
 # Application definition
 
@@ -44,13 +46,16 @@ INSTALLED_APPS = [
     "tailwind",
     "theme",
     "web",
-    "webapi"
+    "webapi",
+    "corsheaders"
 ]
 
 
 TAILWIND_APP_NAME = 'theme'
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
